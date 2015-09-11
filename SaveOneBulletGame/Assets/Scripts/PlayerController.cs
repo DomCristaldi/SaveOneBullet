@@ -12,7 +12,14 @@ public class PlayerController : MonoBehaviour {
     }
 
     //GET COMPONENT
+    Transform tf;
+
     AdvancedMotor motor;
+    ViewController viewControl;
+
+    public bool canMove = true;
+    public bool canLook = true;
+    public bool usingMouse = true;
 
     //USER-ASSIGNED
     public Collider bodyCollider;
@@ -27,18 +34,21 @@ public class PlayerController : MonoBehaviour {
 
     public float aimSensitivity = 1.0f;
 
-    public Vector3 inputDirec = Vector3.zero;
+    public Vector3 moveDirec = Vector3.zero;
+    public Vector3 aimDirec = Vector2.zero;
 
     public MovementMode curMovementMode;
 
     void Awake() {
-        
+        tf = GetComponent<Transform>();
+
         motor = GetComponent<AdvancedMotor>();
+        viewControl = GetComponent<ViewController>();
     }
 
 	// Use this for initialization
 	void Start () {
-	
+        //Cursor.lockState = CursorLockMode.Locked;
 	}
 	
 	// Update is called once per frame
@@ -46,21 +56,33 @@ public class PlayerController : MonoBehaviour {
         RecieveInput();
 
         SendMotorInput();
+
+        //Debug.Log(Input.GetAxis("Mouse X"));
+        //Debug.Log(Input.mousePosition);
 	}
 
     private void SendMotorInput() {
         if (curMovementMode == MovementMode.walking) {//WALK
-            motor.InputDirec(inputDirec * motor.walkSpeed);
+            motor.InputDirec(moveDirec * motor.walkSpeed);
         }
         else if (curMovementMode == MovementMode.running) {//RUN
-            motor.InputDirec(inputDirec * motor.runSpeed);
+            motor.InputDirec(moveDirec * motor.runSpeed);
         }
         else if (curMovementMode == MovementMode.sneaking) {//SNEAK
-            motor.InputDirec(inputDirec * motor.sneakSpeed);
+            motor.InputDirec(moveDirec * motor.sneakSpeed);
+        }
+    }
+    
+    private void RecieveInput() {
+        if (canMove) {
+            RecieveMoveInput();
+        }
+        if (canLook) {
+            RecieveViewInput();
         }
     }
 
-    private void RecieveInput() {
+    private void RecieveMoveInput() {
         //NOTE: put jumping in here if we want it (y value for inputDirec)
 
         //allow for additions to 0 so movement can cancel itself out
@@ -81,6 +103,15 @@ public class PlayerController : MonoBehaviour {
             horMovement += -1.0f;
         }
 
-        inputDirec = new Vector3(horMovement, 0.0f, vertMovement);
+        moveDirec = tf.rotation * (new Vector3(horMovement, 0.0f, vertMovement)).normalized;
+    }
+
+    private void RecieveViewInput() {
+        if (usingMouse) {
+            viewControl.InputDeltaView(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
+
+            //viewControl.InputDeltaView(new Vector2(Input.GetAxis("Mouse X"), 0.0f));
+            //viewControl.InputDeltaView(new Vector2(0.0f, Input.GetAxis("Mouse Y")));
+        }
     }
 }

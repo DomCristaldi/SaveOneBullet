@@ -49,7 +49,7 @@ public class Motor : MonoBehaviour {
     }
     
 //HANDLE ANY MODIFICATIONS THE MOTOR HAS TO MAKE TO MOVEMENT
-    public void HandleMovement() {
+    protected void HandleMovement() {
         trueDirec = desiredDirec;
 
         
@@ -57,7 +57,7 @@ public class Motor : MonoBehaviour {
     }
 
 //APPLY THE MOVEMENT TO THE RIGID BODY
-    public void ApplyMovementFixed() {//only do in FixedUpdate()
+    protected void ApplyMovementFixed() {//only do in FixedUpdate()
         rigbod.velocity = new Vector3(trueDirec.x, rigbod.velocity.y, trueDirec.z);
     }
 
