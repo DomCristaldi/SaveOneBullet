@@ -44,7 +44,7 @@ public class ViewController : MonoBehaviour {
             }
             */
 
-            Debug.Log(value);
+            //Debug.Log(value);
             return value;
         }
     }
@@ -69,7 +69,7 @@ public class ViewController : MonoBehaviour {
         //Debug.Log(deltaAimAngle_Y);
 
         //Debug.DrawRay(tf.position, deltaAimPos_X, Color.red);
-        Debug.DrawRay(tf.position, deltaAimPos_Y, Color.green);
+        //Debug.DrawRay(tf.position, deltaAimPos_Y, Color.green);
         //Debug.DrawRay(tf.position, Vector3.back * 10.0f);
 
         //HORIZONTAL
