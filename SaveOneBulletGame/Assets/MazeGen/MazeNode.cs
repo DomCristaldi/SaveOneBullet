@@ -33,6 +33,7 @@ public class MazeNode : MonoBehaviour {
 	public float f;
 	public bool closed;
 	public bool connectedToMain;
+	public float distanceToGoal;
 
     void Awake () {
 		connections = new List<MazeNode>();
@@ -48,6 +49,7 @@ public class MazeNode : MonoBehaviour {
 			links.Add(null);
 		}
 		ResetAStarVariables();
+		distanceToGoal = Mathf.Infinity;
     }
     
 	void Start () {
@@ -61,6 +63,8 @@ public class MazeNode : MonoBehaviour {
 	public void AddConnection (Direction direction, MazeNode node) {
 		connections[DirectionToIndex(direction)] = node;
 		node.connections[DirectionToIndex(InverseDirection(direction))] = this;
+		links[DirectionToIndex(direction)].adjacentNode1 = this;
+		links[DirectionToIndex(direction)].adjacentNode2 = node;
 		//***DEBUG***
 		//AddCurrentConnections(direction, node);
 	}
@@ -139,5 +143,10 @@ public class MazeNode : MonoBehaviour {
 		f = Mathf.Infinity;
 		closed = false;
 		cameFrom = null;
+	}
+
+	public MazeLink DetermineGoalDistanceDifferential (Direction direction) {
+		links[DirectionToIndex(direction)].goalDistanceDifferential = Mathf.Abs(distanceToGoal - connections[DirectionToIndex(direction)].distanceToGoal);
+		return links[DirectionToIndex(direction)];
 	}
 }

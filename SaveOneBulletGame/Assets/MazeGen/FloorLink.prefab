@@ -124,7 +124,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 580a5bb1236bc9c4f989a23affe56658, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -189,6 +189,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wall: {fileID: 149958}
   onMainPath: 0
+  goalDistanceDifferential: 0
+  adjacentNode1: {fileID: 0}
+  adjacentNode2: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -200,6 +203,10 @@ Prefab:
       propertyPath: wall
       value: 
       objectReference: {fileID: 149958}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 194452}

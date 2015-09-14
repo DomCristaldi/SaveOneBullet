@@ -22,6 +22,14 @@ public class MazeController : MonoBehaviour {
 	public MazeNode startNode;
 	public List<MazeNode> path;
 	public List<MazeNode> unconnected;
+	List<MazeNode> distanceChecked;
+	[Header("Maze Generation Parms (for informed designers only):")]
+	public int offshootStopChance;
+	public int wallRemovalsGoal;
+	public int wallRemovalsStart;
+	public int aStarPasses;
+	public AStarMode aStarMode;
+	public float aStarRandom;
 
 	void Awake () {
 		if (singleton == null) {
@@ -70,8 +78,9 @@ public class MazeController : MonoBehaviour {
 		ConnectNodes();
 		SetExit();
 		FindGoldenPath();
-		CarveOtherPaths(5);
+		CarveOtherPaths(offshootStopChance);
 		ConnectStragglers();
+		CreateLoops(wallRemovalsGoal, wallRemovalsStart);
 		SolidifyWalls();
 	}
 
@@ -132,7 +141,7 @@ public class MazeController : MonoBehaviour {
 				node.connectedToMain = true;
 				unconnected.Remove(node);
 			}
-			CarvePath(node, stopChance);
+			CarvePath(node, stopChance, connectStragglers);
 			if (connectStragglers) {
 				start.connectedToMain = true;
 				unconnected.Remove(start);
@@ -162,16 +171,16 @@ public class MazeController : MonoBehaviour {
 				MazeNode thisNode = mazePieces[x][z].GetComponent<MazeNode>();
 				mazeNodes[i].Add(thisNode);
 				unconnected.Add(thisNode);
+				thisNode.AddLink(MazeNode.Direction.up, mazePieces[x][z-1].GetComponent<MazeLink>());
+				thisNode.AddLink(MazeNode.Direction.down, mazePieces[x][z+1].GetComponent<MazeLink>());
+				thisNode.AddLink(MazeNode.Direction.left, mazePieces[x-1][z].GetComponent<MazeLink>());
+				thisNode.AddLink(MazeNode.Direction.right, mazePieces[x+1][z].GetComponent<MazeLink>());
 				if (i > 0) {
 					thisNode.AddConnection(MazeNode.Direction.left, mazeNodes[i-1][k]);
 				}
 				if (k > 0) {
 					thisNode.AddConnection(MazeNode.Direction.up, mazeNodes[i][k-1]);
 				}
-				thisNode.AddLink(MazeNode.Direction.up, mazePieces[x][z-1].GetComponent<MazeLink>());
-				thisNode.AddLink(MazeNode.Direction.down, mazePieces[x][z+1].GetComponent<MazeLink>());
-				thisNode.AddLink(MazeNode.Direction.left, mazePieces[x-1][z].GetComponent<MazeLink>());
-				thisNode.AddLink(MazeNode.Direction.right, mazePieces[x+1][z].GetComponent<MazeLink>());
 				k++;
 			}
 			i++;
@@ -325,7 +334,7 @@ public class MazeController : MonoBehaviour {
 		return path;
 	}
 
-	public float GetHeuristic (MazeNode nodeStart, MazeNode nodeEnd, AStarMode mode, float rand) {
+	public float GetHeuristic (MazeNode nodeStart, MazeNode nodeEnd, AStarMode mode, float rand = 0f) {
 		Vector2 start = new Vector2(nodeStart.transform.position.x, nodeStart.transform.position.z);
 		Vector2 end = new Vector2(nodeEnd.transform.position.x, nodeEnd.transform.position.z);
 		if (mode == AStarMode.euclidian) {
@@ -343,6 +352,91 @@ public class MazeController : MonoBehaviour {
 		else {
 			Debug.LogWarning("Unspecified Heuristic!");
 			return 0f;
+		}
+	}
+
+	void CreateLoops (int goalPasses, int startPasses) {
+		for (int i = 0; i < startPasses; i++) {
+			DetermineDistancesFromGoal(startNode);
+			MazeLink highestDiffLink = DetermineGoalDistanceDifferentials();
+			//Debug.DrawLine(highestDiffLink.transform.position, new Vector3(0f, 20f, 0f), Color.black);
+			highestDiffLink.adjacentNode1.ConnectToNode(highestDiffLink.adjacentNode2);
+			ResetGoalDistances();
+			//Debug.Break();
+			for (int j = 0; j < aStarPasses; j++) {
+				List<MazeNode> newPath = AStar(startNode, exitNode, aStarMode, aStarRandom);
+				foreach (MazeNode node in newPath) {
+					if (node != exitNode && node != startNode) {
+						node.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+					}
+				}
+			}
+		}
+		for (int i = 0; i < goalPasses; i++) {
+			DetermineDistancesFromGoal(exitNode);
+			MazeLink highestDiffLink = DetermineGoalDistanceDifferentials();
+			//Debug.DrawLine(highestDiffLink.transform.position, new Vector3(0f, 20f, 0f), Color.black);
+			highestDiffLink.adjacentNode1.ConnectToNode(highestDiffLink.adjacentNode2);
+			ResetGoalDistances();
+			//Debug.Break();
+			for (int j = 0; j < aStarPasses; j++) {
+				List<MazeNode> newPath = AStar(startNode, exitNode, aStarMode, aStarRandom);
+				foreach (MazeNode node in newPath) {
+					if (node != exitNode && node != startNode) {
+						node.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+					}
+				}
+			}
+		}
+	}
+
+	void ResetGoalDistances () {
+		for (int x = 0; x < nodeWidth; x++) {
+			for (int z = 0; z < nodeHeight; z++) {
+				mazeNodes[x][z].distanceToGoal = Mathf.Infinity;
+			}
+		}
+	}
+
+	MazeLink DetermineGoalDistanceDifferentials () {
+		MazeLink highestDiffLink = null;
+		float highestDiff = 0f;
+		for (int x = 0; x < nodeWidth; x++) {
+			for (int z = 0; z < nodeHeight; z++) {
+				if (x > 0) {
+					MazeLink thisLink = mazeNodes[x][z].DetermineGoalDistanceDifferential(MazeNode.Direction.left);
+					if (thisLink != null && thisLink.goalDistanceDifferential > highestDiff) {
+						highestDiff = thisLink.goalDistanceDifferential;
+						highestDiffLink = thisLink;
+					}
+				}
+				if (z > 0) {
+					MazeLink thisLink = mazeNodes[x][z].DetermineGoalDistanceDifferential(MazeNode.Direction.up);
+					if (thisLink != null && thisLink.goalDistanceDifferential > highestDiff) {
+						highestDiff = thisLink.goalDistanceDifferential;
+						highestDiffLink = thisLink;
+					}
+				}
+			}
+		}
+		return highestDiffLink;
+	}
+
+	void DetermineDistancesFromGoal (MazeNode startNode, float distance = 0f) {
+		if (startNode.distanceToGoal > distance) {
+			startNode.distanceToGoal = distance;
+		}
+		//***DEBUG***
+		//startNode.GetComponentInChildren<MeshRenderer>().material.color = new Color(0f, distance / 200f, 0f);
+		foreach (MazeNode node in startNode.currentConnections) {
+			if (node == null) {
+				continue;
+			}
+			float newDist = distance + GetHeuristic(startNode, node, AStarMode.manhattan);
+			if (node.distanceToGoal <= newDist) {
+				continue;
+			}
+			DetermineDistancesFromGoal(node, newDist);
 		}
 	}
 }
