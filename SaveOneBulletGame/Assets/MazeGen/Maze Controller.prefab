@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &160978
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 450688}
+  - 114: {fileID: 11478898}
+  m_Layer: 0
+  m_Name: Maze Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &450688
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 160978}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11478898
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 160978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d70254688738ba4d91960451a3e73db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wall: {fileID: 111968, guid: cba125721853e5d41b6c76306ff73872, type: 2}
+  floorLink: {fileID: 194452, guid: 2b90556bd2777f146976a38b21c4060a, type: 2}
+  floorNode: {fileID: 193856, guid: 407362754c069c24b99c127fb241a569, type: 2}
+  nodeWidth: 8
+  nodeHeight: 8
+  mazeWidth: 0
+  mazeHeight: 0
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: floorNode
+      value: 
+      objectReference: {fileID: 193856, guid: 407362754c069c24b99c127fb241a569, type: 2}
+    - target: {fileID: 0}
+      propertyPath: wall
+      value: 
+      objectReference: {fileID: 111968, guid: cba125721853e5d41b6c76306ff73872, type: 2}
+    - target: {fileID: 0}
+      propertyPath: floorLink
+      value: 
+      objectReference: {fileID: 194452, guid: 2b90556bd2777f146976a38b21c4060a, type: 2}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 160978}
+  m_IsPrefabParent: 1
