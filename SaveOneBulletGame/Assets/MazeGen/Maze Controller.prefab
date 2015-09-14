@@ -23,7 +23,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 160978}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,10 +42,15 @@ MonoBehaviour:
   wall: {fileID: 111968, guid: cba125721853e5d41b6c76306ff73872, type: 2}
   floorLink: {fileID: 194452, guid: 2b90556bd2777f146976a38b21c4060a, type: 2}
   floorNode: {fileID: 193856, guid: 407362754c069c24b99c127fb241a569, type: 2}
-  nodeWidth: 8
-  nodeHeight: 8
+  nodeWidth: 20
+  nodeHeight: 20
   mazeWidth: 0
   mazeHeight: 0
+  exitNode: {fileID: 0}
+  exit: {fileID: 0}
+  startNode: {fileID: 0}
+  path: []
+  unconnected: []
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

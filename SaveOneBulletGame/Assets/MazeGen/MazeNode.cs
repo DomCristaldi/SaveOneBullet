@@ -12,17 +12,27 @@ public class MazeNode : MonoBehaviour {
 		left = -2
 	}
 
-	public int DirectionToIndex (Direction direction) {
+	public static int DirectionToIndex (Direction direction) {
 		return (int)direction + 2;
 	}
 
-	public Direction InverseDirection (Direction direction) {
+	public static Direction InverseDirection (Direction direction) {
 		return (Direction)(-(int)direction);
+	}
+
+	public static Direction IndexToDirection (int index) {
+		return (Direction)index - 2;
 	}
 
 	public List<MazeNode> connections;
 	public List<MazeNode> currentConnections;
 	public List<MazeLink> links;
+	public MazeNode cameFrom;
+	public float g;
+	public float h;
+	public float f;
+	public bool closed;
+	public bool connectedToMain;
 
     void Awake () {
 		connections = new List<MazeNode>();
@@ -37,6 +47,7 @@ public class MazeNode : MonoBehaviour {
 		for (int i = 0; i < 5; i++) {
 			links.Add(null);
 		}
+		ResetAStarVariables();
     }
     
 	void Start () {
@@ -51,12 +62,57 @@ public class MazeNode : MonoBehaviour {
 		connections[DirectionToIndex(direction)] = node;
 		node.connections[DirectionToIndex(InverseDirection(direction))] = this;
 		//***DEBUG***
-		AddCurrentConnections(direction, node);
+		//AddCurrentConnections(direction, node);
 	}
 
-	public void AddCurrentConnections (Direction direction, MazeNode node) {
+	public void AddCurrentConnections (Direction direction, MazeNode node, bool isMainPath = false) {
 		currentConnections[DirectionToIndex(direction)] = node;
 		node.currentConnections[DirectionToIndex(InverseDirection(direction))] = this;
+		links[DirectionToIndex(direction)].wall.SetActive(false);
+		if (isMainPath) {
+			links[DirectionToIndex(direction)].onMainPath = true;
+			links[DirectionToIndex(direction)].GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+		}
+	}
+
+	public void RemoveCurrentConnections (Direction direction, MazeNode node) {
+		currentConnections[DirectionToIndex(direction)] = null;
+		node.currentConnections[DirectionToIndex(InverseDirection(direction))] = null;
+		links[DirectionToIndex(direction)].wall.SetActive(true);
+	}
+
+	public void ConnectToNode (MazeNode node, bool isMainPath = false) {
+		int connectionIndex = -1;
+		for (int i = 0; i < 5; i++) {
+			if (connections[i] == node) {
+				connectionIndex = i;
+				break;
+			}
+		}
+		if (connectionIndex == -1) {
+			Debug.LogError("Unable to connect nodes!");
+				return;
+		}
+		AddCurrentConnections(IndexToDirection(connectionIndex), node, isMainPath);
+		if (isMainPath) {
+			connectedToMain = true;
+			node.connectedToMain = true;
+		}
+	}
+
+	public void DisconnectFromNode (MazeNode node) {
+		int connectionIndex = -1;
+		for (int i = 0; i < 5; i++) {
+			if (connections[i] == node) {
+				connectionIndex = i;
+				break;
+			}
+		}
+		if (connectionIndex == -1) {
+			Debug.LogError("Unable to disconnect nodes!");
+			return;
+		}
+		RemoveCurrentConnections(IndexToDirection(connectionIndex), node);
 	}
 
 	public void AddLink (Direction direction, MazeLink link) {
@@ -75,5 +131,13 @@ public class MazeNode : MonoBehaviour {
 				links[i].wall.SetActive(false);
 			}
 		}
+	}
+
+	public void ResetAStarVariables () {
+		g = Mathf.Infinity;
+		h = Mathf.Infinity;
+		f = Mathf.Infinity;
+		closed = false;
+		cameFrom = null;
 	}
 }
