@@ -932,6 +932,10 @@ Prefab:
       propertyPath: aimSensitivity
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 181192, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
   m_IsPrefabParent: 0
