@@ -3,7 +3,19 @@ using System.Collections;
 
 public class ItemBase : MonoBehaviour {
 
+    public enum ItemType {
+        gun,
+        flashlight,
+        compass,
+    }
+
     public Animator animator;
+
+    public ItemType thisItemType;
+
+    protected virtual void Awake() {
+
+    }
 
 	// Use this for initialization
 	void Start () {
