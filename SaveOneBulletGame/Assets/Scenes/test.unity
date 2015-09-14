@@ -892,10 +892,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 11444304, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
-      propertyPath: equipmentSlots.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 488048, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
       propertyPath: m_LocalPosition.x
       value: -1.61000001
@@ -932,13 +928,9 @@ Prefab:
       propertyPath: equipmentSlots.Array.data[0].item
       value: 
       objectReference: {fileID: 798787647}
-    - target: {fileID: 11444304, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
-      propertyPath: equipmentSlots.Array.data[1].item
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 11444304, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
-      propertyPath: equipmentSlots.Array.data[1].currentlyEquipped
-      value: 0
+    - target: {fileID: 11448842, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
+      propertyPath: aimSensitivity
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}

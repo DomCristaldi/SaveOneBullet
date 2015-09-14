@@ -302,7 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camNeckTf: {fileID: 411862}
   cam: {fileID: 2066518}
-  aimSensitivity: 3
+  aimSensitivity: 5
   deltaAimDirec: {x: 0, y: 0}
 --- !u!114 &11466646
 MonoBehaviour:

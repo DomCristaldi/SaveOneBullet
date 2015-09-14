@@ -8,7 +8,7 @@ public class ViewController : MonoBehaviour {
     public Camera cam;
     Transform camTf;
 
-    public float aimSensitivity = 3.0f;
+    public float aimSensitivity = 5.0f;
 
     public Vector2 deltaAimDirec;//unit vector representing how far mouse moved this frame
 
@@ -75,61 +75,43 @@ public class ViewController : MonoBehaviour {
         //Debug.DrawRay(tf.position, deltaAimPos_Y, Color.green);
         //Debug.DrawRay(tf.position, Vector3.back * 10.0f);
 
-        //HORIZONTAL
+    //HORIZONTAL
         Quaternion newHorRot = GetNewHorCamRot(deltaAimAngle_X);
         tf.rotation = Quaternion.Slerp(tf.rotation, newHorRot, Time.deltaTime * aimSensitivity);
 
 
-        //VERTICAL
+    //VERTICAL
         //if (Mathf.Sign(deltaAimDirec.y) > 0.0f && Vector3.Angle(camTF.forward, Vector3.forward) < 90.0f)
         Quaternion newVertRot = GetNewVertCamRot(deltaAimAngle_Y);
         Quaternion finalVertRot = Quaternion.Slerp(camNeckTf.rotation, newVertRot, Time.deltaTime * aimSensitivity);
 
 
-        Debug.DrawRay(camNeckTf.position, finalVertRot * Vector3.forward, Color.red);
+        //Debug.DrawRay(camNeckTf.position, finalVertRot * Vector3.forward, Color.red);
 
+        //planes for limiting player's view rotation (currently generated every frame, this is only ideal if we change the player's orientation, like if gravity changed)
         Plane forwardPlane = new Plane(tf.forward, camNeckTf.position);
         Plane upPlane = new Plane(tf.up, camNeckTf.position);
+
         if (!forwardPlane.GetSide((finalVertRot * Vector3.forward) + camNeckTf.position)) {
-            Debug.Log("backward");
-
+        //LIMIT UP
             if (upPlane.GetSide((finalVertRot * Vector3.forward) + camNeckTf.position)) {
-                Debug.Log("up");
+                //Debug.Log("up");
+                finalVertRot = tf.rotation;
+                finalVertRot *= Quaternion.LookRotation(tf.up, tf.up);
 
-                //Quaternion tempQuat = Quaternion.Euler(0.0f, 0.0f, camNeckTf.localRotation.y);
-
-                //Vector3 tempVec = Vector3.ProjectOnPlane(finalVertRot * Vector3.forward, upPlane.normal);
-                //Quaternion tempQuat = Quaternion.FromToRotation(tf.forward, tempVec);
-
-                //finalVertRot
-                //Quaternion tempQuat = finalVertRot;
-                //tempQuat.SetEulerAngles(0.0f, -tempQuat.eulerAngles.y, 0.0f);
-                finalVertRot.SetLookRotation(tf.up, tf.up);
-                //finalVertRot *= tempQuat;
-                //finalVertRot *= newHorRot;
             }
+        //LIMIT DOWN
             else {
-                Debug.Log("down");
-                finalVertRot.SetLookRotation(-tf.up, tf.up);
-                //finalVertRot *= newHorRot;
+                //Debug.Log("down");
+                finalVertRot = tf.rotation;
+                finalVertRot *= Quaternion.LookRotation(-tf.up, tf.up);
             }
         }
 
-        Debug.DrawRay(camNeckTf.position, upPlane.normal * 2.0f, Color.blue);
-
+        //Debug.DrawRay(camNeckTf.position, upPlane.normal * 2.0f, Color.blue);
 
 
         camNeckTf.rotation = finalVertRot;
-
-
-
-        /*
-        if (!(camNeckTf.localRotation.eulerAngles.x > 0.0f && camNeckTf.localRotation.eulerAngles.x < 90.0f)) {
-            camNeckTf.localRotation.SetEulerAngles(0.0f,
-                                                   camNeckTf.localRotation.eulerAngles.y,
-                                                   camNeckTf.localRotation.eulerAngles.z);
-        }
-        */
     }
 
     
@@ -140,75 +122,9 @@ public class ViewController : MonoBehaviour {
 
 
     private Quaternion GetNewVertCamRot(float angle) {
-        /*
-        Quaternion deltaRot = Quaternion.AngleAxis(angle, camTF.right);
-        
-        if ((camTF.rotation * deltaRot).eulerAngles.y > 90.0f
-            || (camTF.rotation * deltaRot).eulerAngles.y < -90.0f) 
-        {
-            camTF.rotation *= deltaRot;
-        }
-        */
 
-        //Debug.Log(angle);
+        return camNeckTf.rotation * Quaternion.AngleAxis(angle, Vector3.right);
 
-        //Debug.Log(camNeckTf.localRotation.eulerAngles.x);
-        //Debug.Log(angle + camNeckTf.localRotation.eulerAngles.x);
-        if (angle + camNeckTf.localRotation.eulerAngles.x < 0.0f || angle + camNeckTf.localRotation.eulerAngles.x > 90.0f) {
-            //Debug.Log("asdf");
-        }
-
-        /*
-        if (camNeckTf.rotation.eulerAngles.x >= 0.0f && camNeckTf.rotation.eulerAngles.x < 90.0f) {
-            //Debug.Log("down");
-            if (angle + camNeckTf.rotation.eulerAngles.x <= 0.0f) {
-                Debug.Log("adjust");
-            }
-        }
-
-        if (camNeckTf.rotation.eulerAngles.x > 270.0f && camNeckTf.rotation.eulerAngles.x <= 360.0f) {
-            Debug.Log("up");
-        }
-        */
-        //if (camNeckTf.rotation.eulerAngles.x 
-                
-
-        Quaternion newRot = camNeckTf.rotation * Quaternion.AngleAxis(angle, Vector3.right);
-
-        //Debug.Log(newRot.eulerAngles.x);
-
-        //Vector3 newRotVec = newRot * tf.forward;
-
-        
-        //float clampedX = Mathf.Clamp(newRot.eulerAngles.x, -90.0f, 90.0f);
-        //Debug.Log(clampedX);
-        //Debug.Log(newRot.eulerAngles.x);
-        //newRot.SetEulerAngles(clampedX, newRot.eulerAngles.y, newRot.eulerAngles.z);
-
-        //Debug.Log(newRot.eulerAngles);
-
-        /*
-        if (Vector3.Angle(Vector3.forward, newRot * Vector3.forward) > 90.0f) {
-            if (Vector3.Angle(Vector3.up, newRot * Vector3.forward) < Vector3.Angle(-Vector3.up, newRot * Vector3.forward)) {
-                //Debug.Log("up");
-                //newRot = new Quaternion();
-                //newRot.SetLookRotation(Vector3.up);
-                return camNeckTf.rotation;
-            }
-            else {
-                //Debug.Log("down");
-                //newRot = new Quaternion();
-                //newRot.SetLookRotation(Vector3.up);
-                return camNeckTf.rotation;
-            }
-        }
-        */
-        return newRot;
-
-
-        //Debug.Log("angle: " + angle);
-        //camTF.rotation *= Quaternion.AngleAxis(angle, Vector3.right);
-        //return camTF.rotation * Quaternion.AngleAxis(angle, Vector3.right);
     }
 
     public void InputDeltaView(Vector2 deltaView) {
