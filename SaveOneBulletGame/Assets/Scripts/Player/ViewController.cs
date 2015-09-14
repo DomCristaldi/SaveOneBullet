@@ -104,13 +104,31 @@ public class ViewController : MonoBehaviour {
                 //finalVertRot
                 //Quaternion tempQuat = finalVertRot;
                 //tempQuat.SetEulerAngles(0.0f, -tempQuat.eulerAngles.y, 0.0f);
+                
+                /*
                 finalVertRot.SetLookRotation(tf.up, tf.up);
+                Quaternion upRot = Quaternion.LookRotation(tf.up, tf.up);
+                finalVertRot *= tf.rotation;
+                */
+                finalVertRot = tf.rotation;
+                finalVertRot *= Quaternion.LookRotation(tf.up, tf.up);
+
                 //finalVertRot *= tempQuat;
                 //finalVertRot *= newHorRot;
+
+                
+
+                //finalVertRot = newVertRot * Quaternion.FromToRotation(
             }
             else {
                 Debug.Log("down");
-                finalVertRot.SetLookRotation(-tf.up, tf.up);
+                
+                //finalVertRot.SetLookRotation(-tf.up, tf.up);
+                //finalVertRot *= tf.rotation;
+
+                finalVertRot = tf.rotation;
+                finalVertRot *= Quaternion.LookRotation(-tf.up, tf.up);
+
                 //finalVertRot *= newHorRot;
             }
         }
