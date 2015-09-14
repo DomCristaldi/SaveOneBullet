@@ -63,6 +63,8 @@ public class ViewController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         HandleCam();
+
+        //Debug.DrawRay(GetRayFromCamera().origin, GetRayFromCamera().direction * 10.0f);
 	}
 
     private void HandleCam() {
@@ -211,5 +213,24 @@ public class ViewController : MonoBehaviour {
 
     public void InputDeltaView(Vector2 deltaView) {
         deltaAimDirec = deltaView;
+    }
+
+    public Ray GetRayFromCamera() {
+        return new Ray(camTf.position, camTf.forward);
+
+        /*
+        RaycastHit hit;
+        
+        if (hit == null) {
+            Debug.Log("try this");
+        }
+
+        if (Physics.Raycast(camTf.position, camTf.forward, out hit)) {
+            return hit.collider.gameObject;
+        }
+        else {
+            return null;
+        }
+        */
     }
 }

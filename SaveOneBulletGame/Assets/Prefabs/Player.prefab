@@ -51,7 +51,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &177494
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,8 +79,24 @@ GameObject:
   - 114: {fileID: 11496744}
   - 114: {fileID: 11466646}
   - 114: {fileID: 11448842}
+  - 114: {fileID: 11444304}
   m_Layer: 0
   m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &187068
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 427564}
+  m_Layer: 0
+  m_Name: Hands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,8 +113,21 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 467808}
+  - {fileID: 427564}
   m_Father: {fileID: 488048}
   m_RootOrder: 2
+--- !u!4 &427564
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: .194999993, y: -.27700001, z: .565999985}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 411862}
+  m_RootOrder: 1
 --- !u!4 &451054
 Transform:
   m_ObjectHideFlags: 1
@@ -142,7 +171,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 181192}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.73099995, z: 0}
+  m_LocalPosition: {x: -1.61000001, y: 1.73099995, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 451054}
@@ -244,6 +273,22 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 103208}
   m_Enabled: 1
+--- !u!114 &11444304
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 181192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28a57d026e6fd8f4ea4ebfa968bea07e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handsTf: {fileID: 427564}
+  equippedItem: {fileID: 0}
+  equipmentSlots:
+  - item: {fileID: 0}
+    currentlyEquipped: 1
 --- !u!114 &11448842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -291,13 +336,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canMove: 1
   canLook: 1
+  canUseItem: 1
   usingMouse: 1
-  bodyCollider: {fileID: 0}
+  bodyCollider: {fileID: 13648632}
   moveForward: 119
   moveBackward: 115
   moveRight: 100
   moveLeft: 97
   sneakKey: 304
+  useItem: 323
   aimSensitivity: 1
   moveDirec: {x: 0, y: 0, z: 0}
   aimDirec: {x: 0, y: 0, z: 0}
@@ -328,7 +375,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: bodyCollider
+      value: 
+      objectReference: {fileID: 13648632}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 181192}

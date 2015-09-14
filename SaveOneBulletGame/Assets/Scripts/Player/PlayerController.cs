@@ -16,9 +16,11 @@ public class PlayerController : MonoBehaviour {
 
     AdvancedMotor motor;
     ViewController viewControl;
+    InventoryController invControl;
 
     public bool canMove = true;
     public bool canLook = true;
+    public bool canUseItem = true;
     public bool usingMouse = true;
 
     //USER-ASSIGNED
@@ -32,6 +34,8 @@ public class PlayerController : MonoBehaviour {
 
     public KeyCode sneakKey = KeyCode.LeftShift;
 
+    public KeyCode useItem = KeyCode.Mouse0;
+
     public float aimSensitivity = 1.0f;
 
     public Vector3 moveDirec = Vector3.zero;
@@ -44,6 +48,7 @@ public class PlayerController : MonoBehaviour {
 
         motor = GetComponent<AdvancedMotor>();
         viewControl = GetComponent<ViewController>();
+        invControl = GetComponent<InventoryController>();
     }
 
 	// Use this for initialization
@@ -80,6 +85,9 @@ public class PlayerController : MonoBehaviour {
         if (canLook) {
             RecieveViewInput();
         }
+        if (canUseItem) {
+            RecieveItemInput();
+        }
     }
 
     private void RecieveMoveInput() {
@@ -112,6 +120,12 @@ public class PlayerController : MonoBehaviour {
 
             //viewControl.InputDeltaView(new Vector2(Input.GetAxis("Mouse X"), 0.0f));
             //viewControl.InputDeltaView(new Vector2(0.0f, Input.GetAxis("Mouse Y")));
+        }
+    }
+
+    private void RecieveItemInput() {
+        if (Input.GetKeyDown(useItem)) {
+            invControl.UseItem();
         }
     }
 }
