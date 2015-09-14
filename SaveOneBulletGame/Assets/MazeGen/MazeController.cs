@@ -12,19 +12,22 @@ public class MazeController : MonoBehaviour {
 	[Header("Dimensions (# of nodes):")]
 	public int nodeWidth;
 	public int nodeHeight;
-	[Header("Actual Dimensions (calculated at runtime):")]
+	[Header("Actual dimensions (calculated at runtime):")]
 	public int mazeWidth;
 	public int mazeHeight;
 	public List<List<GameObject>> mazePieces;
 	public List<List<MazeNode>> mazeNodes;
+	[Header("Node graph stuff (DO NOT CHANGE):")]
 	public MazeNode exitNode;
 	public MazeLink exit;
 	public MazeNode startNode;
 	public List<MazeNode> path;
 	public List<MazeNode> unconnected;
 	List<MazeNode> distanceChecked;
-	[Header("Maze Generation Parms (for informed designers only):")]
+	[Header("Maze Generation Parms (FOR INFORMED DESIGNERS ONLY):")]
+	public float goldenPathRandom;
 	public int offshootStopChance;
+	public int maxAllowedStragglers;
 	public int wallRemovalsGoal;
 	public int wallRemovalsStart;
 	public int aStarPasses;
@@ -79,13 +82,13 @@ public class MazeController : MonoBehaviour {
 		SetExit();
 		FindGoldenPath();
 		CarveOtherPaths(offshootStopChance);
-		ConnectStragglers();
+		ConnectStragglers(maxAllowedStragglers);
 		CreateLoops(wallRemovalsGoal, wallRemovalsStart);
 		SolidifyWalls();
 	}
 
 	void FindGoldenPath () {
-		path = AStar(startNode, exitNode, AStarMode.randomManhattan, 5000f, true);
+		path = AStar(startNode, exitNode, AStarMode.randomManhattan, goldenPathRandom, true);
 		foreach (MazeNode node in path) {
 			if (node != exitNode && node != startNode) {
 				node.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;

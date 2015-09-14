@@ -51,7 +51,9 @@ MonoBehaviour:
   startNode: {fileID: 0}
   path: []
   unconnected: []
+  goldenPathRandom: 5000
   offshootStopChance: 4
+  maxAllowedStragglers: 200
   wallRemovalsGoal: 8
   wallRemovalsStart: 8
   aStarPasses: 10
