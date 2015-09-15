@@ -34,6 +34,7 @@ public class MazeNode : MonoBehaviour {
 	public bool closed;
 	public bool connectedToMain;
 	public float distanceToGoal;
+	public bool searched;
 
     void Awake () {
 		connections = new List<MazeNode>();
