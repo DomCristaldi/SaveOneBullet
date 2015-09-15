@@ -82,7 +82,7 @@ GameObject:
   - 114: {fileID: 11444304}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -317,9 +317,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desiredDirec: {x: 0, y: 0, z: 0}
   trueDirec: {x: 0, y: 0, z: 0}
-  maxDesiredDirecMag: 2
   moveSpeedModifier: 1
-  walkSpeed: 1.5
+  redirectSpeed: 20
+  curMovementMode: 0
+  walkSpeed: 2
+  runSpeed: 4
   sneakSpeed: 1
   backwardsMovementModifier: .300000012
   sidewaysMovementModifier: .5

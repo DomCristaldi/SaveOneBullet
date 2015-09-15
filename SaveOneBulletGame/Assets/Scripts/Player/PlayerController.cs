@@ -54,10 +54,14 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         RecieveInput();
 
         SendMotorInput();
@@ -67,6 +71,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
     private void SendMotorInput() {
+        motor.InputDirec(moveDirec);
+
+        /*
         if (curMovementMode == MovementMode.walking) {//WALK
             motor.InputDirec(moveDirec * motor.walkSpeed);
         }
@@ -76,6 +83,7 @@ public class PlayerController : MonoBehaviour {
         else if (curMovementMode == MovementMode.sneaking) {//SNEAK
             motor.InputDirec(moveDirec * motor.sneakSpeed);
         }
+        */
     }
     
     private void RecieveInput() {
