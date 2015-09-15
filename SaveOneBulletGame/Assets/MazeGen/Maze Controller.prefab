@@ -42,8 +42,8 @@ MonoBehaviour:
   wall: {fileID: 111968, guid: cba125721853e5d41b6c76306ff73872, type: 2}
   floorLink: {fileID: 194452, guid: 2b90556bd2777f146976a38b21c4060a, type: 2}
   floorNode: {fileID: 193856, guid: 407362754c069c24b99c127fb241a569, type: 2}
-  nodeWidth: 35
-  nodeHeight: 35
+  nodeWidth: 50
+  nodeHeight: 50
   mazeWidth: 0
   mazeHeight: 0
   exitNode: {fileID: 0}
@@ -53,12 +53,14 @@ MonoBehaviour:
   unconnected: []
   goldenPathRandom: 5000
   offshootStopChance: 4
-  maxAllowedStragglers: 200
+  maxAllowedStragglers: 1000
   wallRemovalsGoal: 8
   wallRemovalsStart: 8
   aStarPasses: 10
   aStarMode: 3
   aStarRandom: 500
+  aStarSpeed: 50
+  searchRandom: .5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

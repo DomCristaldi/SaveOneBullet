@@ -33,6 +33,8 @@ public class MazeController : MonoBehaviour {
 	public int aStarPasses;
 	public AStarMode aStarMode;
 	public float aStarRandom;
+	public int aStarSpeed;
+	public float searchRandom;
 
 	void Awake () {
 		if (singleton == null) {
@@ -47,7 +49,18 @@ public class MazeController : MonoBehaviour {
 	}
 
 	void Update () {
-		
+		if (Input.GetKeyDown(KeyCode.A)) {
+			StartCoroutine(AStarAgent());
+		}
+		if (Input.GetKeyDown(KeyCode.S)) {
+			for (int x = 0; x < nodeWidth; x++) {
+				for (int z = 0; z < nodeHeight; z++) {
+					mazeNodes[x][z].searched = false;
+				}
+			}
+			bool found = AgentSearch(startNode);
+			Debug.Log(found);
+		}
 	}
 
 	void InitializeMazePieces () {
@@ -261,6 +274,110 @@ public class MazeController : MonoBehaviour {
 		euclidian,
 		randomManhattan,
 		randomEuclidian,
+	}
+
+	bool AgentSearch (MazeNode node) {
+		if (node == exitNode) {
+			for (int x = 0; x < nodeWidth; x++) {
+				for (int z = 0; z < nodeHeight; z++) {
+					mazeNodes[x][z].searched = false;
+				}
+			}
+			return true;
+		}
+		List<MazeNode> nodes = new List<MazeNode>(node.currentConnections);
+		List<MazeNode> inOrder = new List<MazeNode>();
+		while (nodes.Count > 0) {
+			MazeNode bestNode = nodes[0];
+			float smallestDist;
+			if (nodes[0] != null) {
+				smallestDist = GetHeuristic(nodes[0], exitNode, AStarMode.randomEuclidian, searchRandom);
+			}
+			else {
+				smallestDist = Mathf.Infinity;
+			}
+			for (int i = 1; i < nodes.Count; i++) {
+				if (nodes[i] == null) {
+					continue;
+				}
+				if (nodes[i].searched) {
+					continue;
+				}
+				float dist = GetHeuristic(nodes[i], exitNode, AStarMode.randomEuclidian, searchRandom);
+				if (dist < smallestDist) {
+					smallestDist = dist;
+					bestNode = nodes[i];
+				}
+			}
+			if (bestNode != null) {
+				inOrder.Add(bestNode);
+				nodes.Remove(bestNode);
+			}
+			else {
+				break;
+			}
+		}
+		foreach (MazeNode n in inOrder) {
+			n.searched = true;
+			n.GetComponentInChildren<MeshRenderer>().material.color = Color.magenta;
+			bool endFound = AgentSearch(n);
+			if (endFound) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	IEnumerator AStarAgent (AStarMode mode = AStarMode.manhattan, float rand = 5f) {
+		int timer = 0;
+		List<MazeNode> closed = new List<MazeNode>();
+		List<MazeNode> open = new List<MazeNode>();
+		open.Add(startNode);
+		startNode.g = 0f;
+		while (open.Count > 0) {
+			MazeNode bestNode = open[0];
+			foreach (MazeNode node in open) {
+				if (node.f < bestNode.f) {
+					bestNode = node;
+				}
+			}
+			if (bestNode == exitNode) {
+				break;
+			}
+			foreach (MazeNode node in bestNode.currentConnections) {
+				if (node == null) {
+					continue;
+				}
+				if (node.closed) {
+					continue;
+				}
+				open.Add(node);
+				float newG = bestNode.g + GetHeuristic(bestNode, node, AStarMode.manhattan, 0f);
+				if (node.g > newG) {
+					node.g = newG;
+					node.h = GetHeuristic(node, exitNode, mode, rand);
+					node.f = node.g + node.h;
+					node.cameFrom = bestNode;
+				}
+			}
+			closed.Add(bestNode);
+			bestNode.closed = true;
+			bestNode.GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
+			open.Remove(bestNode);
+			timer++;
+			if (timer >= aStarSpeed) {
+				timer = 0;
+				yield return new WaitForSeconds(0.01f);
+			}
+		}
+		//Reset came from
+		foreach(MazeNode node in closed) {
+			node.ResetAStarVariables();
+		}
+		foreach(MazeNode node in open) {
+			node.ResetAStarVariables();
+		}
+		yield break;
 	}
 
 	public List<MazeNode> AStar (MazeNode start, MazeNode end, AStarMode mode = AStarMode.manhattan, float rand = 5f, bool ignoreWalls = false) {
