@@ -7,32 +7,25 @@ public class ItemBase : MonoBehaviour {
         gun,
         flashlight,
         compass,
+		none
     }
 
     public Animator animator;
 
     public ItemType thisItemType;
 
-    protected virtual void Awake() {
+	public InventoryController inv;
 
+    protected virtual void Awake() {
+		inv = GameObject.FindGameObjectWithTag ("Player").GetComponent<InventoryController> ();
     }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     public virtual void Equip() {
-
+		inv.EquipItem (thisItemType);
     }
 
     public virtual void Unequip() {
-
+		inv.EquipItem (ItemType.none);
     }
 
     public virtual void Use() {

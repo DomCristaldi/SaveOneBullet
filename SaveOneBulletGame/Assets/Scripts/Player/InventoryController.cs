@@ -19,7 +19,6 @@ public class InventoryController : MonoBehaviour {
 	void Start () {
         //ChangeEquippedItem();
         EquipItem(ItemBase.ItemType.gun);
-        PutEquippedItemInHand();
 	}
 	
 	// Update is called once per frame
@@ -38,9 +37,10 @@ public class InventoryController : MonoBehaviour {
                 equippedItem.transform.parent = null;
             }
         }
+		PutEquippedItemInHand();
     }
 
-    private void HandleEuippedItem() {
+    private void HandleEquippedItem() {
 
     }
 
