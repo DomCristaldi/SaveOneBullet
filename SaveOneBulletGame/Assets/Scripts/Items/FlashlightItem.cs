@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Scripts/Items/FlashlightItem")]
 public class FlashlightItem : ItemBase {
 
 	//bool to keep track of whether the light in on or off

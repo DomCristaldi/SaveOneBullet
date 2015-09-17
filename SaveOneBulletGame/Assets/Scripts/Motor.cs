@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Scripts/Engine/Motor")]
 [RequireComponent(typeof(Rigidbody))]
 public class Motor : MonoBehaviour {
 

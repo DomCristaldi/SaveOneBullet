@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Scripts/Items/ItemBase")]
 public class ItemBase : MonoBehaviour {
 
     public enum ItemType {

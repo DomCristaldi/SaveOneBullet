@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[AddComponentMenu("Scripts/Player/InventoryController")]
 public class InventoryController : MonoBehaviour {
 
     [System.Serializable]
