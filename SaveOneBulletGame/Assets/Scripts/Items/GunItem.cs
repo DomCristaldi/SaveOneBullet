@@ -25,10 +25,14 @@ public class GunItem : ItemBase {
 	// Update is called once per frame
 	void Update () {
 		if (reloading) {
+            animator.SetBool("OpenBreach_Bool", true);
 			timer += Time.deltaTime;
 			if(timer - start >= reloadTime)
 				reloading = false;
 		}
+        else {
+            animator.SetBool("OpenBreach_Bool", false);
+        }
 	}
 
     public override void Equip() {
