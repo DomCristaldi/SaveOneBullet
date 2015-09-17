@@ -1,10 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [AddComponentMenu("Scripts/Player/PlayerController")]
 [RequireComponent(typeof(AdvancedMotor))]
 [RequireComponent(typeof(ViewController))]
 public class PlayerController : MonoBehaviour {
+
+    [System.Serializable]
+    public class ItemKeyMapping {
+        public ItemBase.ItemType itemType;
+        public KeyCode inputKey;
+    }
 
     public enum MovementMode {
         walking,
@@ -37,6 +44,9 @@ public class PlayerController : MonoBehaviour {
 
     public KeyCode useItem = KeyCode.Mouse0;
 
+    public ItemKeyMapping[] itemKeyList;
+    public Dictionary<KeyCode, ItemKeyMapping> itemKeyMap;
+
     public float aimSensitivity = 1.0f;
 
     public Vector3 moveDirec = Vector3.zero;
@@ -50,24 +60,48 @@ public class PlayerController : MonoBehaviour {
         motor = GetComponent<AdvancedMotor>();
         viewControl = GetComponent<ViewController>();
         invControl = GetComponent<InventoryController>();
+
+        PopulateItemKeyMap();
     }
 
 	// Use this for initialization
 	void Start () {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        RecieveInput();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        SendInput();
 
         SendMotorInput();
-
+        /*
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+            invControl.EquipItem(ItemBase.ItemType.gun);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) {
+            invControl.EquipItem(ItemBase.ItemType.none);
+        }
+        */
         //Debug.Log(Input.GetAxis("Mouse X"));
         //Debug.Log(Input.mousePosition);
 	}
 
     private void SendMotorInput() {
+
+        if (Input.GetKey(sneakKey)) {
+            motor.curMovementMode = AdvancedMotor.MovementMode.sneaking;
+        }
+        else {
+            motor.curMovementMode = AdvancedMotor.MovementMode.walking;
+        }
+
+        motor.InputDirec(moveDirec);
+
+        /*
         if (curMovementMode == MovementMode.walking) {//WALK
             motor.InputDirec(moveDirec * motor.walkSpeed);
         }
@@ -77,21 +111,22 @@ public class PlayerController : MonoBehaviour {
         else if (curMovementMode == MovementMode.sneaking) {//SNEAK
             motor.InputDirec(moveDirec * motor.sneakSpeed);
         }
+        */
     }
     
-    private void RecieveInput() {
+    private void SendInput() {
         if (canMove) {
-            RecieveMoveInput();
+            SendMoveInput();
         }
         if (canLook) {
-            RecieveViewInput();
+            SendViewInput();
         }
         if (canUseItem) {
-            RecieveItemInput();
+            SendItemInput();
         }
     }
 
-    private void RecieveMoveInput() {
+    private void SendMoveInput() {
         //NOTE: put jumping in here if we want it (y value for inputDirec)
 
         //allow for additions to 0 so movement can cancel itself out
@@ -115,7 +150,7 @@ public class PlayerController : MonoBehaviour {
         moveDirec = tf.rotation * (new Vector3(horMovement, 0.0f, vertMovement)).normalized;
     }
 
-    private void RecieveViewInput() {
+    private void SendViewInput() {
         if (usingMouse) {
             viewControl.InputDeltaView(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
 
@@ -124,9 +159,33 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void RecieveItemInput() {
+    private void SendItemInput() {
+        
+        foreach (ItemKeyMapping ikm in itemKeyList) {
+            if (Input.GetKeyDown(ikm.inputKey)) {
+
+                invControl.EquipItem(ikm.itemType);
+
+                break;
+            }
+        }
+
+        /*
+        foreach (KeyValuePair kvp in itemKeyMap) {
+
+        }
+        */
+
         if (Input.GetKeyDown(useItem)) {
             invControl.UseItem();
+        }
+    }
+
+    private void PopulateItemKeyMap() {
+        itemKeyMap = new Dictionary<KeyCode, ItemKeyMapping>();
+
+        foreach (ItemKeyMapping ikm in itemKeyList) {
+            itemKeyMap.Add(ikm.inputKey, ikm);
         }
     }
 }

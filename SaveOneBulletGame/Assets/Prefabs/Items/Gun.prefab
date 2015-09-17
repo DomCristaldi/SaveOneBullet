@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 400022}
   - 33: {fileID: 3303774}
   - 23: {fileID: 2351382}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 437770}
   - 114: {fileID: 11420122}
-  m_Layer: 0
+  - 95: {fileID: 9519102}
+  m_Layer: 8
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +45,7 @@ GameObject:
   - 33: {fileID: 3301416}
   - 23: {fileID: 2307532}
   - 95: {fileID: 9511982}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BackPlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +60,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 414942}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SwingPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,7 +78,7 @@ GameObject:
   - 33: {fileID: 3392060}
   - 23: {fileID: 2300646}
   - 95: {fileID: 9599368}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +129,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 178244}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .0566897392, z: .0335245132}
+  m_LocalPosition: {x: 0, y: .193000004, z: .116999999}
   m_LocalScale: {x: .154133707, y: .182685599, z: .174500138}
   m_Children:
   - {fileID: 400022}
@@ -142,7 +143,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168596}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.62901449, y: 2.59100008, z: 5.04699993}
+  m_LocalPosition: {x: .194999993, y: 2.16599989, z: .565999985}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 422458}
@@ -258,6 +259,23 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!95 &9519102
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 168596}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e76135a33988d0044abc54f12dbb398b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!95 &9599368
 Animator:
   serializedVersion: 3
@@ -267,7 +285,7 @@ Animator:
   m_GameObject: {fileID: 192444}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 11d8401cb144250419ee80fa7a3ddac5, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -288,6 +306,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 9511982}
   thisItemType: 0
+  itemKey: 0
+  inv: {fileID: 0}
+  ammo: 8
+  reloadTime: 3
+  reloading: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

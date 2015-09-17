@@ -8,12 +8,14 @@ public class ItemBase : MonoBehaviour {
         gun,
         flashlight,
         compass,
-		none
+		none,
     }
 
     public Animator animator;
 
     public ItemType thisItemType;
+
+    public KeyCode itemKey;
 
 	public InventoryController inv;
 
@@ -22,11 +24,11 @@ public class ItemBase : MonoBehaviour {
     }
 
     public virtual void Equip() {
-		inv.EquipItem (thisItemType);
+		//inv.EquipItem (thisItemType);
     }
 
     public virtual void Unequip() {
-		inv.EquipItem (ItemType.none);
+		//inv.EquipItem (ItemType.none);
     }
 
     public virtual void Use() {

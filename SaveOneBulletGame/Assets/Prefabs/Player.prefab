@@ -35,6 +35,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &146902
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 489632}
+  - 20: {fileID: 2098380}
+  - 124: {fileID: 12471404}
+  - 92: {fileID: 9250008}
+  - 81: {fileID: 8150770}
+  m_Layer: 0
+  m_Name: ItemCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &166284
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,7 +101,7 @@ GameObject:
   - 114: {fileID: 11444304}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,7 +168,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 489632}
   m_Father: {fileID: 411862}
   m_RootOrder: 0
 --- !u!4 &473908
@@ -179,6 +199,18 @@ Transform:
   - {fileID: 411862}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &489632
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146902}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 467808}
+  m_RootOrder: 0
 --- !u!20 &2066518
 Camera:
   m_ObjectHideFlags: 1
@@ -203,7 +235,41 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967039
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: .0219999999
+  m_StereoMirrorMode: 0
+--- !u!20 &2098380
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146902}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 3
+  m_BackGroundColor: {r: .192156866, g: .301960796, b: .474509805, a: .0196078438}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: .300000012
+  far clip plane: 1
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 256
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -259,12 +325,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!81 &8150770
+AudioListener:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146902}
+  m_Enabled: 1
 --- !u!81 &8180702
 AudioListener:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 103208}
+  m_Enabled: 1
+--- !u!92 &9250008
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146902}
   m_Enabled: 1
 --- !u!92 &9263728
 Behaviour:
@@ -285,10 +365,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handsTf: {fileID: 427564}
+  emptyHandsPrefab: {fileID: 0}
   equippedItem: {fileID: 0}
-  equipmentSlots:
-  - item: {fileID: 0}
-    currentlyEquipped: 1
+  startingItems: []
 --- !u!114 &11448842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -317,12 +396,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desiredDirec: {x: 0, y: 0, z: 0}
   trueDirec: {x: 0, y: 0, z: 0}
-  maxDesiredDirecMag: 2
   moveSpeedModifier: 1
-  walkSpeed: 1.5
+  redirectSpeed: 20
+  curMovementMode: 0
+  walkSpeed: 2
+  runSpeed: 4
   sneakSpeed: 1
-  backwardsMovementModifier: .300000012
-  sidewaysMovementModifier: .5
 --- !u!114 &11496744
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -349,6 +428,13 @@ MonoBehaviour:
   moveDirec: {x: 0, y: 0, z: 0}
   aimDirec: {x: 0, y: 0, z: 0}
   curMovementMode: 0
+--- !u!124 &12471404
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146902}
+  m_Enabled: 1
 --- !u!124 &12492528
 Behaviour:
   m_ObjectHideFlags: 1
