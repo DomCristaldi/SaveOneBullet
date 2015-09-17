@@ -8,6 +8,12 @@ AnimatorController:
   m_Name: GunAnimController
   serializedVersion: 5
   m_AnimatorParameters:
+  - m_Name: EquipItem_Trig
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   - m_Name: OpenBreach_Bool
     m_Type: 4
     m_DefaultFloat: 0
@@ -26,7 +32,7 @@ AnimatorController:
     m_DefaultWeight: 0
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - serializedVersion: 5
     m_Name: HandMotion
     m_StateMachine: {fileID: 110719790}
@@ -42,8 +48,32 @@ AnimatorController:
     m_DefaultWeight: 1
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
-    m_Controller: {fileID: 0}
---- !u!1101 &110127962
+    m_Controller: {fileID: 9100000}
+--- !u!1101 &110103834
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: EquipItem_Trig
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 110262204}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: .100000001
+  m_TransitionOffset: 0
+  m_ExitTime: .899999976
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
+--- !u!1101 &110109326
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -51,7 +81,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions: []
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 110284006}
+  m_DstState: {fileID: 110299780}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -244,30 +274,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!1101 &110194804
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: OpenBreach_Bool
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 110269798}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: .25
-  m_TransitionOffset: 0
-  m_ExitTime: .75
-  m_HasExitTime: 0
-  m_HasFixedDuration: 1
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
 --- !u!1102 &110202224
 AnimatorState:
   serializedVersion: 5
@@ -361,29 +367,6 @@ AnimatorState:
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
---- !u!1102 &110227872
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Gun_BreachOpen_Idle
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 79d8865199d1e1d4080298fdd9aea261, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
 --- !u!1102 &110244096
 AnimatorState:
   serializedVersion: 5
@@ -408,16 +391,17 @@ AnimatorState:
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
---- !u!1102 &110245626
+--- !u!1102 &110262204
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Gun_CloseBreach
-  m_Speed: 1
+  m_Name: EquipItem_Generic
+  m_Speed: 3
   m_CycleOffset: 0
-  m_Transitions: []
+  m_Transitions:
+  - {fileID: 110109326}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -426,30 +410,7 @@ AnimatorState:
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: fccc7e8df574ba64aa98262cb3174b44, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
---- !u!1102 &110246114
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Gun_OpenBreach_HandMotion
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 052139c865b39ec468adf6b67724c4d8, type: 2}
+  m_Motion: {fileID: 7400000, guid: c05e916bea664554595144828f5bb8e6, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -465,76 +426,6 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 110193294}
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 479e1ff797a2d164587fb82feb81109a, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
---- !u!1102 &110268024
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Gun_CloseBreach_HandMotion
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b484cac76376b3046a5e8fedc3651752, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
---- !u!1102 &110269798
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: CloseBreach
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: fccc7e8df574ba64aa98262cb3174b44, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
---- !u!1102 &110276000
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: OpenBreach
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: 110127962}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -567,30 +458,6 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_Motion: {fileID: 0}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
---- !u!1102 &110284006
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Gun_BreachClosed_Idle
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: 110194804}
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 79d8865199d1e1d4080298fdd9aea261, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -748,50 +615,33 @@ AnimatorStateMachine:
   m_Name: GunMotion
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: 110276000}
-    m_Position: {x: 132, y: 264, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: 110299780}
-    m_Position: {x: 264, y: 120, z: 0}
+    m_Position: {x: 288, y: 108, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 110269798}
-    m_Position: {x: 384, y: 264, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 110284006}
-    m_Position: {x: 264, y: 384, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 110227872}
-    m_Position: {x: 96, y: 492, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 110245626}
-    m_Position: {x: 96, y: 552, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 110246114}
-    m_Position: {x: 131, y: 617, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 110268024}
-    m_Position: {x: 166, y: 682, z: 0}
+    m_State: {fileID: 110262204}
+    m_Position: {x: 132, y: 36, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: 110799398}
-    m_Position: {x: 408, y: 36, z: 0}
-  m_AnyStateTransitions: []
+    m_Position: {x: 288, y: 192, z: 0}
+  m_AnyStateTransitions:
+  - {fileID: 110103834}
   m_EntryTransitions: []
   m_StateMachineTransitions:
     data:
-      first: {fileID: 110748854}
+      first: {fileID: 110755242}
       second: []
     data:
       first: {fileID: 110799398}
       second:
       - {fileID: 110999106}
     data:
-      first: {fileID: 110755242}
+      first: {fileID: 110748854}
       second: []
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_AnyStatePosition: {x: 12, y: -24, z: 0}
+  m_EntryPosition: {x: 48, y: 120, z: 0}
+  m_ExitPosition: {x: 600, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 110299780}
 --- !u!1107 &110799398
@@ -822,7 +672,7 @@ AnimatorStateMachine:
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 12, y: 168, z: 0}
   m_ExitPosition: {x: 276, y: 168, z: 0}
-  m_ParentStateMachinePosition: {x: 132, y: 84, z: 0}
+  m_ParentStateMachinePosition: {x: 120, y: 96, z: 0}
   m_DefaultState: {fileID: 110263982}
 --- !u!1109 &110999106
 AnimatorTransition:

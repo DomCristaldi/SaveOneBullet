@@ -123,6 +123,8 @@ public class InventoryController : MonoBehaviour {
     private void PutEquippedItemInHand() {
         equippedItem.gameObject.SetActive(true);
 
+        equippedItem.Equip();
+
         //equippedItem.transform.parent = handsTf;
 
         //equippedItem.transform.localPosition = Vector3.zero;
@@ -131,7 +133,7 @@ public class InventoryController : MonoBehaviour {
         //equippedItem.transform.position = handsTf.position;
         //equippedItem.transform.rotation = handsTf.rotation;
         //equippedItem.transform.localRotation = new Quaternion();
-        Debug.Log(handsTf.rotation);
+        //Debug.Log(handsTf.rotation);
         //equippedItem.transform.parent = handsTf;
     }
 
@@ -142,7 +144,7 @@ public class InventoryController : MonoBehaviour {
 
     public void UseItem() {
         equippedItem.Use();
-        Debug.Log("UseItem()");
+        //Debug.Log("UseItem()");
     }
 
 }
