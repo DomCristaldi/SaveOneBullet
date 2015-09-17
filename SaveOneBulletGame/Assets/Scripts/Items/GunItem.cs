@@ -5,6 +5,7 @@ public class GunItem : ItemBase {
 
     public int ammo = 8;
 	public int reloadTime = 3;
+    public bool canFire = true;
 	public bool reloading = false; //bool to keep track on if its reloading or not
 	private float timer;
 	private float start;
@@ -29,6 +30,11 @@ public class GunItem : ItemBase {
 				reloading = false;
 		}
 	}
+
+    public override void Equip() {
+        base.Equip();
+        animator.SetTrigger("EquipItem_Trig");
+    }
 
 	//will fire the gun if its not still reloading
     public override void Use() {
