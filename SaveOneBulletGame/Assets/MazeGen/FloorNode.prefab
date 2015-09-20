@@ -122,13 +122,25 @@ MonoBehaviour:
   f: 0
   closed: 0
   connectedToMain: 0
+  distanceToGoal: 0
+  searched: 0
+  floorRenderer: {fileID: 2354124}
+  floorMat: {fileID: 2100000, guid: 5454941733bea23488ffec6cefea6b08, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: floorRenderer
+      value: 
+      objectReference: {fileID: 2354124}
+    - target: {fileID: 0}
+      propertyPath: floorMat
+      value: 
+      objectReference: {fileID: 2100000, guid: 5454941733bea23488ffec6cefea6b08, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 193856}

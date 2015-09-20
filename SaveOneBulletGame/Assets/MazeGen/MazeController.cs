@@ -2,13 +2,28 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[AddComponentMenu("Scripts/MazeGen/MazeController")]
 public class MazeController : MonoBehaviour {
+
+	public enum EvadeUseMode {
+		display,
+		wallPlacement,
+	}
+
+	public enum SearchUseMode {
+		display,
+		enemyPlacement,
+	}
 
 	public static MazeController singleton;
 	[Header("Prefabs:")]
 	public GameObject wall;
 	public GameObject floorLink;
 	public GameObject floorNode;
+	[Header("Keycodes:")]
+	public KeyCode aStarKey;
+	public KeyCode searchKey;
+	public KeyCode evadeKey;
 	[Header("Dimensions (# of nodes):")]
 	public int nodeWidth;
 	public int nodeHeight;
@@ -24,6 +39,16 @@ public class MazeController : MonoBehaviour {
 	public List<MazeNode> path;
 	public List<MazeNode> unconnected;
 	List<MazeNode> distanceChecked;
+	[Header("Turn debug coloring on/off:")]
+	public bool debugColors;
+	bool colorsOff;
+	[Header("Debug Materials:")]
+	public Material debugBlue;
+	public Material debugCyan;
+	public Material debugGreen;
+	public Material debugMagenta;
+	public Material debugRed;
+	public Material debugYellow;
 	[Header("Maze Generation Parms (FOR INFORMED DESIGNERS ONLY):")]
 	public float goldenPathRandom;
 	public int offshootStopChance;
@@ -35,6 +60,7 @@ public class MazeController : MonoBehaviour {
 	public float aStarRandom;
 	public int aStarSpeed;
 	public float searchRandom;
+	public int evadeDistance;
 
 	void Awake () {
 		if (singleton == null) {
@@ -42,6 +68,7 @@ public class MazeController : MonoBehaviour {
 		}
 		mazeWidth = nodeWidth * 2 + 1;
 		mazeHeight = nodeHeight * 2 + 1;
+		colorsOff = true;
 	}
 
 	void Start () {
@@ -49,18 +76,69 @@ public class MazeController : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Input.GetKeyDown(KeyCode.A)) {
+		if (Input.GetKeyDown(aStarKey)) {
 			StartCoroutine(AStarAgent());
 		}
-		if (Input.GetKeyDown(KeyCode.S)) {
+		if (Input.GetKeyDown(searchKey)) {
 			for (int x = 0; x < nodeWidth; x++) {
 				for (int z = 0; z < nodeHeight; z++) {
 					mazeNodes[x][z].searched = false;
 				}
 			}
-			bool found = AgentSearch(startNode);
-			Debug.Log(found);
+			AgentSearch(startNode);
 		}
+		if (Input.GetKeyDown(evadeKey)) {
+			for (int x = 0; x < nodeWidth; x++) {
+				for (int z = 0; z < nodeHeight; z++) {
+					mazeNodes[x][z].searched = false;
+				}
+			}
+			AgentEvade(startNode, exitNode, 0, evadeDistance);
+		}
+		if (debugColors) {
+			if (colorsOff) {
+				ShowGoldenPath();
+				colorsOff = false;
+			}
+		}
+		if (!debugColors) {
+			if (!colorsOff) {
+				ClearDebugColors();
+				colorsOff = true;
+			}
+		}
+	}
+
+	void ClearDebugColors () {
+		for (int x = 0; x < nodeWidth; x++) {
+			for (int z = 0; z < nodeHeight; z++) {
+				mazeNodes[x][z].floorRenderer.material = mazeNodes[x][z].floorMat;
+				foreach(MazeLink link in mazeNodes[x][z].links) {
+					if (link == null) {
+						continue;
+					}
+					link.floorRenderer.material = link.floorMat;
+					link.cubeRenderer.material = link.cubeMat;
+				}
+			}
+		}
+	}
+
+	void ShowGoldenPath () {
+		foreach (MazeNode node in path) {
+			node.floorRenderer.material = debugYellow;
+			foreach (MazeLink link in node.links) {
+				if (link == null) {
+					continue;
+				}
+				if (link.onMainPath) {
+					link.floorRenderer.material = debugYellow;
+				}
+			}
+		}
+		exitNode.floorRenderer.material = debugGreen;
+		exit.cubeRenderer.material = debugBlue;
+		startNode.floorRenderer.material = debugRed;
 	}
 
 	void InitializeMazePieces () {
@@ -104,7 +182,9 @@ public class MazeController : MonoBehaviour {
 		path = AStar(startNode, exitNode, AStarMode.randomManhattan, goldenPathRandom, true);
 		foreach (MazeNode node in path) {
 			if (node != exitNode && node != startNode) {
-				node.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+				if (debugColors) {
+					node.floorRenderer.material = debugYellow;
+				}
 			}
 		}
 		unconnected.Remove(path[0]);
@@ -236,11 +316,13 @@ public class MazeController : MonoBehaviour {
 			}
 		}
 		exitNode = mazeNodes[x][z];
-		exitNode.GetComponentInChildren<MeshRenderer>().material.color = Color.green; //***DEBUG***
 		exit = exitNode.links[MazeNode.DirectionToIndex(d)];
-		exit.wall.GetComponent<MeshRenderer>().material.color = Color.blue; //***DEBUG***
 		startNode = mazeNodes[nodeWidth - 1 - x][nodeHeight - 1 - z];
-		startNode.GetComponentInChildren<MeshRenderer>().material.color = Color.red; //***DEBUG***
+		if (debugColors) {
+			exitNode.floorRenderer.material = debugGreen;
+			exit.cubeRenderer.material = debugBlue;
+			startNode.floorRenderer.material = debugRed;
+		}
 	}
 
 	void SolidifyWalls () {
@@ -276,7 +358,70 @@ public class MazeController : MonoBehaviour {
 		randomEuclidian,
 	}
 
-	bool AgentSearch (MazeNode node) {
+	bool AgentEvade (MazeNode node, MazeNode evadeNode, int depth, int distance = 50, EvadeUseMode mode = EvadeUseMode.display) {
+		if (depth >= distance) {
+			for (int x = 0; x < nodeWidth; x++) {
+				for (int z = 0; z < nodeHeight; z++) {
+					mazeNodes[x][z].searched = false;
+				}
+			}
+			return true;
+		}
+		List<MazeNode> nodes = new List<MazeNode>(node.currentConnections);
+		List<MazeNode> inOrder = new List<MazeNode>();
+		while (nodes.Count > 0) {
+			MazeNode bestNode = nodes[0];
+			float largestDist;
+			if (nodes[0] != null) {
+				largestDist = GetHeuristic(nodes[0], evadeNode, AStarMode.randomEuclidian, searchRandom);
+			}
+			else {
+				largestDist = 0f;
+			}
+			for (int i = 1; i < nodes.Count; i++) {
+				if (nodes[i] == null) {
+					continue;
+				}
+				if (nodes[i].searched) {
+					continue;
+				}
+				float dist = GetHeuristic(nodes[i], evadeNode, AStarMode.randomEuclidian, searchRandom);
+				if (dist > largestDist) {
+					largestDist = dist;
+					bestNode = nodes[i];
+				}
+			}
+			if (bestNode != null) {
+				inOrder.Add(bestNode);
+				nodes.Remove(bestNode);
+			}
+			else {
+				break;
+			}
+		}
+		foreach (MazeNode n in inOrder) {
+			n.searched = true;
+			if (debugColors) {
+				n.floorRenderer.material = debugGreen;
+			}
+			bool endFound = AgentEvade(n, evadeNode, depth + 1, distance, mode);
+			if (endFound) {
+				if (depth + 1 >= distance) {
+					if (mode == EvadeUseMode.wallPlacement) {
+						PlaceWall(node, n);
+					}
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	void PlaceWall (MazeNode node1, MazeNode node2) {
+
+	}
+
+	bool AgentSearch (MazeNode node, int distance = int.MaxValue, SearchUseMode mode = SearchUseMode.display) {
 		if (node == exitNode) {
 			for (int x = 0; x < nodeWidth; x++) {
 				for (int z = 0; z < nodeHeight; z++) {
@@ -319,7 +464,9 @@ public class MazeController : MonoBehaviour {
 		}
 		foreach (MazeNode n in inOrder) {
 			n.searched = true;
-			n.GetComponentInChildren<MeshRenderer>().material.color = Color.magenta;
+			if (debugColors) {
+				n.floorRenderer.material = debugMagenta;
+			}
 			bool endFound = AgentSearch(n);
 			if (endFound) {
 				return true;
@@ -362,7 +509,9 @@ public class MazeController : MonoBehaviour {
 			}
 			closed.Add(bestNode);
 			bestNode.closed = true;
-			bestNode.GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
+			if (debugColors) {
+				bestNode.floorRenderer.material = debugCyan;
+			}
 			open.Remove(bestNode);
 			timer++;
 			if (timer >= aStarSpeed) {
@@ -487,7 +636,9 @@ public class MazeController : MonoBehaviour {
 				List<MazeNode> newPath = AStar(startNode, exitNode, aStarMode, aStarRandom);
 				foreach (MazeNode node in newPath) {
 					if (node != exitNode && node != startNode) {
-						node.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+						if (debugColors) {
+							node.floorRenderer.material = debugYellow;
+						}
 					}
 				}
 			}
@@ -503,7 +654,9 @@ public class MazeController : MonoBehaviour {
 				List<MazeNode> newPath = AStar(startNode, exitNode, aStarMode, aStarRandom);
 				foreach (MazeNode node in newPath) {
 					if (node != exitNode && node != startNode) {
-						node.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+						if (debugColors) {
+							node.floorRenderer.material = debugYellow;
+						}
 					}
 				}
 			}
@@ -547,7 +700,11 @@ public class MazeController : MonoBehaviour {
 			startNode.distanceToGoal = distance;
 		}
 		//***DEBUG***
-		//startNode.GetComponentInChildren<MeshRenderer>().material.color = new Color(0f, distance / 200f, 0f);
+		/*
+		if (debugColors) {
+			startNode.floorRenderer.material.color = new Color(0f, distance / 200f, 0f);
+		}
+		*/
 		foreach (MazeNode node in startNode.currentConnections) {
 			if (node == null) {
 				continue;
