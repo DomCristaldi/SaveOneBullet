@@ -6,6 +6,8 @@ public class FlashlightItem : ItemBase {
 	//bool to keep track of whether the light in on or off
 	public bool lightEnabled;
 
+	public GameObject lightObject;
+
 	protected override void Awake() {
 		base.Awake();
 		
@@ -22,5 +24,6 @@ public class FlashlightItem : ItemBase {
 		base.Use ();
 		lightEnabled = !lightEnabled;
 		//do the same for the actual light in game ... get light component and turn it to be on/off
+		lightObject.SetActive(false);
 	}
 }
