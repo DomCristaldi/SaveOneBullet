@@ -17,7 +17,6 @@ public class FlashlightItem : ItemBase {
 
 	// Update is called once per frame
 	void Update () {
-	
 	}
 
 	//using the flashlight will turn on/off the light accosiated with it
