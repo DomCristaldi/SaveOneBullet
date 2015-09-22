@@ -23,7 +23,6 @@ public class FlashlightItem : ItemBase {
 	public override void Use() {
 		base.Use ();
 		lightEnabled = !lightEnabled;
-		//do the same for the actual light in game ... get light component and turn it to be on/off
-		lightObject.SetActive(false);
+		lightObject.SetActive(lightEnabled);
 	}
 }
