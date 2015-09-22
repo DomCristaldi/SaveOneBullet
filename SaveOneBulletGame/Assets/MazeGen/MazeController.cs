@@ -16,21 +16,23 @@ public class MazeController : MonoBehaviour {
 	}
 
 	public static MazeController singleton;
+	public LayerMask layerMask;
 	[Header("Prefabs:")]
 	public GameObject wall;
 	public GameObject floorLink;
 	public GameObject floorNode;
 	public GameObject playerPrefab;
+	public GameObject wraithPrefab;
 	[Header("Check to spawn player:")]
 	public bool spawnPlayer;
-	[Header("Keycodes:")]
-	public bool useDebugKeys;
-	public KeyCode showPathKey;
-	public KeyCode showLoopsKey;
-	public KeyCode aStarKey;
-	public KeyCode searchKey;
-	public KeyCode evadeKey;
-	public KeyCode clearKey;
+	[Header("Wraith spawning stuff:")]
+	public bool spawnWraiths;
+	public int realWraiths;
+	public int fakeWraiths;
+	public int minSpawnDistance;
+	public int maxSpawnDistance;
+	public float wraithWrapDistance;
+	public float wraithRandom;
 	[Header("Dimensions (# of nodes):")]
 	public int nodeWidth;
 	public int nodeHeight;
@@ -50,16 +52,26 @@ public class MazeController : MonoBehaviour {
 	public List<MazeNode> path;
 	public List<MazeNode> unconnected;
 	List<MazeNode> distanceChecked;
+	[Header("Keycodes:")]
+	public bool useDebugKeys;
+	public KeyCode showPathKey;
+	public KeyCode showLoopsKey;
+	public KeyCode aStarKey;
+	public KeyCode searchKey;
+	public KeyCode evadeKey;
+	public KeyCode clearKey;
 	[Header("Turn debug coloring on/off:")]
 	public bool debugColors;
 	bool colorsOff;
 	[Header("Debug Materials:")]
+	public Material debugRed;
+	public Material debugGreen;
 	public Material debugBlue;
 	public Material debugCyan;
-	public Material debugGreen;
 	public Material debugMagenta;
-	public Material debugRed;
 	public Material debugYellow;
+	public Material debugBlack;
+	public Material debugWhite;
 	[Header("Maze Generation Parms (FOR INFORMED DESIGNERS ONLY):")]
 	public float goldenPathRandom;
 	public int offshootStopChance;
@@ -79,7 +91,7 @@ public class MazeController : MonoBehaviour {
 		}
 		mazeWidth = nodeWidth * 2 + 1;
 		mazeHeight = nodeHeight * 2 + 1;
-		colorsOff = true;
+		colorsOff = false;
 	}
 
 	void Start () {
@@ -92,19 +104,11 @@ public class MazeController : MonoBehaviour {
 				StartCoroutine(AStarAgent());
 			}
 			if (Input.GetKeyDown(searchKey)) {
-				for (int x = 0; x < nodeWidth; x++) {
-					for (int z = 0; z < nodeHeight; z++) {
-						mazeNodes[x][z].searched = false;
-					}
-				}
-				AgentSearch(playerNode);
+				ClearNodesSearched();
+				AgentSearch(playerNode, 0);
 			}
 			if (Input.GetKeyDown(evadeKey)) {
-				for (int x = 0; x < nodeWidth; x++) {
-					for (int z = 0; z < nodeHeight; z++) {
-						mazeNodes[x][z].searched = false;
-					}
-				}
+				ClearNodesSearched();
 				AgentEvade(playerNode, exitNode, 0, evadeDistance);
 			}
 			if (Input.GetKeyDown(clearKey)) {
@@ -134,9 +138,20 @@ public class MazeController : MonoBehaviour {
 		}
 	}
 
+	void ClearNodesSearched () {
+		for (int x = 0; x < nodeWidth; x++) {
+			for (int z = 0; z < nodeHeight; z++) {
+				mazeNodes[x][z].searched = false;
+			}
+		}
+	}
+
 	void ClearDebugColors () {
 		for (int x = 0; x < nodeWidth; x++) {
 			for (int z = 0; z < nodeHeight; z++) {
+				if (debugColors && mazeNodes[x][z].enemyOccupied) {
+					continue;
+				}
 				mazeNodes[x][z].floorRenderer.material = mazeNodes[x][z].floorMat;
 				foreach(MazeLink link in mazeNodes[x][z].links) {
 					if (link == null) {
@@ -162,8 +177,8 @@ public class MazeController : MonoBehaviour {
 			}
 		}
 		exitNode.floorRenderer.material = debugGreen;
-		exit.cubeRenderer.material = debugBlue;
-		startNode.floorRenderer.material = debugRed;
+		exit.cubeRenderer.material = debugBlack;
+		startNode.floorRenderer.material = debugWhite;
 	}
 
 	void InitializeMazePieces () {
@@ -187,6 +202,7 @@ public class MazeController : MonoBehaviour {
 		if (spawnPlayer) {
 			GameObject spawnedPlayer = Instantiate(playerPrefab, startNode.transform.position, Quaternion.identity) as GameObject;
 			player = spawnedPlayer.GetComponent<NodeTracker>();
+			player.closestNode = startNode;
 			playerNode = startNode;
 		}
 	}
@@ -215,6 +231,7 @@ public class MazeController : MonoBehaviour {
 		CreateLoops(wallRemovalsGoal, wallRemovalsStart);
 		SolidifyWalls();
 		SpawnPlayer();
+		SpawnWraiths();
 	}
 
 	void FindGoldenPath () {
@@ -360,8 +377,8 @@ public class MazeController : MonoBehaviour {
 		playerNode = startNode;
 		if (debugColors) {
 			exitNode.floorRenderer.material = debugGreen;
-			exit.cubeRenderer.material = debugBlue;
-			startNode.floorRenderer.material = debugRed;
+			exit.cubeRenderer.material = debugBlack;
+			startNode.floorRenderer.material = debugWhite;
 		}
 	}
 
@@ -428,11 +445,7 @@ public class MazeController : MonoBehaviour {
 
 	bool AgentEvade (MazeNode node, MazeNode evadeNode, int depth, int distance = 50, EvadeUseMode mode = EvadeUseMode.display) {
 		if (depth >= distance) {
-			for (int x = 0; x < nodeWidth; x++) {
-				for (int z = 0; z < nodeHeight; z++) {
-					mazeNodes[x][z].searched = false;
-				}
-			}
+			ClearNodesSearched();
 			return true;
 		}
 		List<MazeNode> nodes = new List<MazeNode>(node.currentConnections);
@@ -489,14 +502,25 @@ public class MazeController : MonoBehaviour {
 
 	}
 
-	bool AgentSearch (MazeNode node, int distance = int.MaxValue, SearchUseMode mode = SearchUseMode.display) {
+	bool AgentSearch (MazeNode node, int depth, int distance = int.MaxValue, SearchUseMode mode = SearchUseMode.display, bool realWraith = false) {
+		float srchRand = 0f;
+		if (mode == SearchUseMode.display) {
+			srchRand = searchRandom;
+		}
+		if (mode == SearchUseMode.enemyPlacement) {
+			srchRand = wraithRandom;
+		}
 		if (node == exitNode) {
-			for (int x = 0; x < nodeWidth; x++) {
-				for (int z = 0; z < nodeHeight; z++) {
-					mazeNodes[x][z].searched = false;
-				}
-			}
+			ClearNodesSearched();
 			return true;
+		}
+		if (depth >= distance) {
+			if (mode == SearchUseMode.enemyPlacement && !node.enemyOccupied) {
+				SpawnWraith(node, realWraith);
+				ClearNodesSearched();
+				return true;
+			}
+			return false;
 		}
 		List<MazeNode> nodes = new List<MazeNode>(node.currentConnections);
 		List<MazeNode> inOrder = new List<MazeNode>();
@@ -504,7 +528,7 @@ public class MazeController : MonoBehaviour {
 			MazeNode bestNode = nodes[0];
 			float smallestDist;
 			if (nodes[0] != null) {
-				smallestDist = GetHeuristic(nodes[0], exitNode, AStarMode.randomEuclidian, searchRandom);
+				smallestDist = GetHeuristic(nodes[0], exitNode, AStarMode.randomEuclidian, srchRand);
 			}
 			else {
 				smallestDist = Mathf.Infinity;
@@ -516,7 +540,7 @@ public class MazeController : MonoBehaviour {
 				if (nodes[i].searched) {
 					continue;
 				}
-				float dist = GetHeuristic(nodes[i], exitNode, AStarMode.randomEuclidian, searchRandom);
+				float dist = GetHeuristic(nodes[i], exitNode, AStarMode.randomEuclidian, srchRand);
 				if (dist < smallestDist) {
 					smallestDist = dist;
 					bestNode = nodes[i];
@@ -532,10 +556,10 @@ public class MazeController : MonoBehaviour {
 		}
 		foreach (MazeNode n in inOrder) {
 			n.searched = true;
-			if (debugColors) {
+			if (debugColors && mode == SearchUseMode.display) {
 				n.floorRenderer.material = debugMagenta;
 			}
-			bool endFound = AgentSearch(n);
+			bool endFound = AgentSearch(n, depth + 1, distance, mode, realWraith);
 			if (endFound) {
 				return true;
 			}
@@ -777,6 +801,64 @@ public class MazeController : MonoBehaviour {
 				continue;
 			}
 			DetermineDistancesFromGoal(node, newDist);
+		}
+	}
+
+	void SpawnWraith (MazeNode node, bool realWraith) {
+		if (debugColors) {
+			node.floorRenderer.material = debugRed;
+		}
+		if (wraithPrefab == null) {
+			Debug.LogError("Maze Controller wraith prefab not set!");
+			return;
+		}
+		GameObject newWraith = Instantiate(wraithPrefab, node.transform.position, Quaternion.identity) as GameObject;
+		NodeTracker wraithTracker = newWraith.GetComponent<NodeTracker>();
+		if (wraithTracker == null) {
+			Debug.LogError("Wraith prefab needs a NodeTracker script!");
+			return;
+		}
+		wraithTracker.closestNode = node;
+		node.enemyOccupied = true;
+		WraithAI ai = newWraith.GetComponent<WraithAI>();
+		if (ai == null) {
+			Debug.LogError("Wraith prefab needs an AI script!");
+			return;
+		}
+		ai.SetReal(realWraith);
+		ai.player = player;
+	}
+
+	void SpawnWraiths () {
+		if (!spawnWraiths) {
+			return;
+		}
+		int realSpawned = 0;
+		int fakeSpawned = 0;
+		int totalWraithsToSpawn = fakeWraiths + realWraiths;
+		if (totalWraithsToSpawn > (maxSpawnDistance - minSpawnDistance)) {
+			maxSpawnDistance = minSpawnDistance + totalWraithsToSpawn;
+		}
+		if (totalWraithsToSpawn <= 1 || fakeWraiths < 1 || realWraiths < 1) {
+			Debug.LogWarning("Not spawning wraiths because the spawn number isn't high enough.");
+			return;
+		}
+		float distanceStep = (float)(maxSpawnDistance - minSpawnDistance) / (float)(totalWraithsToSpawn - 1);
+		int placeDistance = minSpawnDistance;
+		float actualPlaceDistance = (float)placeDistance;
+		while ((realSpawned + fakeSpawned) < totalWraithsToSpawn) {
+			if (Random.value > (float)fakeSpawned / (float)(fakeWraiths)) {
+				AgentSearch(startNode, 0, placeDistance, SearchUseMode.enemyPlacement, false);
+				fakeSpawned++;
+			}
+			else {
+				AgentSearch(startNode, 0, placeDistance, SearchUseMode.enemyPlacement, true);
+				realSpawned++;
+			}
+			actualPlaceDistance += distanceStep;
+			while (actualPlaceDistance - (float)placeDistance >= 1f) {
+				placeDistance++;
+			}
 		}
 	}
 }
