@@ -126,14 +126,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 11478898, guid: 8987a517df78ac344add8b26843394fe, type: 2}
-      propertyPath: useDebugKeys
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11478898, guid: 8987a517df78ac344add8b26843394fe, type: 2}
-      propertyPath: clearKey
-      value: 52
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8987a517df78ac344add8b26843394fe, type: 2}
   m_IsPrefabParent: 0
@@ -168,7 +160,7 @@ Light:
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_Strength: 1
     m_Bias: .0500000007

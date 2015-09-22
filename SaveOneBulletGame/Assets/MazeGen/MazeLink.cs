@@ -13,12 +13,14 @@ public class MazeLink : MonoBehaviour {
 	public MeshRenderer cubeRenderer;
 	public Material floorMat;
 	public Material cubeMat;
+	public BoxCollider wallCollider;
 
     void Awake () {
 		onMainPath = false;
 		goalDistanceDifferential = 0f;
 		floorRenderer.material = floorMat;
 		cubeRenderer.material = cubeMat;
+		wallCollider = wall.GetComponent<BoxCollider>();
     }
     
 	void Start () {

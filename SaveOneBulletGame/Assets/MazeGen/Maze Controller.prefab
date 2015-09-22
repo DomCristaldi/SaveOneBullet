@@ -39,16 +39,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d70254688738ba4d91960451a3e73db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 512
   wall: {fileID: 111968, guid: cba125721853e5d41b6c76306ff73872, type: 2}
   floorLink: {fileID: 194452, guid: 2b90556bd2777f146976a38b21c4060a, type: 2}
   floorNode: {fileID: 193856, guid: 407362754c069c24b99c127fb241a569, type: 2}
   playerPrefab: {fileID: 181192, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
+  wraithPrefab: {fileID: 142106, guid: cbd66e4babc799843b282f5523f5f917, type: 2}
   spawnPlayer: 1
-  useDebugKeys: 0
-  aStarKey: 49
-  searchKey: 50
-  evadeKey: 51
-  clearKey: 0
+  spawnWraiths: 1
+  realWraiths: 2
+  fakeWraiths: 5
+  minSpawnDistance: 12
+  maxSpawnDistance: 35
+  wraithWrapDistance: 40
+  wraithRandom: 5
   nodeWidth: 35
   nodeHeight: 35
   mazeScale: 2
@@ -61,13 +67,22 @@ MonoBehaviour:
   playerNode: {fileID: 0}
   path: []
   unconnected: []
+  useDebugKeys: 1
+  showPathKey: 49
+  showLoopsKey: 50
+  aStarKey: 51
+  searchKey: 52
+  evadeKey: 53
+  clearKey: 54
   debugColors: 1
+  debugRed: {fileID: 2100000, guid: d060845e71e66d840b616601d3db6cd3, type: 2}
+  debugGreen: {fileID: 2100000, guid: 63193b1b0d4e5dc4a9ce15c9413d8a72, type: 2}
   debugBlue: {fileID: 2100000, guid: 4afdc14c7ef88dc41a0b266956254c27, type: 2}
   debugCyan: {fileID: 2100000, guid: f0a3b71cfcb685c4b906ba46bde7db92, type: 2}
-  debugGreen: {fileID: 2100000, guid: 63193b1b0d4e5dc4a9ce15c9413d8a72, type: 2}
   debugMagenta: {fileID: 2100000, guid: b2cb6a431a42ec64cb2b49f3a77f4955, type: 2}
-  debugRed: {fileID: 2100000, guid: d060845e71e66d840b616601d3db6cd3, type: 2}
   debugYellow: {fileID: 2100000, guid: 36c590d5f498c024a8ba9ba845d39e4a, type: 2}
+  debugBlack: {fileID: 2100000, guid: dd7d740388ec38b4ab6639d0d405f73a, type: 2}
+  debugWhite: {fileID: 2100000, guid: fd2b2789dfb627d4583f0fc91834aa8b, type: 2}
   goldenPathRandom: 5000
   offshootStopChance: 4
   maxAllowedStragglers: 1000

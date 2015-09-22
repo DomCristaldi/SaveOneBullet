@@ -38,6 +38,7 @@ public class MazeNode : MonoBehaviour {
 	public bool searched;
 	public MeshRenderer floorRenderer;
 	public Material floorMat;
+	public bool enemyOccupied;
 
     void Awake () {
 		connections = new List<MazeNode>();
@@ -78,6 +79,8 @@ public class MazeNode : MonoBehaviour {
 		currentConnections[DirectionToIndex(direction)] = node;
 		node.currentConnections[DirectionToIndex(InverseDirection(direction))] = this;
 		links[DirectionToIndex(direction)].wall.SetActive(false);
+		links[DirectionToIndex(direction)].wallCollider.gameObject.layer = 2;
+		//links[DirectionToIndex(direction)].wall.transform.localPosition = Vector3.up * 3f;
 		if (isMainPath) {
 			links[DirectionToIndex(direction)].onMainPath = true;
 			if (MazeController.singleton.debugColors) {
@@ -90,6 +93,8 @@ public class MazeNode : MonoBehaviour {
 		currentConnections[DirectionToIndex(direction)] = null;
 		node.currentConnections[DirectionToIndex(InverseDirection(direction))] = null;
 		links[DirectionToIndex(direction)].wall.SetActive(true);
+		links[DirectionToIndex(direction)].wallCollider.gameObject.layer = 9;
+		//links[DirectionToIndex(direction)].wall.transform.localPosition = Vector3.up;
 	}
 
 	public void ConnectToNode (MazeNode node, bool isMainPath = false) {
@@ -137,9 +142,13 @@ public class MazeNode : MonoBehaviour {
 			}
 			if (currentConnections[i] == null) {
 				links[i].wall.SetActive(true);
+				links[i].wallCollider.gameObject.layer = 9;
+				//links[i].wall.transform.localPosition = Vector3.up;
 			}
 			else {
 				links[i].wall.SetActive(false);
+				links[i].wallCollider.gameObject.layer = 2;
+				//links[i].wall.transform.localPosition = Vector3.up * 3f;
 			}
 		}
 	}
