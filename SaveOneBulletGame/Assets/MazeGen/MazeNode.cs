@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[AddComponentMenu("Scripts/MazeGen/MazeNode")]
 public class MazeNode : MonoBehaviour {
     
 	public enum Direction {
@@ -35,6 +36,8 @@ public class MazeNode : MonoBehaviour {
 	public bool connectedToMain;
 	public float distanceToGoal;
 	public bool searched;
+	public MeshRenderer floorRenderer;
+	public Material floorMat;
 
     void Awake () {
 		connections = new List<MazeNode>();
@@ -51,6 +54,7 @@ public class MazeNode : MonoBehaviour {
 		}
 		ResetAStarVariables();
 		distanceToGoal = Mathf.Infinity;
+		floorRenderer.material = floorMat;
     }
     
 	void Start () {
@@ -76,7 +80,9 @@ public class MazeNode : MonoBehaviour {
 		links[DirectionToIndex(direction)].wall.SetActive(false);
 		if (isMainPath) {
 			links[DirectionToIndex(direction)].onMainPath = true;
-			links[DirectionToIndex(direction)].GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+			if (MazeController.singleton.debugColors) {
+				links[DirectionToIndex(direction)].floorRenderer.material = MazeController.singleton.debugYellow;
+			}
 		}
 	}
 

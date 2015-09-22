@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Scripts/Items/GunItem")]
 public class GunItem : ItemBase {
 
     public int ammo = 8;

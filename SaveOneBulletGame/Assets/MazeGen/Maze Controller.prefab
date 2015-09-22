@@ -42,15 +42,32 @@ MonoBehaviour:
   wall: {fileID: 111968, guid: cba125721853e5d41b6c76306ff73872, type: 2}
   floorLink: {fileID: 194452, guid: 2b90556bd2777f146976a38b21c4060a, type: 2}
   floorNode: {fileID: 193856, guid: 407362754c069c24b99c127fb241a569, type: 2}
-  nodeWidth: 50
-  nodeHeight: 50
+  playerPrefab: {fileID: 181192, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
+  spawnPlayer: 1
+  useDebugKeys: 0
+  aStarKey: 49
+  searchKey: 50
+  evadeKey: 51
+  clearKey: 0
+  nodeWidth: 35
+  nodeHeight: 35
+  mazeScale: 2
   mazeWidth: 0
   mazeHeight: 0
   exitNode: {fileID: 0}
   exit: {fileID: 0}
   startNode: {fileID: 0}
+  player: {fileID: 0}
+  playerNode: {fileID: 0}
   path: []
   unconnected: []
+  debugColors: 1
+  debugBlue: {fileID: 2100000, guid: 4afdc14c7ef88dc41a0b266956254c27, type: 2}
+  debugCyan: {fileID: 2100000, guid: f0a3b71cfcb685c4b906ba46bde7db92, type: 2}
+  debugGreen: {fileID: 2100000, guid: 63193b1b0d4e5dc4a9ce15c9413d8a72, type: 2}
+  debugMagenta: {fileID: 2100000, guid: b2cb6a431a42ec64cb2b49f3a77f4955, type: 2}
+  debugRed: {fileID: 2100000, guid: d060845e71e66d840b616601d3db6cd3, type: 2}
+  debugYellow: {fileID: 2100000, guid: 36c590d5f498c024a8ba9ba845d39e4a, type: 2}
   goldenPathRandom: 5000
   offshootStopChance: 4
   maxAllowedStragglers: 1000
@@ -61,6 +78,7 @@ MonoBehaviour:
   aStarRandom: 500
   aStarSpeed: 50
   searchRandom: .5
+  evadeDistance: 100
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

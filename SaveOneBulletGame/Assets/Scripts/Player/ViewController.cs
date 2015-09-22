@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Scripts/Player/ViewController")]
 public class ViewController : MonoBehaviour {
 
     Transform tf;

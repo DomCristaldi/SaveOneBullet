@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[AddComponentMenu("Scripts/Player/PlayerController")]
 [RequireComponent(typeof(AdvancedMotor))]
 [RequireComponent(typeof(ViewController))]
 public class PlayerController : MonoBehaviour {

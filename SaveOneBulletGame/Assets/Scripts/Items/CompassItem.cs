@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Scripts/Items/CompassItem")]
 public class CompassItem : ItemBase {
 
 	protected override void Awake() {

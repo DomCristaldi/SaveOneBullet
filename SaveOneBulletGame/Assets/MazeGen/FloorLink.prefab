@@ -192,6 +192,10 @@ MonoBehaviour:
   goalDistanceDifferential: 0
   adjacentNode1: {fileID: 0}
   adjacentNode2: {fileID: 0}
+  floorRenderer: {fileID: 2321536}
+  cubeRenderer: {fileID: 2391226}
+  floorMat: {fileID: 2100000, guid: 5454941733bea23488ffec6cefea6b08, type: 2}
+  cubeMat: {fileID: 2100000, guid: 580a5bb1236bc9c4f989a23affe56658, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -207,6 +211,22 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: floorRenderer
+      value: 
+      objectReference: {fileID: 2321536}
+    - target: {fileID: 0}
+      propertyPath: cubeRenderer
+      value: 
+      objectReference: {fileID: 2391226}
+    - target: {fileID: 0}
+      propertyPath: floorMat
+      value: 
+      objectReference: {fileID: 2100000, guid: 5454941733bea23488ffec6cefea6b08, type: 2}
+    - target: {fileID: 0}
+      propertyPath: cubeMat
+      value: 
+      objectReference: {fileID: 2100000, guid: 580a5bb1236bc9c4f989a23affe56658, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 194452}

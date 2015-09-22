@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Scripts/Items/FlashlightItem")]
 public class FlashlightItem : ItemBase {
 
 	//bool to keep track of whether the light in on or off
 	public bool lightEnabled;
+
+	public GameObject lightObject;
 
 	protected override void Awake() {
 		base.Awake();
@@ -14,7 +17,6 @@ public class FlashlightItem : ItemBase {
 
 	// Update is called once per frame
 	void Update () {
-	
 	}
 
 	//using the flashlight will turn on/off the light accosiated with it
@@ -22,5 +24,6 @@ public class FlashlightItem : ItemBase {
 		base.Use ();
 		lightEnabled = !lightEnabled;
 		//do the same for the actual light in game ... get light component and turn it to be on/off
+		lightObject.SetActive(false);
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Scripts/Engine/AdvancedMotor")]
 public class AdvancedMotor : Motor {
 
     public enum MovementMode {
