@@ -7,6 +7,7 @@ public class ItemBase : MonoBehaviour {
         gun,
         flashlight,
         compass,
+        note,
 		none,
     }
 
