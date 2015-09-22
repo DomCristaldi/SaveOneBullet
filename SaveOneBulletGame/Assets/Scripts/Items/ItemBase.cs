@@ -24,7 +24,6 @@ public class ItemBase : MonoBehaviour {
 
     protected virtual void Awake() {
 		//inv = GameObject.FindGameObjectWithTag ("Player").GetComponent<InventoryController> ();
-		inv = GetComponent<InventoryController> ();
         SaveAnimBools();
     }
 
