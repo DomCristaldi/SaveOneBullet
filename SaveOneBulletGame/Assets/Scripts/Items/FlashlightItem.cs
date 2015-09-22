@@ -22,6 +22,10 @@ public class FlashlightItem : ItemBase {
 	//using the flashlight will turn on/off the light accosiated with it
 	public override void Use() {
 		base.Use ();
+		if (lightEnabled)
+			Off ();
+		else
+			On ();
 	}
 	
 
