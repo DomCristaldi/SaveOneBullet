@@ -4,6 +4,8 @@ using System.Collections;
 [AddComponentMenu("Scripts/Items/CompassItem")]
 public class CompassItem : ItemBase {
 
+	public GameObject needle;
+
 	protected override void Awake() {
 		base.Awake();
 		
@@ -21,7 +23,7 @@ public class CompassItem : ItemBase {
 		pointToEscape ();
 	}
 
-	//function that will update the arrow on the compass to point to escape
+	//function that will update the needle on the compass to point to escape
 	private void pointToEscape(){
 
 	}
