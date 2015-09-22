@@ -99,6 +99,7 @@ GameObject:
   - 114: {fileID: 11466646}
   - 114: {fileID: 11448842}
   - 114: {fileID: 11444304}
+  - 114: {fileID: 11425790}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -239,7 +240,6 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -273,7 +273,6 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -331,7 +330,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 146902}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &8180702
 AudioListener:
   m_ObjectHideFlags: 1
@@ -353,6 +352,18 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 103208}
   m_Enabled: 1
+--- !u!114 &11425790
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 181192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797bb08062ce2b74fab97b3b07c78b96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  closestNode: {fileID: 0}
 --- !u!114 &11444304
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -424,6 +435,7 @@ MonoBehaviour:
   moveLeft: 97
   sneakKey: 304
   useItem: 323
+  itemKeyList: []
   aimSensitivity: 1
   moveDirec: {x: 0, y: 0, z: 0}
   aimDirec: {x: 0, y: 0, z: 0}

@@ -20,13 +20,22 @@ public class MazeController : MonoBehaviour {
 	public GameObject wall;
 	public GameObject floorLink;
 	public GameObject floorNode;
+	public GameObject playerPrefab;
+	[Header("Check to spawn player:")]
+	public bool spawnPlayer;
 	[Header("Keycodes:")]
+	public bool useDebugKeys;
+	public KeyCode showPathKey;
+	public KeyCode showLoopsKey;
 	public KeyCode aStarKey;
 	public KeyCode searchKey;
 	public KeyCode evadeKey;
+	public KeyCode clearKey;
 	[Header("Dimensions (# of nodes):")]
 	public int nodeWidth;
 	public int nodeHeight;
+	[Header("Scaling:")]
+	public float mazeScale;
 	[Header("Actual dimensions (calculated at runtime):")]
 	public int mazeWidth;
 	public int mazeHeight;
@@ -36,6 +45,8 @@ public class MazeController : MonoBehaviour {
 	public MazeNode exitNode;
 	public MazeLink exit;
 	public MazeNode startNode;
+	public NodeTracker player;
+	public MazeNode playerNode;
 	public List<MazeNode> path;
 	public List<MazeNode> unconnected;
 	List<MazeNode> distanceChecked;
@@ -76,24 +87,35 @@ public class MazeController : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Input.GetKeyDown(aStarKey)) {
-			StartCoroutine(AStarAgent());
-		}
-		if (Input.GetKeyDown(searchKey)) {
-			for (int x = 0; x < nodeWidth; x++) {
-				for (int z = 0; z < nodeHeight; z++) {
-					mazeNodes[x][z].searched = false;
-				}
+		if (useDebugKeys) {
+			if (Input.GetKeyDown(aStarKey)) {
+				StartCoroutine(AStarAgent());
 			}
-			AgentSearch(startNode);
-		}
-		if (Input.GetKeyDown(evadeKey)) {
-			for (int x = 0; x < nodeWidth; x++) {
-				for (int z = 0; z < nodeHeight; z++) {
-					mazeNodes[x][z].searched = false;
+			if (Input.GetKeyDown(searchKey)) {
+				for (int x = 0; x < nodeWidth; x++) {
+					for (int z = 0; z < nodeHeight; z++) {
+						mazeNodes[x][z].searched = false;
+					}
 				}
+				AgentSearch(playerNode);
 			}
-			AgentEvade(startNode, exitNode, 0, evadeDistance);
+			if (Input.GetKeyDown(evadeKey)) {
+				for (int x = 0; x < nodeWidth; x++) {
+					for (int z = 0; z < nodeHeight; z++) {
+						mazeNodes[x][z].searched = false;
+					}
+				}
+				AgentEvade(playerNode, exitNode, 0, evadeDistance);
+			}
+			if (Input.GetKeyDown(clearKey)) {
+				ClearDebugColors();
+			}
+			if (Input.GetKeyDown(showPathKey)) {
+				ShowGoldenPath();
+			}
+			if (Input.GetKeyDown(showLoopsKey)) {
+				DetectLoops();
+			}
 		}
 		if (debugColors) {
 			if (colorsOff) {
@@ -106,6 +128,9 @@ public class MazeController : MonoBehaviour {
 				ClearDebugColors();
 				colorsOff = true;
 			}
+		}
+		if (player != null) {
+			playerNode = player.closestNode;
 		}
 	}
 
@@ -154,6 +179,18 @@ public class MazeController : MonoBehaviour {
 		unconnected = new List<MazeNode>();
 	}
 
+	void SpawnPlayer () {
+		if (playerPrefab == null) {
+			Debug.LogWarning("No player prefab assigned to MazeController!");
+			return;
+		}
+		if (spawnPlayer) {
+			GameObject spawnedPlayer = Instantiate(playerPrefab, startNode.transform.position, Quaternion.identity) as GameObject;
+			player = spawnedPlayer.GetComponent<NodeTracker>();
+			playerNode = startNode;
+		}
+	}
+
 	void CreateMaze () {
 		InitializeMazePieces();
 		for (int x = 0; x < mazeWidth; x++) {
@@ -167,6 +204,7 @@ public class MazeController : MonoBehaviour {
 				else {
 					mazePieces[x].Add(CreatePiece(x, z, floorLink));
 				}
+				mazePieces[x][z].transform.localScale = Vector3.one * mazeScale;
 			}
 		}
 		ConnectNodes();
@@ -176,6 +214,7 @@ public class MazeController : MonoBehaviour {
 		ConnectStragglers(maxAllowedStragglers);
 		CreateLoops(wallRemovalsGoal, wallRemovalsStart);
 		SolidifyWalls();
+		SpawnPlayer();
 	}
 
 	void FindGoldenPath () {
@@ -318,6 +357,7 @@ public class MazeController : MonoBehaviour {
 		exitNode = mazeNodes[x][z];
 		exit = exitNode.links[MazeNode.DirectionToIndex(d)];
 		startNode = mazeNodes[nodeWidth - 1 - x][nodeHeight - 1 - z];
+		playerNode = startNode;
 		if (debugColors) {
 			exitNode.floorRenderer.material = debugGreen;
 			exit.cubeRenderer.material = debugBlue;
@@ -344,11 +384,39 @@ public class MazeController : MonoBehaviour {
 	}
 
 	public float IndexToX (int x) {
-		return (float)x - (float)(mazeWidth / 2);
+		return ((float)x - (float)(mazeWidth / 2)) * mazeScale;
 	}
 
 	public float IndexToZ (int z) {
-		return (float)z - (float)(mazeHeight / 2);
+		return ((float)z - (float)(mazeHeight / 2)) * mazeScale;
+	}
+
+	public MazeNode ClosestNodeToPositon (Vector3 position) {
+		List<int> indices = PositionToIndex (position);
+		return mazeNodes[indices[0]][indices[1]];
+	}
+
+	public List<int> PositionToIndex (Vector3 position) {
+		List<int> indices = new List<int>();
+		indices.Add(XToIndex(position.x));
+		indices.Add(ZToIndex(position.z));
+		return indices;
+	}
+
+	public int XToIndex (float x) {
+		x = x - transform.position.x;
+		x = x / 2f;
+		x = x / mazeScale;
+		x = x + nodeWidth / 2;
+		return Mathf.RoundToInt(x);
+	}
+
+	public int ZToIndex (float z) {
+		z = z - transform.position.z;
+		z = z / 2f;
+		z = z / mazeScale;
+		z = z + nodeHeight / 2;
+		return Mathf.RoundToInt(z);
 	}
 
 	public enum AStarMode {
@@ -624,6 +692,19 @@ public class MazeController : MonoBehaviour {
 		}
 	}
 
+	void DetectLoops () {
+		for (int j = 0; j < aStarPasses; j++) {
+			List<MazeNode> newPath = AStar(startNode, exitNode, aStarMode, aStarRandom);
+			foreach (MazeNode node in newPath) {
+				if (node != exitNode && node != startNode) {
+					if (debugColors) {
+						node.floorRenderer.material = debugYellow;
+					}
+				}
+			}
+		}
+	}
+
 	void CreateLoops (int goalPasses, int startPasses) {
 		for (int i = 0; i < startPasses; i++) {
 			DetermineDistancesFromGoal(startNode);
@@ -632,16 +713,7 @@ public class MazeController : MonoBehaviour {
 			highestDiffLink.adjacentNode1.ConnectToNode(highestDiffLink.adjacentNode2);
 			ResetGoalDistances();
 			//Debug.Break();
-			for (int j = 0; j < aStarPasses; j++) {
-				List<MazeNode> newPath = AStar(startNode, exitNode, aStarMode, aStarRandom);
-				foreach (MazeNode node in newPath) {
-					if (node != exitNode && node != startNode) {
-						if (debugColors) {
-							node.floorRenderer.material = debugYellow;
-						}
-					}
-				}
-			}
+			DetectLoops();
 		}
 		for (int i = 0; i < goalPasses; i++) {
 			DetermineDistancesFromGoal(exitNode);
@@ -650,16 +722,7 @@ public class MazeController : MonoBehaviour {
 			highestDiffLink.adjacentNode1.ConnectToNode(highestDiffLink.adjacentNode2);
 			ResetGoalDistances();
 			//Debug.Break();
-			for (int j = 0; j < aStarPasses; j++) {
-				List<MazeNode> newPath = AStar(startNode, exitNode, aStarMode, aStarRandom);
-				foreach (MazeNode node in newPath) {
-					if (node != exitNode && node != startNode) {
-						if (debugColors) {
-							node.floorRenderer.material = debugYellow;
-						}
-					}
-				}
-			}
+			DetectLoops();
 		}
 	}
 
