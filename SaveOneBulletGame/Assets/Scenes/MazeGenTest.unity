@@ -126,6 +126,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 11478898, guid: 8987a517df78ac344add8b26843394fe, type: 2}
+      propertyPath: useDebugKeys
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11478898, guid: 8987a517df78ac344add8b26843394fe, type: 2}
+      propertyPath: clearKey
+      value: 52
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8987a517df78ac344add8b26843394fe, type: 2}
   m_IsPrefabParent: 0
@@ -207,7 +215,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &979301782
 AudioListener:
   m_ObjectHideFlags: 0

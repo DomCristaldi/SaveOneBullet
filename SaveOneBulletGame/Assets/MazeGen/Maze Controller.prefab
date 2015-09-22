@@ -42,16 +42,23 @@ MonoBehaviour:
   wall: {fileID: 111968, guid: cba125721853e5d41b6c76306ff73872, type: 2}
   floorLink: {fileID: 194452, guid: 2b90556bd2777f146976a38b21c4060a, type: 2}
   floorNode: {fileID: 193856, guid: 407362754c069c24b99c127fb241a569, type: 2}
+  playerPrefab: {fileID: 181192, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
+  spawnPlayer: 1
+  useDebugKeys: 0
   aStarKey: 49
   searchKey: 50
   evadeKey: 51
+  clearKey: 0
   nodeWidth: 35
   nodeHeight: 35
+  mazeScale: 2
   mazeWidth: 0
   mazeHeight: 0
   exitNode: {fileID: 0}
   exit: {fileID: 0}
   startNode: {fileID: 0}
+  player: {fileID: 0}
+  playerNode: {fileID: 0}
   path: []
   unconnected: []
   debugColors: 1
