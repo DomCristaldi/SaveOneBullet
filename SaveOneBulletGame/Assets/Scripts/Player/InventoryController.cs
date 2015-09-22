@@ -51,7 +51,7 @@ public class InventoryController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        HandleEquippedItem();
 	}
 
     private void PrepareEquippableItem(ItemBase item) {
@@ -116,11 +116,13 @@ public class InventoryController : MonoBehaviour {
     }
 
     private void HandleEquippedItem() {
-
+        
     }
 
     private void PutEquippedItemInHand() {
-        equippedItem.gameObject.SetActive(true);
+        //equippedItem.gameObject.SetActive(true);
+
+        equippedItem.EnableItem();
 
         equippedItem.Equip();
 
@@ -138,7 +140,12 @@ public class InventoryController : MonoBehaviour {
 
     private void PutAwayEquippedItem() {
         //equippedItem.transform.parent = null;
-        equippedItem.gameObject.SetActive(false);
+
+        //equippedItem.Interrupt();
+
+        equippedItem.Unequip();
+
+        //equippedItem.gameObject.SetActive(false);
     }
 
     public void UseItem() {
