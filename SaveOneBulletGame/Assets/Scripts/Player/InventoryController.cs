@@ -150,7 +150,8 @@ public class InventoryController : MonoBehaviour {
     }
 
     public void UseItem() {
-        equippedItem.Use();
+		if(equippedItem.thisItemType != ItemBase.ItemType.none)
+        	equippedItem.Use();
         //Debug.Log("UseItem()");
     }
 
