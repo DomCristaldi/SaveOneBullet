@@ -50,9 +50,9 @@ MonoBehaviour:
   spawnPlayer: 1
   spawnWraiths: 1
   realWraiths: 4
-  fakeWraiths: 8
+  fakeWraiths: 20
   minSpawnDistance: 12
-  maxSpawnDistance: 60
+  maxSpawnDistance: 80
   wraithWrapDistance: 40
   wraithRandom: 5
   nodeWidth: 35
