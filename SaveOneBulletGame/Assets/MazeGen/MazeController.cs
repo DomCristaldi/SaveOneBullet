@@ -26,6 +26,7 @@ public class MazeController : MonoBehaviour {
 	public GameObject playerPrefab;
 	public GameObject wraithPrefab;
 	public GameObject notePrefab;
+	public GameObject ceilingPrefab;
 	[Header("Check to spawn player:")]
 	public bool spawnPlayer;
 	[Header("Wraith spawning stuff:")]
@@ -46,6 +47,7 @@ public class MazeController : MonoBehaviour {
 	public int nodeHeight;
 	[Header("Scaling:")]
 	public float mazeScale;
+	public float ceilingHeight;
 	[Header("Actual dimensions (calculated at runtime):")]
 	public int mazeWidth;
 	public int mazeHeight;
@@ -252,6 +254,9 @@ public class MazeController : MonoBehaviour {
 	}
 
 	void SpawnMazePieces () {
+		GameObject ceiling = Instantiate(ceilingPrefab, transform.position + transform.up * ceilingHeight * mazeScale, Quaternion.identity) as GameObject;
+		ceiling.transform.localScale = new Vector3(mazeScale * (float)mazeWidth, 1f, mazeScale * (float)mazeHeight);
+		ceiling.transform.parent = transform;
 		for (int x = 0; x < mazeWidth; x++) {
 			for (int z = 0; z < mazeHeight; z++) {
 				if (x % 2 == 0 && z % 2 == 0) {

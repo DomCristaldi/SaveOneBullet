@@ -35,6 +35,7 @@ public class WraithAI : MonoBehaviour {
 	bool decrementSearchTimer;
 	MazeNode currentSearchNode;
 	MazeNode nextSearchNode;
+	public float despawnTime;
 	[Header("Movement Variables:")]
 	public float idleSpeed;
 	public float provokedSpeed;
@@ -142,12 +143,14 @@ public class WraithAI : MonoBehaviour {
 	void Provoke () {
 		currentSpeed = provokedSpeed;
 		currentBehavior = AIState.chasing;
+		target = player.transform;
 	}
 
 	void Enrage () {
 		enraged = true;
 		currentSpeed = enragedSpeed;
 		currentBehavior = AIState.chasing;
+		target = player.transform;
 	}
 
 	void StartChasing () {
@@ -157,7 +160,6 @@ public class WraithAI : MonoBehaviour {
 		else {
 			Provoke();
 		}
-		target = player.transform;
 	}
 
 	void Calm () {
@@ -277,6 +279,26 @@ public class WraithAI : MonoBehaviour {
 	}
 
 	public void ReactToItem (ItemBase.ItemType itemType) {
+		if (itemType == ItemBase.ItemType.gun) {
+			Despawn();
+		}
+		if (itemType == ItemBase.ItemType.flashlight) {
+			if (_isReal) {
+				Enrage();
+			}
+			else {
+				Despawn();
+			}
+		}
+	}
 
+	public void Despawn () {
+		StartCoroutine(DestroyAfterSeconds(despawnTime));
+		//***SPOOPY FADE SHADER CALL GOES HERE***
+	}
+
+	IEnumerator DestroyAfterSeconds (float seconds) {
+		yield return new WaitForSeconds(seconds);
+		Destroy(gameObject);
 	}
 }

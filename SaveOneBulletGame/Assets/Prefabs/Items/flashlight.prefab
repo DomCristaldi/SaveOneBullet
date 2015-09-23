@@ -76,7 +76,7 @@ GameObject:
   - 95: {fileID: 9572026}
   - 114: {fileID: 11441922}
   m_Layer: 8
-  m_Name: Flashlight
+  m_Name: flashlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
