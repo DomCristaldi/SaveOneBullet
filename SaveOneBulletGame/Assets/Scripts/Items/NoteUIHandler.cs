@@ -21,6 +21,12 @@ public class NoteUIHandler : MonoBehaviour {
 	}
 
     public void AssignTextToUI() {
+        //Debug.Log(uiText != null);
+
+        if (uiText == null) {
+            uiText = GetComponent<Text>();
+        }
+
         uiText.text = text;
     }
 
