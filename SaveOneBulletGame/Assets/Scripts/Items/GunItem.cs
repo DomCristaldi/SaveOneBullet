@@ -8,7 +8,9 @@ public class GunItem : ItemBase {
     public LayerMask hitLayers;
 
     private AudioSource audio;
-    public AudioClip gunshot;
+    public AudioClip gunshotSound;
+    public AudioClip openBreachSound;
+    public AudioClip closeBreachSound;
 
     public int ammo = 8;
 
@@ -109,7 +111,7 @@ public class GunItem : ItemBase {
 
 
             //audio.clip = gunshot;
-            audio.PlayOneShot(gunshot);
+            audio.PlayOneShot(gunshotSound);
 
             partEmitter.Emit(particlesEmittedCount);
             StartCoroutine(ShootLightTime());
@@ -214,5 +216,13 @@ public class GunItem : ItemBase {
         shootLight.enabled = false;
 
         yield break;
+    }
+
+    public void PlayOpenBreachSound() {
+        audio.PlayOneShot(openBreachSound);
+    }
+
+    public void PlayCloseBreachSound() {
+        audio.PlayOneShot(closeBreachSound);
     }
 }
