@@ -3,6 +3,8 @@ using System.Collections;
 
 public class NotePickup : MonoBehaviour {
 
+    public NoteUIHandler noteUI;
+
     public string noteText;
 
     void OnTriggerEnter(Collider other) {
@@ -14,7 +16,7 @@ public class NotePickup : MonoBehaviour {
         
         
         if (!inv.ItemInInventory(ItemBase.ItemType.note)) {
-
+            //***ADD A NOTE TO THE INVENTORY***
         }
         else {
             NoteItem nItem = inv.equipSlots[ItemBase.ItemType.note].item as NoteItem;//upcast b/c we know it's going to be a note
@@ -24,6 +26,10 @@ public class NotePickup : MonoBehaviour {
             Destroy(gameObject);
         }
         
+    }
+
+    void Awake() {
+        //SetUIText();
     }
 
 	// Use this for initialization
@@ -38,5 +44,10 @@ public class NotePickup : MonoBehaviour {
 
     public void SetNoteText(string text) {
         noteText = text;
+        SetUIText();
+    }
+
+    private void SetUIText() {
+        noteUI.SetText(noteText);
     }
 }

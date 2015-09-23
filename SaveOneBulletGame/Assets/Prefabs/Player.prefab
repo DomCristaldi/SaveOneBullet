@@ -99,6 +99,7 @@ GameObject:
   - 114: {fileID: 11448842}
   - 114: {fileID: 11444304}
   - 114: {fileID: 11470694}
+  - 114: {fileID: 11422876}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -191,7 +192,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 181192}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.61000001, y: 0, z: 0}
+  m_LocalPosition: {x: -1.45982814, y: .981899977, z: 7.04679918}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 451054}
@@ -261,7 +262,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: .300000012
-  far clip plane: 1
+  far clip plane: 1.25
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -344,6 +345,20 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 103208}
   m_Enabled: 1
+--- !u!114 &11422876
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 181192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e1bbaa2a8274a349933f2b31fba53c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  standingFOV: 52
+  runningFOV: 70
+  lerpSpeed: 10
 --- !u!114 &11444304
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -358,7 +373,11 @@ MonoBehaviour:
   handsTf: {fileID: 427564}
   emptyHandsPrefab: {fileID: 11459726, guid: ea37074a529ee43469f2854864fbf85a, type: 2}
   equippedItem: {fileID: 0}
-  startingItems: []
+  startingItems:
+  - {fileID: 11420122, guid: f8c4a41016f9e184b89b53b6fc67dd12, type: 2}
+  - {fileID: 11441922, guid: e6094502ef06c8141880c49be8e23b2d, type: 2}
+  - {fileID: 11445148, guid: 5a16a69bc10adb04a9f17b307017c682, type: 2}
+  - {fileID: 11467492, guid: 0b1b129a88426504fa5601f1daf662d1, type: 2}
 --- !u!114 &11448842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -427,6 +446,7 @@ MonoBehaviour:
   moveRight: 100
   moveLeft: 97
   sneakKey: 304
+  runKey: 306
   useItem: 323
   itemKeyList:
   - itemType: 0
@@ -482,6 +502,30 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: walkFOV
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sneakFOV
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: runFOV
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: lerpSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: standingFOV
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: runningFOV
+      value: 70
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

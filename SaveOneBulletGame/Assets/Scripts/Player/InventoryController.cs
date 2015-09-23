@@ -35,11 +35,13 @@ public class InventoryController : MonoBehaviour {
 
         AddItemToInventory((ItemBase)Instantiate(emptyHandsPrefab));//always ensure we have an empty hands
         EquipItem(ItemBase.ItemType.none);
-
+        
         foreach (ItemBase item in startingItems) {
-            AddItemToInventory(item);
-            item.gameObject.SetActive(false);
+            GameObject tempItem = (GameObject)Instantiate(item.gameObject);
+            AddItemToInventory(tempItem);
+            tempItem.SetActive(false);
         }
+        
 
     }
 

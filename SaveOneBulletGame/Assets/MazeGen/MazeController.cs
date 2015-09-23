@@ -25,6 +25,8 @@ public class MazeController : MonoBehaviour {
 	public GameObject floorNode;
 	public GameObject playerPrefab;
 	public GameObject wraithPrefab;
+	public GameObject notePrefab;
+	public GameObject ceilingPrefab;
 	[Header("Check to spawn player:")]
 	public bool spawnPlayer;
 	[Header("Wraith spawning stuff:")]
@@ -38,11 +40,14 @@ public class MazeController : MonoBehaviour {
 	[Header("Note spawning stuff:")]
 	public bool spawnNotes;
 	public float noteRandom;
+	public int minNoteDistance;
+	public int maxNoteDistance;
 	[Header("Dimensions (# of nodes):")]
 	public int nodeWidth;
 	public int nodeHeight;
 	[Header("Scaling:")]
 	public float mazeScale;
+	public float ceilingHeight;
 	[Header("Actual dimensions (calculated at runtime):")]
 	public int mazeWidth;
 	public int mazeHeight;
@@ -249,6 +254,9 @@ public class MazeController : MonoBehaviour {
 	}
 
 	void SpawnMazePieces () {
+		GameObject ceiling = Instantiate(ceilingPrefab, transform.position + transform.up * ceilingHeight * mazeScale, Quaternion.identity) as GameObject;
+		ceiling.transform.localScale = new Vector3(mazeScale * (float)mazeWidth, 1f, mazeScale * (float)mazeHeight);
+		ceiling.transform.parent = transform;
 		for (int x = 0; x < mazeWidth; x++) {
 			for (int z = 0; z < mazeHeight; z++) {
 				if (x % 2 == 0 && z % 2 == 0) {
@@ -630,7 +638,7 @@ public class MazeController : MonoBehaviour {
 			if (debugColors && mode == SearchUseMode.display) {
 				n.floorRenderer.material = debugMagenta;
 			}
-			bool endFound = AgentSearch(n, depth + 1, distance, mode, realWraith);
+			bool endFound = AgentSearch(n, depth + 1, distance, mode, realWraith, noteIndex);
 			if (endFound) {
 				return true;
 			}
@@ -923,11 +931,11 @@ public class MazeController : MonoBehaviour {
 		float actualPlaceDistance = (float)placeDistance;
 		while ((realSpawned + fakeSpawned) < totalWraithsToSpawn) {
 			if (Random.value > (float)fakeSpawned / (float)(fakeWraiths)) {
-				AgentSearch(startNode, 0, placeDistance, SearchUseMode.enemyPlacement, false);
+				AgentSearch(startNode, 0, placeDistance, SearchUseMode.enemyPlacement, realWraith: false);
 				fakeSpawned++;
 			}
 			else {
-				AgentSearch(startNode, 0, placeDistance, SearchUseMode.enemyPlacement, true);
+				AgentSearch(startNode, 0, placeDistance, SearchUseMode.enemyPlacement, realWraith: true);
 				realSpawned++;
 			}
 			actualPlaceDistance += distanceStep;
@@ -938,13 +946,36 @@ public class MazeController : MonoBehaviour {
 	}
 
 	void SpawnNote (MazeNode node, int noteIndex) {
-		//***NEEDS NOTE MANAGER REFERENCE***
+		GameObject newNote = Instantiate(notePrefab, node.transform.position, Quaternion.identity) as GameObject;
+		NotePickup noteScript = newNote.GetComponent<NotePickup>();
+		noteScript.SetNoteText(NoteManager.singleton.allNotes[noteIndex]);
+	}
+
+	void TestFunction (int var1 = 1, int var2 = 2, int var3 = 3) {
+		Debug.Log("var1: " + var1 + " var2: " + var2 + " var3: " + var3);
 	}
 
 	void SpawnNotes () {
 		if (!spawnNotes) {
 			return;
 		}
-		//***NEEDS NOTE MANAGER REFERENCE***
+		int totalNotes = NoteManager.singleton.allNotes.Count;
+		if (totalNotes > (maxNoteDistance - minNoteDistance)) {
+			maxNoteDistance = minNoteDistance + totalNotes;
+		}
+		if (totalNotes <= 1) {
+			Debug.LogWarning("Not spawning notes because the spawn number isn't high enough.");
+			return;
+		}
+		float distanceStep = (float)(maxNoteDistance - minNoteDistance) / (float)(totalNotes - 1);
+		int placeDistance = minNoteDistance;
+		float actualPlaceDistance = (float)placeDistance;
+		for (int i = 0; i < totalNotes; i++) {
+			AgentSearch(startNode, 0, placeDistance, SearchUseMode.notePlacement, noteIndex: i);
+			actualPlaceDistance += distanceStep;
+			while (actualPlaceDistance - (float)placeDistance >= 1f) {
+				placeDistance++;
+			}
+		}
 	}
 }

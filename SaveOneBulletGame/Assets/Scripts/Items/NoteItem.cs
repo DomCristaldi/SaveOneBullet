@@ -44,7 +44,7 @@ public class NoteItem : ItemBase {
 
     
     private void AssignCurrentlyViewedNote(int index) {
-        if (index >= 0) {
+        if (index >= 0 && collectedNotes.Count > 0) {
             noteUI.SetText(collectedNotes[index]);
         }
     }
