@@ -3,6 +3,8 @@ using System.Collections;
 
 public class NotePickup : MonoBehaviour {
 
+    public string noteText;
+
     void OnTriggerEnter(Collider other) {
         InventoryController inv = other.GetComponent<InventoryController>();
 
@@ -25,4 +27,8 @@ public class NotePickup : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    public void SetNoteText(string text) {
+        noteText = text;
+    }
 }
