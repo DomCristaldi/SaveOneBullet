@@ -18,7 +18,7 @@ public class ItemBase : MonoBehaviour {
 
     public KeyCode itemKey;
 
-	public InventoryController inv;
+	//public InventoryController inv;
 
     public bool interuptedAction = false;
 

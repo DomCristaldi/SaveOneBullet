@@ -13,6 +13,8 @@ public class MazeController : MonoBehaviour {
 	public enum SearchUseMode {
 		display,
 		enemyPlacement,
+		checkExitPath,
+		notePlacement,
 	}
 
 	public static MazeController singleton;
@@ -33,6 +35,9 @@ public class MazeController : MonoBehaviour {
 	public int maxSpawnDistance;
 	public float wraithWrapDistance;
 	public float wraithRandom;
+	[Header("Note spawning stuff:")]
+	public bool spawnNotes;
+	public float noteRandom;
 	[Header("Dimensions (# of nodes):")]
 	public int nodeWidth;
 	public int nodeHeight;
@@ -43,6 +48,7 @@ public class MazeController : MonoBehaviour {
 	public int mazeHeight;
 	public List<List<GameObject>> mazePieces;
 	public List<List<MazeNode>> mazeNodes;
+	List<MazeLink> mazeLinks;
 	[Header("Node graph stuff (DO NOT CHANGE):")]
 	public MazeNode exitNode;
 	public MazeLink exit;
@@ -60,6 +66,7 @@ public class MazeController : MonoBehaviour {
 	public KeyCode searchKey;
 	public KeyCode evadeKey;
 	public KeyCode clearKey;
+	public KeyCode toggleDebugKey;
 	[Header("Turn debug coloring on/off:")]
 	public bool debugColors;
 	bool colorsOff;
@@ -78,12 +85,16 @@ public class MazeController : MonoBehaviour {
 	public int maxAllowedStragglers;
 	public int wallRemovalsGoal;
 	public int wallRemovalsStart;
+	public bool swapWalls;
+	public float wallSwapTime;
+	public int wallSwapDepth;
 	public int aStarPasses;
 	public AStarMode aStarMode;
 	public float aStarRandom;
 	public int aStarSpeed;
 	public float searchRandom;
 	public int evadeDistance;
+	Coroutine wallTimer;
 
 	void Awake () {
 		if (singleton == null) {
@@ -96,6 +107,9 @@ public class MazeController : MonoBehaviour {
 
 	void Start () {
 		CreateMaze();
+		if (swapWalls) {
+			wallTimer = StartCoroutine(WallSwappingTimer(wallSwapTime));
+		}
 	}
 
 	void Update () {
@@ -120,6 +134,9 @@ public class MazeController : MonoBehaviour {
 			if (Input.GetKeyDown(showLoopsKey)) {
 				DetectLoops();
 			}
+			if (Input.GetKeyDown(toggleDebugKey)) {
+				debugColors = !debugColors;
+			}
 		}
 		if (debugColors) {
 			if (colorsOff) {
@@ -133,9 +150,28 @@ public class MazeController : MonoBehaviour {
 				colorsOff = true;
 			}
 		}
+		if (!swapWalls && wallTimer != null) {
+			StopCoroutine(wallTimer);
+			wallTimer = null;
+		}
+		if (swapWalls && wallTimer == null) {
+			wallTimer = StartCoroutine(WallSwappingTimer(wallSwapTime));
+		}
 		if (player != null) {
 			playerNode = player.closestNode;
 		}
+	}
+
+	IEnumerator WallSwappingTimer (float maxTimer) {
+		while (true) {
+			yield return new WaitForSeconds(maxTimer);
+			SwapWalls(exitNode);
+		}
+	}
+
+	void SwapWalls (MazeNode evadeNode) {
+		AgentEvade(playerNode, evadeNode, 0, wallSwapDepth, EvadeUseMode.wallPlacement);
+		CreateLoops(1, 0, doColors: true);
 	}
 
 	void ClearNodesSearched () {
@@ -161,6 +197,10 @@ public class MazeController : MonoBehaviour {
 					link.cubeRenderer.material = link.cubeMat;
 				}
 			}
+		}
+		foreach (MazeLink link in mazeLinks) {
+			link.floorRenderer.material = link.floorMat;
+			link.cubeRenderer.material = link.cubeMat;
 		}
 	}
 
@@ -192,6 +232,7 @@ public class MazeController : MonoBehaviour {
 		}
 		path = new List<MazeNode>();
 		unconnected = new List<MazeNode>();
+		mazeLinks = new List<MazeLink>();
 	}
 
 	void SpawnPlayer () {
@@ -207,8 +248,7 @@ public class MazeController : MonoBehaviour {
 		}
 	}
 
-	void CreateMaze () {
-		InitializeMazePieces();
+	void SpawnMazePieces () {
 		for (int x = 0; x < mazeWidth; x++) {
 			for (int z = 0; z < mazeHeight; z++) {
 				if (x % 2 == 0 && z % 2 == 0) {
@@ -219,10 +259,16 @@ public class MazeController : MonoBehaviour {
 				}
 				else {
 					mazePieces[x].Add(CreatePiece(x, z, floorLink));
+					mazeLinks.Add(mazePieces[x][z].GetComponent<MazeLink>());
 				}
 				mazePieces[x][z].transform.localScale = Vector3.one * mazeScale;
 			}
 		}
+	}
+
+	void CreateMaze () {
+		InitializeMazePieces();
+		SpawnMazePieces();
 		ConnectNodes();
 		SetExit();
 		FindGoldenPath();
@@ -232,6 +278,7 @@ public class MazeController : MonoBehaviour {
 		SolidifyWalls();
 		SpawnPlayer();
 		SpawnWraiths();
+		SpawnNotes();
 	}
 
 	void FindGoldenPath () {
@@ -482,14 +529,22 @@ public class MazeController : MonoBehaviour {
 		}
 		foreach (MazeNode n in inOrder) {
 			n.searched = true;
-			if (debugColors) {
+			if (debugColors && mode == EvadeUseMode.display) {
 				n.floorRenderer.material = debugGreen;
 			}
 			bool endFound = AgentEvade(n, evadeNode, depth + 1, distance, mode);
 			if (endFound) {
 				if (depth + 1 >= distance) {
 					if (mode == EvadeUseMode.wallPlacement) {
-						PlaceWall(node, n);
+						if (!PlaceWall(node, n)) {
+							endFound = false;
+							continue;
+						}
+						else {
+							if (debugColors) {
+								node.GetLinkToNode(n).cubeRenderer.material = debugMagenta;
+							}
+						}
 					}
 				}
 				return true;
@@ -498,17 +553,28 @@ public class MazeController : MonoBehaviour {
 		return false;
 	}
 
-	void PlaceWall (MazeNode node1, MazeNode node2) {
-
+	bool PlaceWall (MazeNode node1, MazeNode node2) {
+		if (node1.enemyOccupied || node2.enemyOccupied) {
+			return false;
+		}
+		node1.DisconnectFromNode(node2);
+		if (AgentSearch(node1, 0, mode: SearchUseMode.checkExitPath)) {
+			return true;
+		}
+		node1.ConnectToNode(node2);
+		return false;
 	}
 
-	bool AgentSearch (MazeNode node, int depth, int distance = int.MaxValue, SearchUseMode mode = SearchUseMode.display, bool realWraith = false) {
+	bool AgentSearch (MazeNode node, int depth, int distance = int.MaxValue, SearchUseMode mode = SearchUseMode.display, bool realWraith = false, int noteIndex = -1) {
 		float srchRand = 0f;
-		if (mode == SearchUseMode.display) {
+		if (mode == SearchUseMode.display || mode == SearchUseMode.checkExitPath) {
 			srchRand = searchRandom;
 		}
 		if (mode == SearchUseMode.enemyPlacement) {
 			srchRand = wraithRandom;
+		}
+		if (mode == SearchUseMode.notePlacement) {
+			srchRand = noteRandom;
 		}
 		if (node == exitNode) {
 			ClearNodesSearched();
@@ -517,6 +583,11 @@ public class MazeController : MonoBehaviour {
 		if (depth >= distance) {
 			if (mode == SearchUseMode.enemyPlacement && !node.enemyOccupied) {
 				SpawnWraith(node, realWraith);
+				ClearNodesSearched();
+				return true;
+			}
+			if (mode == SearchUseMode.notePlacement && noteIndex != -1) {
+				SpawnNote(node, noteIndex);
 				ClearNodesSearched();
 				return true;
 			}
@@ -717,19 +788,20 @@ public class MazeController : MonoBehaviour {
 	}
 
 	void DetectLoops () {
+		if (!debugColors) {
+			return;
+		}
 		for (int j = 0; j < aStarPasses; j++) {
 			List<MazeNode> newPath = AStar(startNode, exitNode, aStarMode, aStarRandom);
 			foreach (MazeNode node in newPath) {
 				if (node != exitNode && node != startNode) {
-					if (debugColors) {
-						node.floorRenderer.material = debugYellow;
-					}
+					node.floorRenderer.material = debugYellow;
 				}
 			}
 		}
 	}
 
-	void CreateLoops (int goalPasses, int startPasses) {
+	void CreateLoops (int goalPasses, int startPasses, bool doColors = false) {
 		for (int i = 0; i < startPasses; i++) {
 			DetermineDistancesFromGoal(startNode);
 			MazeLink highestDiffLink = DetermineGoalDistanceDifferentials();
@@ -742,6 +814,9 @@ public class MazeController : MonoBehaviour {
 		for (int i = 0; i < goalPasses; i++) {
 			DetermineDistancesFromGoal(exitNode);
 			MazeLink highestDiffLink = DetermineGoalDistanceDifferentials();
+			if (doColors && debugColors) {
+				highestDiffLink.floorRenderer.material = debugGreen;
+			}
 			//Debug.DrawLine(highestDiffLink.transform.position, new Vector3(0f, 20f, 0f), Color.black);
 			highestDiffLink.adjacentNode1.ConnectToNode(highestDiffLink.adjacentNode2);
 			ResetGoalDistances();
@@ -860,5 +935,16 @@ public class MazeController : MonoBehaviour {
 				placeDistance++;
 			}
 		}
+	}
+
+	void SpawnNote (MazeNode node, int noteIndex) {
+		//***NEEDS NOTE MANAGER REFERENCE***
+	}
+
+	void SpawnNotes () {
+		if (!spawnNotes) {
+			return;
+		}
+		//***NEEDS NOTE MANAGER REFERENCE***
 	}
 }

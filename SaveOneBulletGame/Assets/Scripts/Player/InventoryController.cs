@@ -52,7 +52,7 @@ public class InventoryController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        HandleEquippedItem();
+        //HandleEquippedItem();
 	}
 
     private void PrepareEquippableItem(ItemBase item) {
@@ -63,11 +63,6 @@ public class InventoryController : MonoBehaviour {
 
     private void PrepareAllEquipableItems() {
         foreach (KeyValuePair<ItemBase.ItemType, EquipmentSlot> slot in equipSlots) {
-            /*
-            slot.Value.item.transform.position = handsTf.position;
-            slot.Value.item.transform.rotation = handsTf.rotation;
-            slot.Value.item.transform.parent = handsTf;
-            */
 
             PrepareEquippableItem(slot.Value.item);
 
@@ -78,7 +73,6 @@ public class InventoryController : MonoBehaviour {
     }
 
     public void AddItemToInventory(ItemBase item) {
-        //equipmentSlots.Add(new EquipmentSlot(item));
         equipSlots.Add(item.thisItemType, new EquipmentSlot(item));
         PrepareEquippableItem(item);
     }
@@ -121,38 +115,31 @@ public class InventoryController : MonoBehaviour {
     }
 
     private void PutEquippedItemInHand() {
-        //equippedItem.gameObject.SetActive(true);
 
         equippedItem.EnableItem();
 
         equippedItem.Equip();
 
-        //equippedItem.transform.parent = handsTf;
-
-        //equippedItem.transform.localPosition = Vector3.zero;
-        //equippedItem.transform.localRotation.SetEulerAngles(0.0f, 0.0f, 0.0f);
-
-        //equippedItem.transform.position = handsTf.position;
-        //equippedItem.transform.rotation = handsTf.rotation;
-        //equippedItem.transform.localRotation = new Quaternion();
-        //Debug.Log(handsTf.rotation);
-        //equippedItem.transform.parent = handsTf;
     }
 
     private void PutAwayEquippedItem() {
-        //equippedItem.transform.parent = null;
-
-        //equippedItem.Interrupt();
-
         equippedItem.Unequip();
-
-        //equippedItem.gameObject.SetActive(false);
     }
 
     public void UseItem() {
-		if(equippedItem != null)
+		if(equippedItem != null) {
         	equippedItem.Use();
+        }
         //Debug.Log("UseItem()");
+    }
+
+    public bool ItemInInventory(ItemBase.ItemType type) {
+        if (equipSlots.ContainsKey(type)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }
