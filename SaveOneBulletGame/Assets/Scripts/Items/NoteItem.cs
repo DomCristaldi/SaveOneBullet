@@ -39,12 +39,12 @@ public class NoteItem : ItemBase {
         collectedNotes.Add(note);
         noteIndex = collectedNotes.Count - 1;
 
-        AssignCurrentlyViewedNote(noteIndex);
+        AssignCurrentlyViewedNote();
     }
 
     
     private void AssignCurrentlyViewedNote(int index) {
-        if (index > 0) {
+        if (index >= 0) {
             noteUI.SetText(collectedNotes[index]);
         }
     }
