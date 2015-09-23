@@ -10503,13 +10503,9 @@ MonoBehaviour:
   motor: {fileID: 0}
   nodeTracker: {fileID: 0}
   player: {fileID: 0}
-<<<<<<< HEAD
   model: {fileID: 137408}
   col: {fileID: 13689514}
   drawDistance: 40
-=======
-  model: {fileID: 0}
->>>>>>> ad638b806d1dabf8a5ed5e41b51e198e3ebb7dd4
   currentBehavior: 0
   hasLineOfSight: 0
   enraged: 0
@@ -10523,11 +10519,7 @@ MonoBehaviour:
   searchRandom: .5
   searchTime: 8
   enragedSearchTime: 16
-<<<<<<< HEAD
   despawnTime: 1.5
-=======
-  despawnTime: 0
->>>>>>> ad638b806d1dabf8a5ed5e41b51e198e3ebb7dd4
   idleSpeed: .5
   provokedSpeed: 2.79999995
   enragedSpeed: 4.19999981

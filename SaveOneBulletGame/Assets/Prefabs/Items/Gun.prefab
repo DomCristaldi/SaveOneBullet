@@ -1799,7 +1799,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: d1ae471624766744f8e7f1871ba2c88e, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1925,12 +1925,8 @@ MonoBehaviour:
   interuptedAction: 0
   hitLayers:
     serializedVersion: 2
-<<<<<<< HEAD
-    m_Bits: 1536
-=======
     m_Bits: 0
   gunshot: {fileID: 8300000, guid: d1ae471624766744f8e7f1871ba2c88e, type: 3}
->>>>>>> ad638b806d1dabf8a5ed5e41b51e198e3ebb7dd4
   ammo: 8
   range: 40
   reloadTime: 3
@@ -3033,7 +3029,6 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
-<<<<<<< HEAD
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
@@ -3041,11 +3036,10 @@ Prefab:
       propertyPath: hitLayers.m_Bits
       value: 1536
       objectReference: {fileID: 0}
-=======
-      propertyPath: gunshot
+    - target: {fileID: 0}
+      propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: d1ae471624766744f8e7f1871ba2c88e, type: 3}
->>>>>>> ad638b806d1dabf8a5ed5e41b51e198e3ebb7dd4
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 168596}
