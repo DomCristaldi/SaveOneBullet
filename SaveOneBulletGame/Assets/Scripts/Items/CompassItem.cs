@@ -27,4 +27,16 @@ public class CompassItem : ItemBase {
 	private void pointToEscape(){
 
 	}
+
+    public override void Equip() {
+        base.Equip();
+
+        gameObject.SetActive(true);
+    }
+
+    public override void Unequip() {
+        base.Unequip();
+
+        gameObject.SetActive(false);
+    }
 }

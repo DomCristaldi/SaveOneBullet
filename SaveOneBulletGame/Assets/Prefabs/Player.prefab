@@ -239,6 +239,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -272,6 +273,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -358,7 +360,11 @@ MonoBehaviour:
   handsTf: {fileID: 427564}
   emptyHandsPrefab: {fileID: 11459726, guid: ea37074a529ee43469f2854864fbf85a, type: 2}
   equippedItem: {fileID: 0}
-  startingItems: []
+  startingItems:
+  - {fileID: 11420122, guid: f8c4a41016f9e184b89b53b6fc67dd12, type: 2}
+  - {fileID: 11441922, guid: e6094502ef06c8141880c49be8e23b2d, type: 2}
+  - {fileID: 11445148, guid: 5a16a69bc10adb04a9f17b307017c682, type: 2}
+  - {fileID: 11467492, guid: 0b1b129a88426504fa5601f1daf662d1, type: 2}
 --- !u!114 &11448842
 MonoBehaviour:
   m_ObjectHideFlags: 1
