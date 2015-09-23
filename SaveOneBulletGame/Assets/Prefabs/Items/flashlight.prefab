@@ -137,7 +137,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 172616}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -1.62920685e-07}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -.150000006, y: .430000007, z: -.170000002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 476648}
@@ -457,7 +457,7 @@ MonoBehaviour:
   interuptedAction: 0
   hitLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1536
   lightEnabled: 1
   spotLights:
   - {fileID: 10861152}
@@ -482,6 +482,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: hitLayers.m_Bits
+      value: 1536
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

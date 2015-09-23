@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 405168}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ GameObject:
   - 4: {fileID: 445658}
   - 33: {fileID: 3351698}
   - 23: {fileID: 2349440}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - 199: {fileID: 19998640}
   - 198: {fileID: 19804642}
   - 108: {fileID: 10829020}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 432168}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - 4: {fileID: 440210}
   - 33: {fileID: 3382506}
   - 23: {fileID: 2363952}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube24
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - 4: {fileID: 451870}
   - 33: {fileID: 3379952}
   - 23: {fileID: 2324710}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - 4: {fileID: 466574}
   - 33: {fileID: 3324982}
   - 23: {fileID: 2324876}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pPipe5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - 4: {fileID: 456948}
   - 33: {fileID: 3377900}
   - 23: {fileID: 2367606}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCylinder8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +143,7 @@ GameObject:
   - 4: {fileID: 495848}
   - 33: {fileID: 3371634}
   - 23: {fileID: 2321970}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCylinder5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   - 4: {fileID: 417728}
   - 33: {fileID: 3307724}
   - 23: {fileID: 2362116}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - 4: {fileID: 426580}
   - 33: {fileID: 3354844}
   - 23: {fileID: 2300154}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube25
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   - 4: {fileID: 437368}
   - 33: {fileID: 3310620}
   - 23: {fileID: 2354128}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCylinder6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   - 4: {fileID: 482244}
   - 33: {fileID: 3385138}
   - 23: {fileID: 2318894}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCylinder9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   - 4: {fileID: 427048}
   - 33: {fileID: 3392890}
   - 23: {fileID: 2374730}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +245,7 @@ GameObject:
   - 4: {fileID: 462526}
   - 33: {fileID: 3336586}
   - 23: {fileID: 2330512}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   - 4: {fileID: 432294}
   - 33: {fileID: 3322096}
   - 23: {fileID: 2334086}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,7 +279,7 @@ GameObject:
   - 4: {fileID: 452434}
   - 33: {fileID: 3381920}
   - 23: {fileID: 2332750}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +296,7 @@ GameObject:
   - 4: {fileID: 451270}
   - 33: {fileID: 3352986}
   - 23: {fileID: 2355958}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube26
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -313,7 +313,7 @@ GameObject:
   - 4: {fileID: 440788}
   - 33: {fileID: 3378452}
   - 23: {fileID: 2325800}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +328,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 446942}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 418404}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +360,7 @@ GameObject:
   - 4: {fileID: 465652}
   - 33: {fileID: 3374348}
   - 23: {fileID: 2371508}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pPipe4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -377,7 +377,7 @@ GameObject:
   - 4: {fileID: 493324}
   - 33: {fileID: 3322012}
   - 23: {fileID: 2329892}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pPipe2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +429,7 @@ GameObject:
   - 4: {fileID: 481956}
   - 33: {fileID: 3301482}
   - 23: {fileID: 2375952}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -478,7 +478,7 @@ GameObject:
   - 4: {fileID: 497160}
   - 33: {fileID: 3388174}
   - 23: {fileID: 2380224}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -495,7 +495,7 @@ GameObject:
   - 4: {fileID: 482142}
   - 33: {fileID: 3309594}
   - 23: {fileID: 2325606}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCylinder7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -512,7 +512,7 @@ GameObject:
   - 4: {fileID: 439734}
   - 33: {fileID: 3384192}
   - 23: {fileID: 2387430}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -546,7 +546,7 @@ GameObject:
   - 4: {fileID: 440710}
   - 33: {fileID: 3375574}
   - 23: {fileID: 2302210}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1799,7 +1799,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: d1ae471624766744f8e7f1871ba2c88e, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1925,7 +1925,7 @@ MonoBehaviour:
   interuptedAction: 0
   hitLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1536
   gunshotSound: {fileID: 8300000, guid: ccab5999629eeb74d9ef6259033025ae, type: 3}
   openBreachSound: {fileID: 8300000, guid: 3edaa1118b618a94c9811ce577ad5fc7, type: 3}
   closeBreachSound: {fileID: 8300000, guid: b99a8f71c327409499a0b840fa87f7a1, type: 3}
@@ -3031,7 +3031,15 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
-      propertyPath: gunshot
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: hitLayers.m_Bits
+      value: 1536
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: d1ae471624766744f8e7f1871ba2c88e, type: 3}
     m_RemovedComponents: []

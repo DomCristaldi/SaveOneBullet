@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [AddComponentMenu("Scripts/AI/Wraith")]
 [RequireComponent(typeof(NodeTracker))]
@@ -18,6 +19,8 @@ public class WraithAI : MonoBehaviour {
 	public NodeTracker nodeTracker;
 	public NodeTracker player;
 	public GameObject model;
+	public Collider col;
+	public float drawDistance;
 	[Header("Behavior Variables:")]
 	public AIState currentBehavior;
 	public bool hasLineOfSight;
@@ -37,11 +40,14 @@ public class WraithAI : MonoBehaviour {
 	MazeNode currentSearchNode;
 	MazeNode nextSearchNode;
 	public float despawnTime;
+	public bool freezeAI;
 	[Header("Movement Variables:")]
 	public float idleSpeed;
 	public float provokedSpeed;
 	public float enragedSpeed;
 	public float currentSpeed;
+	List<Material> mats;
+	Coroutine fadeRoutine;
     
     void Awake () {
 		nodeTracker = GetComponent<NodeTracker>();
@@ -49,6 +55,7 @@ public class WraithAI : MonoBehaviour {
 		currentBehavior = AIState.idle;
 		hasLineOfSight = false;
 		lastKnownPlayerLocation = null;
+		freezeAI = false;
     }
     
 	void Start () {
@@ -58,8 +65,18 @@ public class WraithAI : MonoBehaviour {
 	
 	void FixedUpdate () {
 		isReal = _isReal;
-		UpdateAIState();
-		model.transform.forward = motor.trueDirec.normalized;
+		if (!freezeAI) {
+			UpdateAIState();
+		}
+		if (motor.trueDirec.magnitude > 0) {
+			model.transform.forward = motor.trueDirec.normalized;
+		}
+		if (Vector3.Distance(player.transform.position, transform.position) > drawDistance) {
+			model.SetActive(false);
+		}
+		else {
+			model.SetActive(true);
+		}
 	}
 
 	public void SetReal (bool reality) {
@@ -295,12 +312,41 @@ public class WraithAI : MonoBehaviour {
 	}
 
 	public void Despawn () {
+		motor.desiredDirec = Vector3.zero;
+		motor.trueDirec = Vector3.zero;
+		GetComponent<Rigidbody>().velocity = Vector3.zero;
+		motor.enabled = false;
+		col.enabled = false;
 		StartCoroutine(DestroyAfterSeconds(despawnTime));
-		//***SPOOPY FADE SHADER CALL GOES HERE***
+		mats = new List<Material>();
+		GetMaterials(model.transform);
+		fadeRoutine = StartCoroutine(FadeAway(despawnTime));
+	}
+
+	IEnumerator FadeAway (float seconds) {
+		float fadeTime = 0f;
+		while (true) {
+			foreach (Material mat in mats) {
+				mat.SetFloat("_SliceAmount", .8f);
+			}
+			yield return null;
+			fadeTime += Time.deltaTime / seconds;
+		}
 	}
 
 	IEnumerator DestroyAfterSeconds (float seconds) {
 		yield return new WaitForSeconds(seconds);
+		StopCoroutine(fadeRoutine);
 		Destroy(gameObject);
+	}
+
+	void GetMaterials (Transform tf) {
+		MeshRenderer rend = tf.GetComponent<MeshRenderer>();
+		if (rend != null) {
+			mats.Add(rend.material);
+			for (int i = 0; i < tf.childCount; i++) {
+				GetMaterials(tf.GetChild(i));
+			}
+		}
 	}
 }

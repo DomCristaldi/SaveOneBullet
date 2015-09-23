@@ -21,7 +21,9 @@ public class FlashlightItem : ItemBase {
 
 	// Update is called once per frame
 	void Update () {
-        BurnWraiths();
+		if (lightEnabled) {
+        	BurnWraiths();
+		}
 
 	}
 
@@ -60,9 +62,9 @@ public class FlashlightItem : ItemBase {
                 break;
             }
             else {
-                WraithAI wAI = hit.collider.GetComponent<WraithAI>();
+                WraithAI wAI = hit.collider.GetComponentInParent<WraithAI>();
                 if (wAI != null) {
-                    wAI.ReactToItem(thisItemType);
+                    wAI.ReactToItem(ItemType.flashlight);
                 }
             }
         }
