@@ -53,7 +53,7 @@ public class GunItem : ItemBase {
 	// Update is called once per frame
 	void Update () {
 
-        Debug.Log(doneReloading);
+        //Debug.Log(doneReloading);
 
 		if (reloading) {
 
@@ -63,7 +63,7 @@ public class GunItem : ItemBase {
 
             if (doneReloading == false && timer < reloadTime) {//increment timer
                 timer += Time.deltaTime;
-                Debug.Log("timer");
+                //Debug.Log("timer");
             }
 
             if (timer >= reloadTime) {
@@ -116,9 +116,9 @@ public class GunItem : ItemBase {
                     break;
                 }
                 else {
-                    WraithAI wAI = hit.collider.GetComponent<WraithAI>();
+                    WraithAI wAI = hit.collider.GetComponentInParent<WraithAI>();
                     if (wAI != null) {
-                        wAI.ReactToItem(thisItemType);
+						wAI.ReactToItem(ItemType.gun);
                     }
                 }
             }
