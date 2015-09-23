@@ -275,4 +275,8 @@ public class WraithAI : MonoBehaviour {
 	bool AtTarget () {
 		return (Vector3.Distance(transform.position, target.position) < currentSpeed * Time.fixedDeltaTime);
 	}
+
+	public void ReactToItem (ItemBase.ItemType itemType) {
+
+	}
 }
