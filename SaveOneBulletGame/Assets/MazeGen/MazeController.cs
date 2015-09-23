@@ -563,7 +563,7 @@ public class MazeController : MonoBehaviour {
 	}
 
 	bool PlaceWall (MazeNode node1, MazeNode node2) {
-		if (node1.enemyOccupied || node2.enemyOccupied) {
+		if (node1.enemyOccupied || node2.enemyOccupied || node1 == playerNode || node2 == playerNode) {
 			return false;
 		}
 		node1.DisconnectFromNode(node2);
