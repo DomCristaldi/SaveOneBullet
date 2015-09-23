@@ -1677,6 +1677,13 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_GenerateMotionCurves: 0
   m_Events:
+  - time: .783333361
+    functionName: PlayCloseBreachSound
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: .983333349
     functionName: ForeceCanFire
     data: 

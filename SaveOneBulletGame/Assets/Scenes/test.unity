@@ -458,7 +458,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 481804, guid: e6094502ef06c8141880c49be8e23b2d, type: 2}
       propertyPath: m_RootOrder
-      value: 18
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 174306, guid: e6094502ef06c8141880c49be8e23b2d, type: 2}
       propertyPath: m_Name
@@ -509,6 +509,18 @@ Prefab:
     - target: {fileID: 142106, guid: cbd66e4babc799843b282f5523f5f917, type: 2}
       propertyPath: m_Name
       value: Wraith (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 10891728, guid: cbd66e4babc799843b282f5523f5f917, type: 2}
+      propertyPath: m_Intensity
+      value: 1.61000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 10891728, guid: cbd66e4babc799843b282f5523f5f917, type: 2}
+      propertyPath: m_Color.g
+      value: .675999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 10891728, guid: cbd66e4babc799843b282f5523f5f917, type: 2}
+      propertyPath: m_Color.b
+      value: .147
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cbd66e4babc799843b282f5523f5f917, type: 2}
