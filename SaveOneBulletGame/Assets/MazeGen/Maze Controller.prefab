@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 450688}
   - 114: {fileID: 11478898}
+  - 114: {fileID: 11472904}
   m_Layer: 0
   m_Name: Maze Controller
   m_TagString: Untagged
@@ -28,6 +29,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &11472904
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 160978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6922c47cb8fe47e429149958d3e63a57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allNotes: []
 --- !u!114 &11478898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -41,12 +54,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2560
   wall: {fileID: 111968, guid: cba125721853e5d41b6c76306ff73872, type: 2}
   floorLink: {fileID: 194452, guid: 2b90556bd2777f146976a38b21c4060a, type: 2}
   floorNode: {fileID: 193856, guid: 407362754c069c24b99c127fb241a569, type: 2}
   playerPrefab: {fileID: 181192, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
   wraithPrefab: {fileID: 142106, guid: cbd66e4babc799843b282f5523f5f917, type: 2}
+  notePrefab: {fileID: 120838, guid: 8a752755c744aa24f9884d711ed23fba, type: 2}
   spawnPlayer: 1
   spawnWraiths: 1
   realWraiths: 4
@@ -55,6 +69,10 @@ MonoBehaviour:
   maxSpawnDistance: 80
   wraithWrapDistance: 40
   wraithRandom: 5
+  spawnNotes: 1
+  noteRandom: 5
+  minNoteDistance: 6
+  maxNoteDistance: 80
   nodeWidth: 35
   nodeHeight: 35
   mazeScale: 2

@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d5c9fb685f72b947835ac9d438377bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteText: 
+  noteText: '#testpoop'
 --- !u!135 &13515902
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -92,7 +92,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: noteText
+      value: '#testpoop'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 120838}

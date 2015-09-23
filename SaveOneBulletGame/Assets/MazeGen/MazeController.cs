@@ -25,6 +25,7 @@ public class MazeController : MonoBehaviour {
 	public GameObject floorNode;
 	public GameObject playerPrefab;
 	public GameObject wraithPrefab;
+	public GameObject notePrefab;
 	[Header("Check to spawn player:")]
 	public bool spawnPlayer;
 	[Header("Wraith spawning stuff:")]
@@ -38,6 +39,8 @@ public class MazeController : MonoBehaviour {
 	[Header("Note spawning stuff:")]
 	public bool spawnNotes;
 	public float noteRandom;
+	public int minNoteDistance;
+	public int maxNoteDistance;
 	[Header("Dimensions (# of nodes):")]
 	public int nodeWidth;
 	public int nodeHeight;
@@ -923,11 +926,11 @@ public class MazeController : MonoBehaviour {
 		float actualPlaceDistance = (float)placeDistance;
 		while ((realSpawned + fakeSpawned) < totalWraithsToSpawn) {
 			if (Random.value > (float)fakeSpawned / (float)(fakeWraiths)) {
-				AgentSearch(startNode, 0, placeDistance, SearchUseMode.enemyPlacement, false);
+				AgentSearch(startNode, 0, placeDistance, SearchUseMode.enemyPlacement, realWraith: false);
 				fakeSpawned++;
 			}
 			else {
-				AgentSearch(startNode, 0, placeDistance, SearchUseMode.enemyPlacement, true);
+				AgentSearch(startNode, 0, placeDistance, SearchUseMode.enemyPlacement, realWraith: true);
 				realSpawned++;
 			}
 			actualPlaceDistance += distanceStep;
@@ -938,13 +941,39 @@ public class MazeController : MonoBehaviour {
 	}
 
 	void SpawnNote (MazeNode node, int noteIndex) {
-		//***NEEDS NOTE MANAGER REFERENCE***
+		Debug.Log("Spawning note at index " + noteIndex);
+		GameObject newNote = Instantiate(notePrefab, node.transform.position, Quaternion.identity) as GameObject;
+		NotePickup noteScript = newNote.GetComponent<NotePickup>();
+		noteScript.SetNoteText(NoteManager.singleton.allNotes[noteIndex]);
+	}
+
+	void TestFunction (int var1 = 1, int var2 = 2, int var3 = 3) {
+		Debug.Log("var1: " + var1 + " var2: " + var2 + " var3: " + var3);
 	}
 
 	void SpawnNotes () {
 		if (!spawnNotes) {
 			return;
 		}
-		//***NEEDS NOTE MANAGER REFERENCE***
+		Debug.Log("Spawning Notes...");
+		int totalNotes = NoteManager.singleton.allNotes.Count;
+		if (totalNotes > (maxNoteDistance - minNoteDistance)) {
+			maxNoteDistance = minNoteDistance + totalNotes;
+		}
+		if (totalNotes <= 1) {
+			Debug.LogWarning("Not spawning notes because the spawn number isn't high enough.");
+			return;
+		}
+		float distanceStep = (float)(maxNoteDistance - minNoteDistance) / (float)(totalNotes - 1);
+		int placeDistance = minNoteDistance;
+		float actualPlaceDistance = (float)placeDistance;
+		for (int ind = 0; ind < totalNotes; ind++) {
+			AgentSearch(startNode, 0, placeDistance, SearchUseMode.notePlacement, noteIndex: ind);
+			actualPlaceDistance += distanceStep;
+			while (actualPlaceDistance - (float)placeDistance >= 1f) {
+				placeDistance++;
+			}
+		}
+		Debug.Log("Done spawning notes.");
 	}
 }
