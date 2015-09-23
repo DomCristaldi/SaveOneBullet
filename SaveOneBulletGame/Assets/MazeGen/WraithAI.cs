@@ -40,7 +40,7 @@ public class WraithAI : MonoBehaviour {
 	MazeNode currentSearchNode;
 	MazeNode nextSearchNode;
 	public float despawnTime;
-	bool freezeAI;
+	public bool freezeAI;
 	[Header("Movement Variables:")]
 	public float idleSpeed;
 	public float provokedSpeed;
@@ -65,7 +65,9 @@ public class WraithAI : MonoBehaviour {
 	
 	void FixedUpdate () {
 		isReal = _isReal;
-		UpdateAIState();
+		if (!freezeAI) {
+			UpdateAIState();
+		}
 		if (motor.trueDirec.magnitude > 0) {
 			model.transform.forward = motor.trueDirec.normalized;
 		}
@@ -82,36 +84,34 @@ public class WraithAI : MonoBehaviour {
 	}
 
 	void UpdateAIState () {
-		if (!freezeAI) {
-			if (currentBehavior == AIState.idle) {
-				if (PlayerInsideProvokeRange() && HasLineOfSight()) {
-					Provoke();
-				}
-				else {
-					Idle();
-				}
+		if (currentBehavior == AIState.idle) {
+			if (PlayerInsideProvokeRange() && HasLineOfSight()) {
+				Provoke();
 			}
-			if (currentBehavior == AIState.chasing) {
-				if (PlayerOutsideIdleRange()) {
-					Calm();
-				}
-				if (!HasLineOfSight()) {
-					StartSearching();
-				}
-				else {
-					Chase();
-				}
+			else {
+				Idle();
 			}
-			if (currentBehavior == AIState.searching) {
-				if (PlayerOutsideIdleRange()) {
-					Calm();
-				}
-				if (HasLineOfSight()) {
-					StartChasing();
-				}
-				else {
-					Search();
-				}
+		}
+		if (currentBehavior == AIState.chasing) {
+			if (PlayerOutsideIdleRange()) {
+				Calm();
+			}
+			if (!HasLineOfSight()) {
+				StartSearching();
+			}
+			else {
+				Chase();
+			}
+		}
+		if (currentBehavior == AIState.searching) {
+			if (PlayerOutsideIdleRange()) {
+				Calm();
+			}
+			if (HasLineOfSight()) {
+				StartChasing();
+			}
+			else {
+				Search();
 			}
 		}
 	}
@@ -327,7 +327,7 @@ public class WraithAI : MonoBehaviour {
 		float fadeTime = 0f;
 		while (true) {
 			foreach (Material mat in mats) {
-				mat.SetFloat("_SliceAmount", fadeTime);
+				mat.SetFloat("_SliceAmount", .8f);
 			}
 			yield return null;
 			fadeTime += Time.deltaTime / seconds;
@@ -341,7 +341,7 @@ public class WraithAI : MonoBehaviour {
 	}
 
 	void GetMaterials (Transform tf) {
-		Renderer rend = tf.GetComponent<Renderer>();
+		MeshRenderer rend = tf.GetComponent<MeshRenderer>();
 		if (rend != null) {
 			mats.Add(rend.material);
 			for (int i = 0; i < tf.childCount; i++) {

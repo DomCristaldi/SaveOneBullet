@@ -1925,7 +1925,7 @@ MonoBehaviour:
   interuptedAction: 0
   hitLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1536
   gunshotSound: {fileID: 8300000, guid: ccab5999629eeb74d9ef6259033025ae, type: 3}
   openBreachSound: {fileID: 8300000, guid: 3edaa1118b618a94c9811ce577ad5fc7, type: 3}
   closeBreachSound: {fileID: 8300000, guid: b99a8f71c327409499a0b840fa87f7a1, type: 3}

@@ -3606,7 +3606,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 142106}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb767f2a6035e1146b64a51d3845056c, type: 3}
   m_Name: 
@@ -3615,7 +3615,9 @@ MonoBehaviour:
   motor: {fileID: 0}
   nodeTracker: {fileID: 0}
   player: {fileID: 0}
-  model: {fileID: 0}
+  model: {fileID: 137408}
+  col: {fileID: 13689514}
+  drawDistance: 40
   currentBehavior: 0
   hasLineOfSight: 0
   enraged: 0
@@ -3629,7 +3631,8 @@ MonoBehaviour:
   searchRandom: .5
   searchTime: 8
   enragedSearchTime: 16
-  despawnTime: 0
+  despawnTime: 1.5
+  freezeAI: 0
   idleSpeed: .5
   provokedSpeed: 2.79999995
   enragedSpeed: 4.19999981
@@ -3809,6 +3812,26 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: col
+      value: 
+      objectReference: {fileID: 13689514}
+    - target: {fileID: 0}
+      propertyPath: drawDistance
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: despawnTime
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: model
+      value: 
+      objectReference: {fileID: 137408}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
