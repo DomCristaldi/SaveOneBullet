@@ -38,4 +38,16 @@ public class FlashlightItem : ItemBase {
 		lightEnabled = false;
 		lightObject.SetActive (false);
 	}
+
+    public override void Equip() {
+        base.Equip();
+
+        gameObject.SetActive(true);
+    }
+
+    public override void Unequip() {
+        base.Unequip();
+
+        gameObject.SetActive(false);
+    }
 }

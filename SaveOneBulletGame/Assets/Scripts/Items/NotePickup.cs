@@ -16,7 +16,7 @@ public class NotePickup : MonoBehaviour {
         
         
         if (!inv.ItemInInventory(ItemBase.ItemType.note)) {
-
+            //***ADD A NOTE TO THE INVENTORY***
         }
         else {
             NoteItem nItem = inv.equipSlots[ItemBase.ItemType.note].item as NoteItem;//upcast b/c we know it's going to be a note
