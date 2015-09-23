@@ -18,6 +18,7 @@ public class WraithAI : MonoBehaviour {
 	public Motor motor;
 	public NodeTracker nodeTracker;
 	public NodeTracker player;
+	public AdvancedMotor playerMotor;
 	public GameObject model;
 	public Collider col;
 	public float drawDistance;
@@ -61,6 +62,7 @@ public class WraithAI : MonoBehaviour {
     
 	void Start () {
 		target = nodeTracker.closestNode.transform;
+		playerMotor = player.GetComponent<AdvancedMotor>();
 		Calm();
 	}
 	
@@ -118,7 +120,12 @@ public class WraithAI : MonoBehaviour {
 	}
 
 	bool PlayerInsideProvokeRange () {
-		return (Vector3.Distance(player.transform.position, transform.position) < provokeRange);
+		if (playerMotor.curMovementMode == AdvancedMotor.MovementMode.sneaking) {
+			return (Vector3.Distance(player.transform.position, transform.position) < provokeRange / 2f);
+		}
+		else {
+			return (Vector3.Distance(player.transform.position, transform.position) < provokeRange);
+		}
 	}
 
 	bool HasLineOfSight () {
