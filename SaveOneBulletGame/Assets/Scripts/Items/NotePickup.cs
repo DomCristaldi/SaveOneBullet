@@ -29,7 +29,7 @@ public class NotePickup : MonoBehaviour {
     }
 
     void Awake() {
-        SetUIText();
+        //SetUIText();
     }
 
 	// Use this for initialization
