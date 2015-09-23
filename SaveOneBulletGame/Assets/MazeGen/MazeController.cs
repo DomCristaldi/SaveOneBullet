@@ -14,6 +14,7 @@ public class MazeController : MonoBehaviour {
 		display,
 		enemyPlacement,
 		checkExitPath,
+		notePlacement,
 	}
 
 	public static MazeController singleton;
@@ -34,6 +35,9 @@ public class MazeController : MonoBehaviour {
 	public int maxSpawnDistance;
 	public float wraithWrapDistance;
 	public float wraithRandom;
+	[Header("Note spawning stuff:")]
+	public bool spawnNotes;
+	public float noteRandom;
 	[Header("Dimensions (# of nodes):")]
 	public int nodeWidth;
 	public int nodeHeight;
@@ -274,6 +278,7 @@ public class MazeController : MonoBehaviour {
 		SolidifyWalls();
 		SpawnPlayer();
 		SpawnWraiths();
+		SpawnNotes();
 	}
 
 	void FindGoldenPath () {
@@ -560,13 +565,16 @@ public class MazeController : MonoBehaviour {
 		return false;
 	}
 
-	bool AgentSearch (MazeNode node, int depth, int distance = int.MaxValue, SearchUseMode mode = SearchUseMode.display, bool realWraith = false) {
+	bool AgentSearch (MazeNode node, int depth, int distance = int.MaxValue, SearchUseMode mode = SearchUseMode.display, bool realWraith = false, int noteIndex = -1) {
 		float srchRand = 0f;
 		if (mode == SearchUseMode.display || mode == SearchUseMode.checkExitPath) {
 			srchRand = searchRandom;
 		}
 		if (mode == SearchUseMode.enemyPlacement) {
 			srchRand = wraithRandom;
+		}
+		if (mode == SearchUseMode.notePlacement) {
+			srchRand = noteRandom;
 		}
 		if (node == exitNode) {
 			ClearNodesSearched();
@@ -575,6 +583,11 @@ public class MazeController : MonoBehaviour {
 		if (depth >= distance) {
 			if (mode == SearchUseMode.enemyPlacement && !node.enemyOccupied) {
 				SpawnWraith(node, realWraith);
+				ClearNodesSearched();
+				return true;
+			}
+			if (mode == SearchUseMode.notePlacement && noteIndex != -1) {
+				SpawnNote(node, noteIndex);
 				ClearNodesSearched();
 				return true;
 			}
@@ -922,5 +935,16 @@ public class MazeController : MonoBehaviour {
 				placeDistance++;
 			}
 		}
+	}
+
+	void SpawnNote (MazeNode node, int noteIndex) {
+		//***NEEDS NOTE MANAGER REFERENCE***
+	}
+
+	void SpawnNotes () {
+		if (!spawnNotes) {
+			return;
+		}
+		//***NEEDS NOTE MANAGER REFERENCE***
 	}
 }
