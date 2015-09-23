@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [AddComponentMenu("Scripts/Items/FlashlightItem")]
 public class FlashlightItem : ItemBase {
@@ -9,17 +10,13 @@ public class FlashlightItem : ItemBase {
 	//bool to keep track of whether the light in on or off
 	public bool lightEnabled;
 
-	public GameObject lightObject;
-    Light spotLight;
+    public List<Light> spotLights;
 
 	protected override void Awake() {
 		base.Awake();
 		
 		thisItemType = ItemType.flashlight;
-
-        if (lightObject != null) {
-            spotLight = lightObject.GetComponent<Light>();
-        }
+		
 	}
 
 	// Update is called once per frame
@@ -40,18 +37,22 @@ public class FlashlightItem : ItemBase {
 
 	public void On(){
 		lightEnabled = true;
-		lightObject.SetActive (true);
+		foreach (Light light in spotLights) {
+			light.gameObject.SetActive (true);
+		}
 	}
 
 	public void Off(){
 		lightEnabled = false;
-		lightObject.SetActive (false);
+		foreach (Light light in spotLights) {
+			light.gameObject.SetActive (false);
+		}
 	}
 
     private void BurnWraiths() {
         RaycastHit[] hits = Physics.RaycastAll(Camera.main.transform.position,
                               Camera.main.transform.forward,
-                              spotLight.range,
+                              spotLights[0].range,
                               hitLayers);
 
         foreach (RaycastHit hit in hits) {

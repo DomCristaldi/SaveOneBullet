@@ -95,7 +95,7 @@ MonoBehaviour:
   evadeKey: 53
   clearKey: 54
   toggleDebugKey: 55
-  debugColors: 1
+  debugColors: 0
   debugRed: {fileID: 2100000, guid: d060845e71e66d840b616601d3db6cd3, type: 2}
   debugGreen: {fileID: 2100000, guid: 63193b1b0d4e5dc4a9ce15c9413d8a72, type: 2}
   debugBlue: {fileID: 2100000, guid: 4afdc14c7ef88dc41a0b266956254c27, type: 2}
