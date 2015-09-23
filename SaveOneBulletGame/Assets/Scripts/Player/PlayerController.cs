@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour {
     public KeyCode moveLeft = KeyCode.A;
 
     public KeyCode sneakKey = KeyCode.LeftShift;
+	public KeyCode runKey = KeyCode.LeftControl;
 
     public KeyCode useItem = KeyCode.Mouse0;
 
@@ -95,6 +96,9 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKey(sneakKey)) {
             motor.curMovementMode = AdvancedMotor.MovementMode.sneaking;
         }
+		else if (Input.GetKey(runKey)) {
+			motor.curMovementMode = AdvancedMotor.MovementMode.running;
+		}
         else {
             motor.curMovementMode = AdvancedMotor.MovementMode.walking;
         }

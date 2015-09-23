@@ -61,6 +61,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 181192, guid: d8a762c508578e64c9ee2a2ccf5f4253, type: 2}
   wraithPrefab: {fileID: 142106, guid: cbd66e4babc799843b282f5523f5f917, type: 2}
   notePrefab: {fileID: 120838, guid: 8a752755c744aa24f9884d711ed23fba, type: 2}
+  ceilingPrefab: {fileID: 189814, guid: 0254817745d69604d8a0efa4fd2cf273, type: 2}
   spawnPlayer: 1
   spawnWraiths: 1
   realWraiths: 4
@@ -76,6 +77,7 @@ MonoBehaviour:
   nodeWidth: 35
   nodeHeight: 35
   mazeScale: 2
+  ceilingHeight: 2
   mazeWidth: 0
   mazeHeight: 0
   exitNode: {fileID: 0}
