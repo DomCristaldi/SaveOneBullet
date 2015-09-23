@@ -49,10 +49,10 @@ MonoBehaviour:
   wraithPrefab: {fileID: 142106, guid: cbd66e4babc799843b282f5523f5f917, type: 2}
   spawnPlayer: 1
   spawnWraiths: 1
-  realWraiths: 2
-  fakeWraiths: 5
+  realWraiths: 4
+  fakeWraiths: 20
   minSpawnDistance: 12
-  maxSpawnDistance: 35
+  maxSpawnDistance: 80
   wraithWrapDistance: 40
   wraithRandom: 5
   nodeWidth: 35
@@ -74,6 +74,7 @@ MonoBehaviour:
   searchKey: 52
   evadeKey: 53
   clearKey: 54
+  toggleDebugKey: 55
   debugColors: 1
   debugRed: {fileID: 2100000, guid: d060845e71e66d840b616601d3db6cd3, type: 2}
   debugGreen: {fileID: 2100000, guid: 63193b1b0d4e5dc4a9ce15c9413d8a72, type: 2}
@@ -88,6 +89,9 @@ MonoBehaviour:
   maxAllowedStragglers: 1000
   wallRemovalsGoal: 8
   wallRemovalsStart: 8
+  swapWalls: 1
+  wallSwapTime: 10
+  wallSwapDepth: 3
   aStarPasses: 10
   aStarMode: 3
   aStarRandom: 500
