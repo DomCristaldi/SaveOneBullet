@@ -17,6 +17,7 @@ public class WraithAI : MonoBehaviour {
 	public Motor motor;
 	public NodeTracker nodeTracker;
 	public NodeTracker player;
+	public GameObject model;
 	[Header("Behavior Variables:")]
 	public AIState currentBehavior;
 	public bool hasLineOfSight;
@@ -58,6 +59,7 @@ public class WraithAI : MonoBehaviour {
 	void FixedUpdate () {
 		isReal = _isReal;
 		UpdateAIState();
+		model.transform.forward = motor.trueDirec.normalized;
 	}
 
 	public void SetReal (bool reality) {
