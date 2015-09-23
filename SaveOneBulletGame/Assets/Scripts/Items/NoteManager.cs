@@ -5,8 +5,12 @@ using System.Linq;
 public class NoteManager : MonoBehaviour {
 
     public List<string> allNotes;
+	public static NoteManager singleton;
 
     void Awake() {
+		if (singleton == null) {
+			singleton = this;
+		}
         allNotes = new List<string>();
 
         foreach (TextAsset tAsset in Resources.LoadAll<TextAsset>("Writing")) {
