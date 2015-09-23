@@ -633,7 +633,7 @@ public class MazeController : MonoBehaviour {
 			if (debugColors && mode == SearchUseMode.display) {
 				n.floorRenderer.material = debugMagenta;
 			}
-			bool endFound = AgentSearch(n, depth + 1, distance, mode, realWraith);
+			bool endFound = AgentSearch(n, depth + 1, distance, mode, realWraith, noteIndex);
 			if (endFound) {
 				return true;
 			}
@@ -941,7 +941,6 @@ public class MazeController : MonoBehaviour {
 	}
 
 	void SpawnNote (MazeNode node, int noteIndex) {
-		Debug.Log("Spawning note at index " + noteIndex);
 		GameObject newNote = Instantiate(notePrefab, node.transform.position, Quaternion.identity) as GameObject;
 		NotePickup noteScript = newNote.GetComponent<NotePickup>();
 		noteScript.SetNoteText(NoteManager.singleton.allNotes[noteIndex]);
@@ -955,7 +954,6 @@ public class MazeController : MonoBehaviour {
 		if (!spawnNotes) {
 			return;
 		}
-		Debug.Log("Spawning Notes...");
 		int totalNotes = NoteManager.singleton.allNotes.Count;
 		if (totalNotes > (maxNoteDistance - minNoteDistance)) {
 			maxNoteDistance = minNoteDistance + totalNotes;
@@ -967,13 +965,12 @@ public class MazeController : MonoBehaviour {
 		float distanceStep = (float)(maxNoteDistance - minNoteDistance) / (float)(totalNotes - 1);
 		int placeDistance = minNoteDistance;
 		float actualPlaceDistance = (float)placeDistance;
-		for (int ind = 0; ind < totalNotes; ind++) {
-			AgentSearch(startNode, 0, placeDistance, SearchUseMode.notePlacement, noteIndex: ind);
+		for (int i = 0; i < totalNotes; i++) {
+			AgentSearch(startNode, 0, placeDistance, SearchUseMode.notePlacement, noteIndex: i);
 			actualPlaceDistance += distanceStep;
 			while (actualPlaceDistance - (float)placeDistance >= 1f) {
 				placeDistance++;
 			}
 		}
-		Debug.Log("Done spawning notes.");
 	}
 }
