@@ -126,14 +126,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 11478898, guid: 8987a517df78ac344add8b26843394fe, type: 2}
-      propertyPath: swapWalls
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11478898, guid: 8987a517df78ac344add8b26843394fe, type: 2}
-      propertyPath: debugColors
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8987a517df78ac344add8b26843394fe, type: 2}
   m_IsPrefabParent: 0
@@ -152,7 +144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &107371153
 Light:
   m_ObjectHideFlags: 0
@@ -162,13 +154,13 @@ Light:
   m_Enabled: 1
   serializedVersion: 6
   m_Type: 1
-  m_Color: {r: 1, g: .956862748, b: .839215696, a: 1}
+  m_Color: {r: .590505362, g: .258866757, b: .838235259, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_Strength: 1
     m_Bias: .0500000007

@@ -325,15 +325,16 @@ public class WraithAI : MonoBehaviour {
 	IEnumerator FadeAway (float seconds) {
 		float fadeTime = 0f;
 		while (true) {
-
+			matController.SetDissolveAmount(fadeTime);
 			yield return null;
 			fadeTime += Time.deltaTime / seconds;
 		}
+		yield break;
 	}
 
 	IEnumerator DestroyAfterSeconds (float seconds) {
 		yield return new WaitForSeconds(seconds);
-		StopCoroutine(fadeRoutine);
+		//StopCoroutine(fadeRoutine);
 		Destroy(gameObject);
 	}
 	

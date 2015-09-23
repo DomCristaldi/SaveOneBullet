@@ -109,7 +109,7 @@ MonoBehaviour:
   maxAllowedStragglers: 1000
   wallRemovalsGoal: 8
   wallRemovalsStart: 8
-  swapWalls: 1
+  swapWalls: 0
   wallSwapTime: 10
   wallSwapDepth: 3
   aStarPasses: 10
