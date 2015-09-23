@@ -10,8 +10,28 @@ GameObject:
   - 4: {fileID: 412590}
   - 114: {fileID: 11427436}
   - 114: {fileID: 11416944}
-  m_Layer: 0
+  - 54: {fileID: 5469344}
+  - 114: {fileID: 11435176}
+  m_Layer: 10
   m_Name: Wraith
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &156510
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 452686}
+  - 33: {fileID: 3387016}
+  - 136: {fileID: 13689514}
+  - 23: {fileID: 2396656}
+  m_Layer: 10
+  m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,9 +46,68 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 452686}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &452686
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156510}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 412590}
+  m_RootOrder: 0
+--- !u!23 &2396656
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156510}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_ImportantGI: 0
+  m_AutoUVMaxDistance: .5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &3387016
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156510}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &5469344
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142106}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: .0500000007
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!114 &11416944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -54,17 +133,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isReal: 0
+  motor: {fileID: 0}
+  nodeTracker: {fileID: 0}
+  player: {fileID: 0}
   currentBehavior: 0
   hasLineOfSight: 0
+  enraged: 0
+  target: {fileID: 0}
   lastKnownPlayerLocation: {fileID: 0}
-  provokeRange: 5
-  idleRange: 8
-  enragedIdleRange: 12
-  searchTime: 7
-  enragedSearchTime: 15
-  idleSpeed: 1
-  provokedSpeed: 2
-  enragedSpeed: 3
+  guessedNextPlayerLocation: {fileID: 0}
+  provokeRange: 7
+  idleRandom: 5
+  idleRange: 10
+  enragedIdleRange: 14
+  searchRandom: .5
+  searchTime: 8
+  enragedSearchTime: 16
+  idleSpeed: .5
+  provokedSpeed: 2.79999995
+  enragedSpeed: 4.19999981
+  currentSpeed: 0
+--- !u!114 &11435176
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a7f838607feb524b8acff669aabc963, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredDirec: {x: 0, y: 0, z: 0}
+  trueDirec: {x: 0, y: 0, z: 0}
+  moveSpeedModifier: 1
+  redirectSpeed: 10
+--- !u!136 &13689514
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156510}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: .5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -78,35 +194,63 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: provokeRange
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: idleRange
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: searchTime
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 0}
+      propertyPath: idleRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: searchTime
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: enragedSearchTime
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: enragedIdleRange
-      value: 12
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: idleSpeed
-      value: 1
+      value: .5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: provokedSpeed
-      value: 2
+      value: 2.79999995
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: enragedSpeed
-      value: 3
+      value: 4.19999981
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: redirectSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: idleRandom
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: searchRandom
+      value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

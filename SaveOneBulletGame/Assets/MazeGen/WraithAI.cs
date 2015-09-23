@@ -3,6 +3,7 @@ using System.Collections;
 
 [AddComponentMenu("Scripts/AI/Wraith")]
 [RequireComponent(typeof(NodeTracker))]
+[RequireComponent(typeof(Motor))]
 public class WraithAI : MonoBehaviour {
 
 	public enum AIState {
@@ -13,6 +14,7 @@ public class WraithAI : MonoBehaviour {
 
 	private bool _isReal;
 	public bool isReal;
+	public Motor motor;
 	public NodeTracker nodeTracker;
 	public NodeTracker player;
 	[Header("Behavior Variables:")]
@@ -41,6 +43,7 @@ public class WraithAI : MonoBehaviour {
     
     void Awake () {
 		nodeTracker = GetComponent<NodeTracker>();
+		motor = GetComponent<Motor>();
 		currentBehavior = AIState.idle;
 		hasLineOfSight = false;
 		lastKnownPlayerLocation = null;
@@ -265,7 +268,8 @@ public class WraithAI : MonoBehaviour {
 	}
 
 	void MoveToTarget () {
-
+		motor.desiredDirec = (target.position - transform.position).normalized * currentSpeed;
+		motor.moveSpeedModifier = currentSpeed;
 	}
 
 	bool AtTarget () {
