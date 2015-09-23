@@ -97,6 +97,21 @@ public class MazeNode : MonoBehaviour {
 		//links[DirectionToIndex(direction)].wall.transform.localPosition = Vector3.up;
 	}
 
+	public MazeLink GetLinkToNode (MazeNode node) {
+		int connectionIndex = -1;
+		for (int i = 0; i < 5; i++) {
+			if (connections[i] == node) {
+				connectionIndex = i;
+				break;
+			}
+		}
+		if (connectionIndex == -1) {
+			Debug.LogError("Unable to get link!");
+			return null;
+		}
+		return links[connectionIndex];
+	}
+
 	public void ConnectToNode (MazeNode node, bool isMainPath = false) {
 		int connectionIndex = -1;
 		for (int i = 0; i < 5; i++) {
@@ -107,7 +122,7 @@ public class MazeNode : MonoBehaviour {
 		}
 		if (connectionIndex == -1) {
 			Debug.LogError("Unable to connect nodes!");
-				return;
+			return;
 		}
 		AddCurrentConnections(IndexToDirection(connectionIndex), node, isMainPath);
 		if (isMainPath) {
