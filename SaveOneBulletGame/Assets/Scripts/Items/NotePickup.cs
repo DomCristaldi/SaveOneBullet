@@ -3,6 +3,8 @@ using System.Collections;
 
 public class NotePickup : MonoBehaviour {
 
+    public NoteUIHandler noteUI;
+
     public string noteText;
 
     void OnTriggerEnter(Collider other) {
@@ -26,6 +28,10 @@ public class NotePickup : MonoBehaviour {
         
     }
 
+    void Awake() {
+        SetUIText();
+    }
+
 	// Use this for initialization
 	void Start () {
 	
@@ -38,5 +44,10 @@ public class NotePickup : MonoBehaviour {
 
     public void SetNoteText(string text) {
         noteText = text;
+        SetUIText();
+    }
+
+    private void SetUIText() {
+        noteUI.SetText(noteText);
     }
 }
