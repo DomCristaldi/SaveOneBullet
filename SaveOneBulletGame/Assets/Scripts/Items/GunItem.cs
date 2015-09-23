@@ -4,15 +4,17 @@ using System.Collections;
 [AddComponentMenu("Scripts/Items/GunItem")]
 public class GunItem : ItemBase {
 
+    public LayerMask hitLayers;
+
     public int ammo = 8;
+
+    public float range = 40.0f;
 
 	public int reloadTime = 3;
     public bool canFire = true;
     public bool reloading = false; //bool to keep track on if its reloading or not
     public bool doneReloading = false;
     public bool interruptReload = false;
-
-    
 
 	private float timer;
 	private float start;
@@ -69,27 +71,8 @@ public class GunItem : ItemBase {
                 timer = 0.0f;
             }
 
-            /*
-			timer += Time.deltaTime;
-			if(timer - start >= reloadTime) {
-				//reloading = false;
-
-                //animator.SetBool("Reloading_Bool", false);
-
-                SetHasFinishedReloading();
-            }
-            */
 		}
-        /*
-        else {
-            animator.SetBool("Reloading_Bool", false);
-            //AllowCanFire();
-            //AllowCanFire();
-            //reloading = false;
-            //interruptReload = false;
-        }
-        */
-        
+
 	}
 
     public override void Equip() {
@@ -122,6 +105,24 @@ public class GunItem : ItemBase {
             StartCoroutine(ShootLightTime());
 
             //***NEED TO RAYCAST OUT INTO THE ENVIRONMENT AND TRY TO DAMAGE SOMETHING
+        
+            RaycastHit[] hits = Physics.RaycastAll(Camera.main.transform.position,
+                                Camera.main.transform.forward,
+                                range,
+                                hitLayers);
+
+            foreach (RaycastHit hit in hits) {
+                if (hit.collider.gameObject.layer == 9) {//hit a wall
+                    break;
+                }
+                else {
+                    WraithAI wAI = hit.collider.GetComponent<WraithAI>();
+                    if (wAI != null) {
+                        wAI.ReactToItem(thisItemType);
+                    }
+                }
+            }
+
         }
 
     }
