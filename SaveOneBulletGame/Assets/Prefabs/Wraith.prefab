@@ -825,6 +825,7 @@ GameObject:
   - 114: {fileID: 11416944}
   - 54: {fileID: 5469344}
   - 114: {fileID: 11435176}
+  - 114: {fileID: 11465552}
   m_Layer: 10
   m_Name: Wraith
   m_TagString: Untagged
@@ -2590,7 +2591,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156510}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 412590}
@@ -3538,7 +3539,7 @@ Light:
   m_SpotAngle: 68.9000015
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_Strength: 1
     m_Bias: .0500000007
@@ -3570,7 +3571,7 @@ Light:
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_Strength: 1
     m_Bias: .0500000007
@@ -3631,7 +3632,7 @@ MonoBehaviour:
   searchRandom: .5
   searchTime: 8
   enragedSearchTime: 16
-  despawnTime: 1.5
+  despawnTime: 2.5
   freezeAI: 0
   idleSpeed: .5
   provokedSpeed: 2.79999995
@@ -3652,6 +3653,21 @@ MonoBehaviour:
   trueDirec: {x: 0, y: 0, z: 0}
   moveSpeedModifier: 1
   redirectSpeed: 10
+--- !u!114 &11465552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 228c03f2a227d2b4fa46d24da4a27b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderList:
+  - {fileID: 13799088}
+  - {fileID: 13726272}
+  - {fileID: 2349046}
 --- !u!136 &13689514
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -3662,7 +3678,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: .5
-  m_Height: 2
+  m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!137 &13726272
@@ -3750,6 +3766,10 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
+      propertyPath: renderList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: isEnemy
       value: 1
       objectReference: {fileID: 0}
@@ -3823,7 +3843,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: despawnTime
-      value: 1.5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: model
@@ -3831,6 +3851,18 @@ Prefab:
       objectReference: {fileID: 137408}
     - target: {fileID: 0}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Height
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Shadows.m_Type
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -28,6 +28,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 451054}
   - 136: {fileID: 13648632}
+  - 114: {fileID: 11463138}
   m_Layer: 11
   m_Name: BodyCollider
   m_TagString: Untagged
@@ -393,6 +394,17 @@ MonoBehaviour:
   cam: {fileID: 2066518}
   aimSensitivity: 5
   deltaAimDirec: {x: 0, y: 0}
+--- !u!114 &11463138
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 106534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4beb28dbe494684292f1b5e7f9f692b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11466646
 MonoBehaviour:
   m_ObjectHideFlags: 1

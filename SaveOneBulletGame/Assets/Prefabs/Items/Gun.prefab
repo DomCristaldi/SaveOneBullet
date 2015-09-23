@@ -1799,7 +1799,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d1ae471624766744f8e7f1871ba2c88e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ccab5999629eeb74d9ef6259033025ae, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1891,7 +1891,7 @@ Light:
   m_SpotAngle: 144.429581
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_Strength: 1
     m_Bias: .0500000007
@@ -3041,7 +3041,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: d1ae471624766744f8e7f1871ba2c88e, type: 3}
+      objectReference: {fileID: 8300000, guid: ccab5999629eeb74d9ef6259033025ae, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 168596}

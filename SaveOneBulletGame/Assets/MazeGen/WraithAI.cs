@@ -46,8 +46,8 @@ public class WraithAI : MonoBehaviour {
 	public float provokedSpeed;
 	public float enragedSpeed;
 	public float currentSpeed;
-	List<Material> mats;
 	Coroutine fadeRoutine;
+	AgentMaterialController matController;
     
     void Awake () {
 		nodeTracker = GetComponent<NodeTracker>();
@@ -56,6 +56,7 @@ public class WraithAI : MonoBehaviour {
 		hasLineOfSight = false;
 		lastKnownPlayerLocation = null;
 		freezeAI = false;
+		matController = GetComponent<AgentMaterialController>();
     }
     
 	void Start () {
@@ -318,35 +319,23 @@ public class WraithAI : MonoBehaviour {
 		motor.enabled = false;
 		col.enabled = false;
 		StartCoroutine(DestroyAfterSeconds(despawnTime));
-		mats = new List<Material>();
-		GetMaterials(model.transform);
 		fadeRoutine = StartCoroutine(FadeAway(despawnTime));
 	}
 
 	IEnumerator FadeAway (float seconds) {
 		float fadeTime = 0f;
 		while (true) {
-			foreach (Material mat in mats) {
-				mat.SetFloat("_SliceAmount", .8f);
-			}
+			matController.SetDissolveAmount(fadeTime);
 			yield return null;
 			fadeTime += Time.deltaTime / seconds;
 		}
+		yield break;
 	}
 
 	IEnumerator DestroyAfterSeconds (float seconds) {
 		yield return new WaitForSeconds(seconds);
-		StopCoroutine(fadeRoutine);
+		//StopCoroutine(fadeRoutine);
 		Destroy(gameObject);
 	}
-
-	void GetMaterials (Transform tf) {
-		MeshRenderer rend = tf.GetComponent<MeshRenderer>();
-		if (rend != null) {
-			mats.Add(rend.material);
-			for (int i = 0; i < tf.childCount; i++) {
-				GetMaterials(tf.GetChild(i));
-			}
-		}
-	}
+	
 }
