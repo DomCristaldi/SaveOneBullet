@@ -165,6 +165,7 @@ public class MazeController : MonoBehaviour {
 		if (player != null) {
 			playerNode = player.closestNode;
 		}
+		exit.cubeRenderer.material = debugBlack;
 	}
 
 	IEnumerator WallSwappingTimer (float maxTimer) {

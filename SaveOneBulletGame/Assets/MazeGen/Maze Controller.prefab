@@ -64,10 +64,10 @@ MonoBehaviour:
   ceilingPrefab: {fileID: 189814, guid: 0254817745d69604d8a0efa4fd2cf273, type: 2}
   spawnPlayer: 1
   spawnWraiths: 1
-  realWraiths: 4
-  fakeWraiths: 20
+  realWraiths: 6
+  fakeWraiths: 42
   minSpawnDistance: 12
-  maxSpawnDistance: 80
+  maxSpawnDistance: 120
   wraithWrapDistance: 40
   wraithRandom: 5
   spawnNotes: 1
@@ -109,9 +109,9 @@ MonoBehaviour:
   maxAllowedStragglers: 1000
   wallRemovalsGoal: 8
   wallRemovalsStart: 8
-  swapWalls: 0
+  swapWalls: 1
   wallSwapTime: 10
-  wallSwapDepth: 3
+  wallSwapDepth: 5
   aStarPasses: 10
   aStarMode: 3
   aStarRandom: 500

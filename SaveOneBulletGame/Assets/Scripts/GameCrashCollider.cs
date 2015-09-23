@@ -12,7 +12,9 @@ public class GameCrashCollider : MonoBehaviour {
 	}
 	
 	void Update () {
-        
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+			Application.Quit();
+		}
 	}
 
 	void OnCollisionEnter (Collision collision) {
