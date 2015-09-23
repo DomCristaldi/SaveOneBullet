@@ -2,9 +2,13 @@
 using System.Collections;
 
 [AddComponentMenu("Scripts/Items/GunItem")]
+[RequireComponent(typeof(AudioSource))]
 public class GunItem : ItemBase {
 
     public LayerMask hitLayers;
+
+    private AudioSource audio;
+    public AudioClip gunshot;
 
     public int ammo = 8;
 
@@ -36,6 +40,8 @@ public class GunItem : ItemBase {
 	//set itemType
     protected override void Awake() {
         base.Awake();
+
+        audio = GetComponent<AudioSource>();
 
         thisItemType = ItemType.gun;
 
@@ -100,6 +106,10 @@ public class GunItem : ItemBase {
         if (ammo > 0) {
             animator.SetTrigger("Shoot_Trig");
             --ammo;
+
+
+            //audio.clip = gunshot;
+            audio.PlayOneShot(gunshot);
 
             partEmitter.Emit(particlesEmittedCount);
             StartCoroutine(ShootLightTime());
