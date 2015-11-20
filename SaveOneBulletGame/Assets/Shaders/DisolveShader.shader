@@ -2,6 +2,9 @@
 
 Shader "Custom/DisolveShader" {
 	Properties {
+        _Color("Color", Color) = (1.0, 1.0, 1.0, 1.0)
+        _Emission("Emission", Color) = (1.0, 1.0, 1.0, 1.0)
+
 		_MainTex("Texture (RGB)", 2D) = "white" {}
 		_SliceGuide ("SliceGuide (RGB)", 2D) = "white" {}
 		_SliceAmount ("Slice Amount", Range(0.0, 1.0)) = 0.5
@@ -25,6 +28,9 @@ Shader "Custom/DisolveShader" {
 			float _SliceAmount;
 		};
 		
+        uniform float4 _Color;
+        uniform float4 _Emission;
+
 		sampler2D _MainTex;
 		sampler2D _SliceGuide;
 		float _SliceAmount;
@@ -34,8 +40,9 @@ Shader "Custom/DisolveShader" {
 		
 		void surf(Input In, inout SurfaceOutput o) {
 			clip(tex2D(_SliceGuide, In.uv_SliceGuide).rgb - _SliceAmount);
-			o.Albedo = tex2D(_MainTex, In.uv_MainTex).rgb;
-			
+			o.Albedo = (tex2D(_MainTex, In.uv_MainTex).rgb) * _Color;
+            o.Emission = _Emission;
+
 			half test = tex2D(_SliceGuide, In.uv_MainTex).rgb - _SliceAmount;
 			
 			if (test < _BurnSize && _SliceAmount > 0 && _SliceAmount < 1) {
