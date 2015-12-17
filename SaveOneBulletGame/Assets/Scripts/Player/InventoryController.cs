@@ -45,6 +45,8 @@ public class InventoryController : MonoBehaviour {
 
     }
 
+
+    /*
 	// Use this for initialization
 	void Start () {
         //ChangeEquippedItem();
@@ -56,6 +58,7 @@ public class InventoryController : MonoBehaviour {
 	void Update () {
         //HandleEquippedItem();
 	}
+    */
 
     private void PrepareEquippableItem(ItemBase item) {
         item.transform.position = handsTf.position;

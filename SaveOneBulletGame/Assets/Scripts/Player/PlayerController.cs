@@ -73,12 +73,12 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
 
-        SendInput();
+        SendControlsInput();
 
-        SendMotorInput();
+        AssignInputToMotor();
         /*
         if (Input.GetKeyDown(KeyCode.Alpha1)) {
             invControl.EquipItem(ItemBase.ItemType.gun);
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour {
         //Debug.Log(Input.mousePosition);
 	}
 
-    private void SendMotorInput() {
+    private void AssignInputToMotor() {
 
         if (Input.GetKey(sneakKey)) {
             motor.curMovementMode = AdvancedMotor.MovementMode.sneaking;
@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour {
         */
     }
     
-    private void SendInput() {
+    private void SendControlsInput() {
         if (canMove) {
             SendMoveInput();
         }
