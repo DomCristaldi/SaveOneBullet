@@ -7,7 +7,7 @@ public class GunItem : ItemBase {
 
     public LayerMask hitLayers;
 
-    private AudioSource audio;
+    private AudioSource _audio;
     public AudioClip gunshotSound;
     public AudioClip openBreachSound;
     public AudioClip closeBreachSound;
@@ -16,20 +16,26 @@ public class GunItem : ItemBase {
 
     public float range = 40.0f;
 
-	public int reloadTime = 3;
+    public float aimDownSightsSpeed = 3.0f;
+    private int _aimDownSightLayerIndex = 1;
+    private bool _aimingDownSights = false;
+
+    public int reloadTime = 3;
     public bool canFire = true;
     public bool reloading = false; //bool to keep track on if its reloading or not
     public bool doneReloading = false;
     public bool interruptReload = false;
 
-	private float timer;
-	private float start;
+	private float _reloadTimer;
+	//private float _reloadTimerStart;
 
     public Transform bulletSpawnPoint;
-    private ParticleSystem partEmitter;
-    private Light shootLight;
+    private ParticleSystem _particleEmitter;
+    private Light _shootLight;
     public int particlesEmittedCount = 10;
     public float shootLightTime = 0.2f;
+
+    private PhysicsMeshSpawner _physMeshSpawner;
 
 
     //IEnumerator reloadCoroutine;
@@ -43,14 +49,16 @@ public class GunItem : ItemBase {
     protected override void Awake() {
         base.Awake();
 
-        audio = GetComponent<AudioSource>();
+        _audio = GetComponent<AudioSource>();
 
         thisItemType = ItemType.gun;
 
-        partEmitter = bulletSpawnPoint.GetComponent<ParticleSystem>();
-        shootLight = bulletSpawnPoint.GetComponent<Light>();
+        _particleEmitter = bulletSpawnPoint.GetComponent<ParticleSystem>();
+        _shootLight = bulletSpawnPoint.GetComponent<Light>();
 
-        shootLight.enabled = false;
+        _physMeshSpawner = GetComponentInChildren<PhysicsMeshSpawner>();
+
+        _shootLight.enabled = false;
     }
 
 	// Use this for initialization
@@ -69,18 +77,20 @@ public class GunItem : ItemBase {
             //animator.SetBool("OpenBreach_Bool", true);
 
 
-            if (doneReloading == false && timer < reloadTime) {//increment timer
-                timer += Time.deltaTime;
+            if (doneReloading == false && _reloadTimer < reloadTime) {//increment timer
+                _reloadTimer += Time.deltaTime;
                 //Debug.Log("timer");
             }
 
-            if (timer >= reloadTime) {
+            if (_reloadTimer >= reloadTime) {
                 SetHasFinishedReloading();
-                timer = 0.0f;
+                _reloadTimer = 0.0f;
             }
 
 		}
 
+        //handle aiming down sights
+        AimDownSightProtocol();//POSSIBLY OPTIMIZE?
 	}
 
     public override void Equip() {
@@ -103,7 +113,14 @@ public class GunItem : ItemBase {
 
     }
 
-	//will fire bullet
+    //AIM DOWN SIGHTS
+    public override void UseAlternate() {
+        _aimingDownSights = !_aimingDownSights;//set up as toggle button
+
+    }
+
+
+    //will fire bullet
     public void FireBullet() {
         if (ammo > 0) {
             animator.SetTrigger("Shoot_Trig");
@@ -111,9 +128,9 @@ public class GunItem : ItemBase {
 
 
             //audio.clip = gunshot;
-            audio.PlayOneShot(gunshotSound);
+            _audio.PlayOneShot(gunshotSound);
 
-            partEmitter.Emit(particlesEmittedCount);
+            _particleEmitter.Emit(particlesEmittedCount);
             StartCoroutine(ShootLightTime());
 
             //***NEED TO RAYCAST OUT INTO THE ENVIRONMENT AND TRY TO DAMAGE SOMETHING
@@ -148,7 +165,7 @@ public class GunItem : ItemBase {
         DisallowCanFire();
         SetHasNotFinishedReloading();
 
-        timer = 0.0f;
+        _reloadTimer = 0.0f;
 
 		//start = Time.deltaTime;
 		//timer = start;
@@ -207,22 +224,46 @@ public class GunItem : ItemBase {
         animator.SetBool("FinishReload_Bool", doneReloading);
     }
 
+    private void AimDownSightProtocol() {
+
+        float aimTargetValue = 0.0f;//temp value for what we want to move towards this frame
+
+        //figure out if we're aiming down or not
+        if (_aimingDownSights) {
+            aimTargetValue = 1.0f;
+        }
+        else {
+            aimTargetValue = 0.0f;
+        }
+
+        //perform aim down sights action
+        animator.SetLayerWeight(_aimDownSightLayerIndex,
+                                Mathf.MoveTowards(animator.GetLayerWeight(_aimDownSightLayerIndex), //gradually move into aiming down sights
+                                                  aimTargetValue,
+                                                  aimDownSightsSpeed * Time.deltaTime));
+
+    }
+
     private IEnumerator ShootLightTime() {
 
-        shootLight.enabled = true;
+        _shootLight.enabled = true;
 
         yield return new WaitForSeconds(shootLightTime);
 
-        shootLight.enabled = false;
+        _shootLight.enabled = false;
 
         yield break;
     }
 
     public void PlayOpenBreachSound() {
-        audio.PlayOneShot(openBreachSound);
+        _audio.PlayOneShot(openBreachSound);
     }
 
     public void PlayCloseBreachSound() {
-        audio.PlayOneShot(closeBreachSound);
+        _audio.PlayOneShot(closeBreachSound);
+    }
+
+    public void TriggerBulletEjection() {
+        _physMeshSpawner.SpawnObject();
     }
 }

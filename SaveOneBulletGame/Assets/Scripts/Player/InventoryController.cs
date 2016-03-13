@@ -138,6 +138,12 @@ public class InventoryController : MonoBehaviour {
         //Debug.Log("UseItem()");
     }
 
+    public void UseItemAlternate() {
+        if (equippedItem != null) {
+            equippedItem.UseAlternate();
+        }
+    }
+
     public bool ItemInInventory(ItemBase.ItemType type) {
         if (equipSlots.ContainsKey(type)) {
             return true;

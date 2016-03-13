@@ -466,6 +466,7 @@ public class MazeController : MonoBehaviour {
 
 	public MazeNode ClosestNodeToPositon (Vector3 position) {
 		List<int> indices = PositionToIndex (position);
+        Debug.Log(indices.Count);
 		return mazeNodes[indices[0]][indices[1]];
 	}
 

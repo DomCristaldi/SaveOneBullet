@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour {
 	public KeyCode runKey = KeyCode.LeftControl;
 
     public KeyCode useItem = KeyCode.Mouse0;
+    public KeyCode useItemAlternate = KeyCode.Mouse1;
 
     public ItemKeyMapping[] itemKeyList;
     public Dictionary<KeyCode, ItemKeyMapping> itemKeyMap;
@@ -182,6 +183,9 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetKeyDown(useItem)) {
             invControl.UseItem();
+        }
+        if (Input.GetKeyDown(useItemAlternate)) {
+            invControl.UseItemAlternate();
         }
     }
 

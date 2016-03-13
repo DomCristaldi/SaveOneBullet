@@ -28,7 +28,8 @@ public class NodeTracker : MonoBehaviour {
 	}
 
 	void UpdateClosestNode () {
-		MazeNode newClosestNode = MazeController.singleton.ClosestNodeToPositon(transform.position);
+		MazeNode newClosestNode = MazeController.singleton.ClosestNodeToPositon(
+            transform.position);
 		if (newClosestNode == null) {
 			Debug.LogError("NodeTracker cannot find closest node!");
 			return;

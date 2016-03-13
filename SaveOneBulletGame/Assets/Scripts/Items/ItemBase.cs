@@ -56,6 +56,11 @@ public class ItemBase : MonoBehaviour {
     public virtual void Use() {
 
     }
+
+    public virtual void UseAlternate() {
+
+    }
+
     /*
     public virtual void Interrupt() {
         interuptedAction = true;
