@@ -13,6 +13,10 @@ public class InventoryController : MonoBehaviour {
         }
 
         public EquipmentSlot (GameObject item) {
+        	
+        	//make sure the item we're adding is actually an item
+        	if (item.GetComponent<ItemBase>() == null) { return; }
+        	
             this.item = item.GetComponent<ItemBase>();
         }
 
