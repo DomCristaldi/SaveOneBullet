@@ -26,27 +26,12 @@ public class ViewController : MonoBehaviour {
     float deltaAimAngle_X {
         get {
             float value = Mathf.Sign(deltaAimDirec.x) * Vector3.Angle(deltaAimPos_X - Vector3.forward, Vector3.zero - Vector3.forward * deltaAimAngleDampening);
-            /*
-            if (Mathf.Approximately(value, 0.0f) || value < 0.0001f) {
-                return 0.0f;
-            }
-            */
             return value;
         }
-        //get { return Mathf.Sign(deltaAimDirec.x) * Vector3.Angle(delta)
     }
     float deltaAimAngle_Y {
         get {
             float value = -Mathf.Sign(deltaAimDirec.y) * Vector3.Angle(deltaAimPos_Y - Vector3.forward, Vector3.zero - Vector3.forward * deltaAimAngleDampening);
-            /*
-            if (Mathf.Approximately(value, 0.0f) || value < 0.0001f) {
-                Debug.Log("maybe here");
-
-                return 0.0f;
-            }
-            */
-
-            //Debug.Log(value);
             return value;
         }
     }
@@ -56,12 +41,9 @@ public class ViewController : MonoBehaviour {
         camTf = cam.transform;//index the camera transform for readability and faster access
     }
 
-	// Use this for initialsization
 	void Start () {
-        //Cursor.lockState = CursorLockMode.Locked;
 	}
 	
-	// Update is called once per frame
 	void Update () {
         HandleCam();
 
@@ -82,10 +64,8 @@ public class ViewController : MonoBehaviour {
 
 
     //VERTICAL
-        //if (Mathf.Sign(deltaAimDirec.y) > 0.0f && Vector3.Angle(camTF.forward, Vector3.forward) < 90.0f)
         Quaternion newVertRot = GetNewVertCamRot(deltaAimAngle_Y);
         Quaternion finalVertRot = Quaternion.Slerp(camNeckTf.rotation, newVertRot, Time.deltaTime * aimSensitivity);
-
 
         //Debug.DrawRay(camNeckTf.position, finalVertRot * Vector3.forward, Color.red);
 
@@ -111,21 +91,17 @@ public class ViewController : MonoBehaviour {
 
         //Debug.DrawRay(camNeckTf.position, upPlane.normal * 2.0f, Color.blue);
 
-
         camNeckTf.rotation = finalVertRot;
     }
 
     
     private Quaternion GetNewHorCamRot(float angle) {
-        //tf.rotation *= Quaternion.AngleAxis(angle, Vector3.up);
         return tf.rotation * Quaternion.AngleAxis(angle, Vector3.up);
     }
 
 
     private Quaternion GetNewVertCamRot(float angle) {
-
         return camNeckTf.rotation * Quaternion.AngleAxis(angle, Vector3.right);
-
     }
 
     public void InputDeltaView(Vector2 deltaView) {
@@ -134,20 +110,5 @@ public class ViewController : MonoBehaviour {
 
     public Ray GetRayFromCamera() {
         return new Ray(camTf.position, camTf.forward);
-
-        /*
-        RaycastHit hit;
-        
-        if (hit == null) {
-            Debug.Log("try this");
-        }
-
-        if (Physics.Raycast(camTf.position, camTf.forward, out hit)) {
-            return hit.collider.gameObject;
-        }
-        else {
-            return null;
-        }
-        */
     }
 }
